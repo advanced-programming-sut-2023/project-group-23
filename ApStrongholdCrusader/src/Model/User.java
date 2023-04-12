@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class User {
+    private static User currentUser;
     private static ArrayList<User> users = new ArrayList<>();
     private static HashMap<Integer, String> numberToSecurityQuestion = new HashMap<>() {{
         put(1, "What is my father’s name?");
@@ -73,5 +74,13 @@ public class User {
 
     public void sortUserList(User user) {
 
+    }
+
+    public User getUserByUsername(String username) {
+        return null;
+    }
+
+    public void setCurrentUser(User user) {
+        currentUser = user;
     }
 }

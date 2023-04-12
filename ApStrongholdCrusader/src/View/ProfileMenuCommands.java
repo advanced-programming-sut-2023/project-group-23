@@ -15,6 +15,6 @@ public enum ProfileMenuCommands {
     public static Matcher getMatcher(String command, ProfileMenuCommands profileMenuCommands) {
         Matcher matcher = Pattern.compile(profileMenuCommands.regex).matcher(command);
 
-        return matcher.matches() ? matcher : null;
+        return matcher;
     }
 }

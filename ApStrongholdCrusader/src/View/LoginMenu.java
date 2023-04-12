@@ -7,4 +7,8 @@ public class LoginMenu {
     public static void run(Scanner scanner) {
 
     }
+
+    private static void forgotMyPassword(Scanner scanner) {
+
+    }
 }
