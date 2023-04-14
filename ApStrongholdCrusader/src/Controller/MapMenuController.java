@@ -6,7 +6,7 @@ import java.util.regex.Matcher;
 
 public class MapMenuController {
 
-    public static String showMap(int x, int y) {
+    public static String showMap(Matcher matcher) {
         return null;
     }
 
@@ -14,7 +14,25 @@ public class MapMenuController {
         return null;
     }
 
-    public static String showDetails(int x, int y) {
+    public static String showDetails(Matcher matcher) {
         return null;
+    }
+
+    public static void setTextture(Matcher matcher) {
+    }
+
+    public static void clearBlock(Matcher matcher) {
+    }
+
+    public static void dropRock(Matcher matcher) {
+    }
+
+    public static void dropTree(Matcher matcher) {
+    }
+
+    public static void dropBuilding(Matcher matcher) {
+    }
+
+    public static void dropUnit(Matcher matcher) {
     }
 }
