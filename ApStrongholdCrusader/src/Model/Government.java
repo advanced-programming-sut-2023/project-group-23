@@ -14,16 +14,18 @@ public class Government {
     private int maxPopulation;
     private int population;
     private HashMap<ResourceType, Integer> resources;
+    private HashMap<FoodType, Integer> foodsForSale;
+    private HashMap<ResourceType, Integer> resourcesForSale;
     private ArrayList<Trade> tradeHistory;
     private ArrayList<Trade> tradeList;
-    private ArrayList<Food> foods;
+    private HashMap<FoodType, Integer> foods;
     private ArrayList<Person> people;
     private ArrayList<Troop> troops;
     private ArrayList<Building> buildings;
 
+
     public Government(User user) {
         this.user = user;
-        foods = new ArrayList<>();
         people = new ArrayList<>();
         troops = new ArrayList<>();
         buildings = new ArrayList<>();
@@ -79,6 +81,26 @@ public class Government {
         return gold;
     }
 
+    public HashMap<ResourceType, Integer> getResources() {
+        return resources;
+    }
+
+    public void addResources(ResourceType resource, int amount) {
+    }
+    public HashMap<FoodType, Integer> getFoodsForSale() {
+        return foodsForSale;
+    }
+
+    public void addFoodForSale(FoodType food, int amount) {
+    }
+
+    public HashMap<ResourceType, Integer> getResourcesForSale() {
+        return resourcesForSale;
+    }
+
+    public void addResourceForSale(ResourceType resource, int amount) {
+    }
+
     public ArrayList<Trade> getTradeHistory() {
         return tradeHistory;
     }
@@ -95,12 +117,11 @@ public class Government {
         tradeList.add(trade);
     }
 
-    public ArrayList<Food> getFoods() {
+    public HashMap<FoodType, Integer> getFoods() {
         return foods;
     }
 
-    public void addFood(Food food){
-        foods.add(food);
+    public void addFood(FoodType food){
     }
 
     public ArrayList<Person> getPeople() {
