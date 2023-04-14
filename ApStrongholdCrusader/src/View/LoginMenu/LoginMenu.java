@@ -1,4 +1,4 @@
-package View;
+package View.LoginMenu;
 
 import java.util.Scanner;
 

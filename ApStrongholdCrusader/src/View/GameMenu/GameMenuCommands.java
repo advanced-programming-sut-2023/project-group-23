@@ -1,4 +1,4 @@
-package View;
+package View.GameMenu;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

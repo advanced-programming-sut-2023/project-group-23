@@ -1,4 +1,4 @@
-package View;
+package View.ProfileMenu;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
