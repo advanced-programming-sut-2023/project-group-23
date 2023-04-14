@@ -26,9 +26,6 @@ public class Government {
 
     public Government(User user) {
         this.user = user;
-        people = new ArrayList<>();
-        troops = new ArrayList<>();
-        buildings = new ArrayList<>();
     }
 
     public User getUser() {
@@ -121,7 +118,7 @@ public class Government {
         return foods;
     }
 
-    public void addFood(FoodType food){
+    public void addFood(FoodType food, int amount){
     }
 
     public ArrayList<Person> getPeople() {
@@ -153,10 +150,8 @@ public class Government {
     }
 
     public void changeMaxPopulation(int amount) {
-
     }
 
     public void changePopulation(int amount) {
-
     }
 }
