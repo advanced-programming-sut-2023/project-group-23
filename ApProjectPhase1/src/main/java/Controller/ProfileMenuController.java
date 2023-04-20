@@ -1,5 +1,7 @@
 package Controller;
 
+import Model.User;
+
 import java.util.regex.Matcher;
 
 public class ProfileMenuController {
@@ -9,6 +11,7 @@ public class ProfileMenuController {
     }
 
     public static String changeUsername(Matcher matcher) {
+
         return null;
     }
 
@@ -28,20 +31,31 @@ public class ProfileMenuController {
         return null;
     }
 
-    public static String showHighScore() {
-        return null;
+    public static Integer showHighScore() {
+        return User.getCurrentUser().getUserHighScore();
     }
 
-    public static String showRank() {
-        return null;
+    public static Integer showRank() {
+        return User.userRank();
     }
 
     public static String showSlogan() {
-        return null;
+        if (User.getCurrentUser().getSlogan() != null) return User.getCurrentUser().getSlogan();
+        return "Slogan is empty!";
     }
 
     public static String showInfo() {
-        return null;
+        String profileInfo = "User Info:\n";
+        profileInfo += "Username: " + User.getCurrentUser().getUsername() + "\n";
+        profileInfo += "Nickname: " + User.getCurrentUser().getNickname() + "\n";
+        profileInfo += "User ranking: " + User.userRank() + "\n";
+        if (User.getCurrentUser().getSlogan() != null) profileInfo += "Slogan: " + User.getCurrentUser().getSlogan() + "\n";
+        return profileInfo;
+    }
+
+    public static String removeSlogan() {
+        User.getCurrentUser().setSlogan(null);
+        return "Your slogan removed successfully";
     }
 }
 

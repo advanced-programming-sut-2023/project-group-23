@@ -1,6 +1,7 @@
 package Model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 public class User {
@@ -72,15 +73,54 @@ public class User {
         users.add(user);
     }
 
-    public void sortUserList(User user) {
-
+    private static ArrayList<User> copyOfUserList(ArrayList<User> userList) {
+        ArrayList<User> copiedList = new ArrayList<>();
+        for (User user : userList) {
+            copiedList.add(user);
+        }
+        return copiedList;
     }
 
+    private static boolean compareAccordingToHighscore(User firstUser, User secondUser) {
+        if (firstUser.getUserHighScore() < secondUser.getUserHighScore()) return false;
+        else if (firstUser.getUserHighScore() == secondUser.getUserHighScore())
+            if (firstUser.getNickname().compareTo(secondUser.getNickname()) > 0) return false;
+        return true;
+    }
+
+    private static void sortUsers(ArrayList<User> userList) {
+        int listSize = userList.size();
+        for (int i = 1; i < listSize; i ++) {
+            for (int j = 0; j < i; j ++) {
+                if (!compareAccordingToHighscore(userList.get(j), userList.get(i)))
+                    Collections.swap(userList, i, j);
+            }
+        }
+    }
+
+    public static Integer userRank() {
+        ArrayList<User> userList = copyOfUserList(users);
+        sortUsers(userList);
+        Integer userRanking = 1;
+        for (User user : userList) {
+            if (user.equals(currentUser)) return userRanking;
+            userRanking++;
+        }
+        return 0;
+    }
     public User getUserByUsername(String username) {
         return null;
     }
 
+    public static User getCurrentUser() {
+        return currentUser;
+    }
+
     public void setCurrentUser(User user) {
         currentUser = user;
+    }
+
+    public void setSlogan(String slogan) {
+        this.slogan = slogan;
     }
 }
