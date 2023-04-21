@@ -3,6 +3,7 @@ package Model;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
+import org.apache.commons.codec.digest.DigestUtils;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -33,7 +34,7 @@ public class User {
 
     public User(String username, String password, String nickname, String slogan, String email, int userSecurityQuestion, String userAnswerToSecurityQuestion) {
         this.username = username;
-        this.password = password;
+        this.password = DigestUtils.sha256Hex(password);
         this.nickname = nickname;
         this.slogan = slogan;
         this.email = email;
@@ -55,7 +56,13 @@ public class User {
     }
 
     public boolean isPasswordCorrect(String inputPassword) {
-        return this.password.equals(inputPassword);
+        String encryptedInputPassword = DigestUtils.sha256Hex(inputPassword);
+
+        return this.password.equals(encryptedInputPassword);
+    }
+
+    public void setPassword(String password) {
+        this.password = DigestUtils.sha256Hex(password);
     }
 
     public String getNickname() {
