@@ -1,0 +1,42 @@
+[
+  {
+    "username": "dwight",
+    "password": "kurt",
+    "nickname": "Dr.Zeus",
+    "slogan": "hey",
+    "email": "gmail",
+    "userSecurityQuestionNumber": 1,
+    "userAnswerToSecurityQuestion": "yes",
+    "userHighScore": 0
+  },
+  {
+    "username": "dwight",
+    "password": "kurt",
+    "nickname": "Dr.Zeus",
+    "slogan": "hey",
+    "email": "gmail",
+    "userSecurityQuestionNumber": 2,
+    "userAnswerToSecurityQuestion": "no",
+    "userHighScore": 0
+  },
+  {
+    "username": "dwight",
+    "password": "kurt",
+    "nickname": "Dr.Zeus",
+    "slogan": "hey",
+    "email": "gmail",
+    "userSecurityQuestionNumber": 1,
+    "userAnswerToSecurityQuestion": "yes",
+    "userHighScore": 0
+  },
+  {
+    "username": "dwight",
+    "password": "kurt",
+    "nickname": "Dr.Zeus",
+    "slogan": "hey",
+    "email": "gmail",
+    "userSecurityQuestionNumber": 2,
+    "userAnswerToSecurityQuestion": "no",
+    "userHighScore": 0
+  }
+]

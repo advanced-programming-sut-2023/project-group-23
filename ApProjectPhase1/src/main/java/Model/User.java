@@ -1,7 +1,16 @@
 package Model;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.stream.JsonReader;
+
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Arrays;
 import java.util.HashMap;
 
 public class User {
@@ -37,6 +46,10 @@ public class User {
         return users;
     }
 
+    public static void setUsers(ArrayList<User> users) {
+        User.users = users;
+    }
+
     public String getUsername() {
         return username;
     }
@@ -69,7 +82,7 @@ public class User {
         return userHighScore;
     }
 
-    public void addUser(User user) {
+    public static void addUser(User user) {
         users.add(user);
     }
 
@@ -116,8 +129,29 @@ public class User {
         return currentUser;
     }
 
-    public void setCurrentUser(User user) {
+    public static void setCurrentUser(User user) {
         currentUser = user;
+    }
+
+    public static void initializeUsersFromDatabase() throws FileNotFoundException {
+        Gson gson = new GsonBuilder()
+                .setPrettyPrinting()
+                .create();
+        JsonReader reader = new JsonReader(new FileReader("usersDatabase.json"));
+        User[] usersTempArray = gson.fromJson(reader, User[].class);
+        if(usersTempArray != null) {
+            ArrayList<User> usersTempList = new ArrayList<>(Arrays.asList(usersTempArray));
+            User.setUsers(usersTempList);
+        }
+    }
+
+    public static void updateDatabase() throws IOException {
+        Gson gson = new GsonBuilder()
+                .setPrettyPrinting()
+                .create();
+        FileWriter writer = new FileWriter("usersDatabase.json");
+        gson.toJson(User.getUsers(), writer);
+        writer.close();
     }
 
     public void setSlogan(String slogan) {
