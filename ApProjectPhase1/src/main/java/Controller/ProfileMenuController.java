@@ -4,6 +4,8 @@ import Model.User;
 
 import java.util.regex.Matcher;
 
+import static Controller.LoginMenuController.isUsernameFormatCorrect;
+
 public class ProfileMenuController {
 
     public static String change(String string) {
@@ -11,15 +13,24 @@ public class ProfileMenuController {
     }
 
     public static String changeUsername(Matcher matcher) {
-
-        return null;
-    }
-
-    public static String changePassword(Matcher matcher) {
-        return null;
+        String username = matcher.group("username");
+        if(username.matches("\\s*"))
+            return "please enter a username";
+        if(!isUsernameFormatCorrect(username))
+            return "username format is not correct";
+        User.getCurrentUser().setUsername(username);
+        return "Done!";
     }
 
     public static String changeNickname(Matcher matcher) {
+        String nickname = matcher.group("nickname");
+        if(nickname.matches("\\s*"))
+            return "please enter a nickname";
+        User.getCurrentUser().setNickname(nickname);
+        return "Done!";
+    }
+
+    public static String changePassword(Matcher matcher) {
         return null;
     }
 

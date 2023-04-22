@@ -142,6 +142,10 @@ public class User {
         return emails;
     }
 
+    public void setUsername(String newUsername){
+        this.username = newUsername;
+    }
+
     public static User getCurrentUser() {
         return currentUser;
     }
@@ -173,5 +177,9 @@ public class User {
 
     public void setSlogan(String slogan) {
         this.slogan = slogan;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 }
