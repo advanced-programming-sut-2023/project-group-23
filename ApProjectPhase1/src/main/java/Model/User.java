@@ -17,6 +17,7 @@ import java.util.HashMap;
 public class User {
     private static User currentUser;
     private static ArrayList<User> users = new ArrayList<>();
+    private static ArrayList<String> emails = new ArrayList<>();
     private static HashMap<Integer, String> numberToSecurityQuestion = new HashMap<>() {{
         put(1, "What is my father’s name?");
         put(2, "What was my first pet’s name?");
@@ -41,6 +42,7 @@ public class User {
         this.userSecurityQuestionNumber = userSecurityQuestion;
         this.userAnswerToSecurityQuestion = userAnswerToSecurityQuestion;
         this.userHighScore = 0;
+        emails.add(email);
     }
 
     public static ArrayList<User> getUsers() {
@@ -128,8 +130,16 @@ public class User {
         }
         return 0;
     }
-    public User getUserByUsername(String username) {
+    public static User getUserByUsername(String username) {
+        for (User user : users) {
+            if(user.getUsername().equals(username))
+                return user;
+        }
         return null;
+    }
+
+    public static ArrayList<String> getEmails() {
+        return emails;
     }
 
     public static User getCurrentUser() {
