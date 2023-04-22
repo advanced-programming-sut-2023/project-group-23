@@ -5,7 +5,8 @@ import java.util.regex.Pattern;
 
 public enum LoginMenuCommands {
     CREATE_USER("\\s*user\\s+create\\s+-\\s*u\\s+<?(username).+>\\s+-\\s*p\\s+<?(password).+>\\s+<?(passwordConfirmation).+>\\s+-\\s*email\\s+<?(email).+>\\s+-\\s*n\\s+<?(nickname).+>(\\s+-\\s*s\\s+<?(slogan).+>)?\\s*"),
-    VALID_USERNAME("[a-zA-Z0-9_]+");
+    VALID_USERNAME("[a-zA-Z0-9_]+"),
+    VALID_EMAIL("(?<name>\\S+)@(?<mailServer>\\S+)\\.(?<domain>\\S+)");
 
     private String regex;
 
