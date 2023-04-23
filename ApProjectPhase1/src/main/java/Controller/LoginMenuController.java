@@ -36,10 +36,6 @@ public class LoginMenuController {
         return User.getUserByUsername(username) != null;
     }
 
-    public static boolean isPasswordCorrect(String username, String password){
-        return User.checkPasswordByUsername(username, password);
-    }
-
     public static boolean isEmailExist(String emailForCheck){
         return User.getUserByEmail(emailForCheck) != null;
     }
@@ -242,7 +238,7 @@ public class LoginMenuController {
         String password = matcher.group("password").replace("\"", "");
         if (!isUserExist(username))
             return "this username is not exists";
-        if(!isPasswordCorrect(username,password))
+        if(!User.getUserByUsername(username).isPasswordCorrect(password))
             return "username and password didn't match!";
         else{
             User user = User.getUserByUsername(username);
