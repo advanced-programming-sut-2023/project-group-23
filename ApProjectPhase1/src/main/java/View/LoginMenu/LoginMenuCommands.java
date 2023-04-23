@@ -4,9 +4,20 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public enum LoginMenuCommands {
-    CREATE_USER("\\s*user\\s+create\\s+-\\s*u\\s+<?(username).+>\\s+-\\s*p\\s+<?(password).+>\\s+<?(passwordConfirmation).+>\\s+-\\s*email\\s+<?(email).+>\\s+-\\s*n\\s+<?(nickname).+>(\\s+-\\s*s\\s+<?(slogan).+>)?\\s*"),
+    CREATE_USER("\\s*create\\s+user(?<content>(\\s+-[upcnse]\\s+([^\"\\s]+|(\"[^\"]*\")))*)\\s*"),
+    USERNAME_FIELD ("-u\\s+(?<username>[^\"\\s]+|(\"[^\"]*\"))"),
+    PASSWORD_FIELD ("-p\\s+(?<password>[^\"\\s]+|(\"[^\"]*\"))"),
+    PASSWORD_CONFIRM_FIELD ("-c\\s+(?<password>[^\"\\s]+|(\"[^\"]*\"))"),
+    EMAIL_FIELD ("-e\\s+(?<email>[^\"\\s]+|(\"[^\"]*\"))"),
+    NICKNAME_FIELD ("-n\\s+(?<nickname>[^\"\\s]+|(\"[^\"]*\"))"),
+    SLOGAN_FIELD ("-s\\s+(?<slogan>[^\"\\s]+|(\"[^\"]*\"))"),
     VALID_USERNAME("[a-zA-Z0-9_]+"),
-    VALID_EMAIL("(?<name>\\S+)@(?<mailServer>\\S+)\\.(?<domain>\\S+)");
+    VALID_PASSWORD ("\\S+"),
+    VALID_NICKNAME ("\\S+"),
+    VALID_EMAIL("(?<name>\\S+)@(?<mailServer>\\S+)\\.(?<domain>\\S+)"),
+    QUESTION_PICK ("\\s*question\\s+pick(?<content>(\\s+-[qac]\\s+([^\"\\s]+|(\"[^\"]*\")))*)\\s*"),
+    QUESTION_NUMBER_FIELD ("-q\\s+(?<questionNumber>[^\"\\s]+|(\"[^\"]*\"))"),
+    VALID_QUESTION_NUMBER ("-?\\d+");
 
     private String regex;
 
@@ -16,8 +27,6 @@ public enum LoginMenuCommands {
 
     public static Matcher getMatcher(String command, LoginMenuCommands loginMenuCommands) {
         Matcher matcher = Pattern.compile(loginMenuCommands.regex).matcher(command);
-        if (matcher.matches())
-            return matcher;
-        return null;
+        return matcher;
     }
 }

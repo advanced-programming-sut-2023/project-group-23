@@ -23,6 +23,12 @@ public class User {
         put(3, "What is my mother’s last name?");
     }};
 
+    private static HashMap<Integer, String> randomSlogans = new HashMap<>() {{
+        put(1, "I shall have my revenge, in this life or the next");
+        put(2, "slogan2");
+        put(3, "slogan3");
+    }};
+
     private String username;
     private String password;
     private String nickname;
@@ -77,8 +83,12 @@ public class User {
         return email;
     }
 
-    public String  getUserSecurityQuestion() {
+    public String getUserSecurityQuestion() {
         return numberToSecurityQuestion.get(userSecurityQuestionNumber);
+    }
+
+    public static String getQuestionByKey(int key) {
+        return numberToSecurityQuestion.get(key);
     }
 
     public String getUserAnswerToSecurityQuestion() {
@@ -128,7 +138,24 @@ public class User {
         }
         return 0;
     }
-    public User getUserByUsername(String username) {
+    public static User getUserByUsername(String username) {
+        for(User user : users)
+            if(user.getUsername().equals(username))
+                return user;
+        return null;
+    }
+
+    public static User getUserByEmail(String email) {
+        for(User user : users)
+            if(user.getEmail().equals(email))
+                return user;
+        return null;
+    }
+
+    public static User getUserByNickname(String nickname) {
+        for(User user : users)
+            if(user.getNickname().equals(nickname))
+                return user;
         return null;
     }
 
@@ -163,5 +190,9 @@ public class User {
 
     public void setSlogan(String slogan) {
         this.slogan = slogan;
+    }
+
+    public static String getRandomSloganByKey(int key) {
+        return randomSlogans.get(key);
     }
 }
