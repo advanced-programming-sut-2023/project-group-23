@@ -4,7 +4,8 @@ import Model.User;
 
 import java.util.regex.Matcher;
 
-import static Controller.LoginMenuController.isUsernameFormatCorrect;
+import Controller.LoginMenuController;
+import View.ProfileMenu.ProfileMenuCommands;
 
 public class ProfileMenuController {
 
@@ -14,7 +15,8 @@ public class ProfileMenuController {
 
     public static String changeUsername(Matcher matcher) {
         String username = matcher.group("username");
-        if(username.matches("\\s*"))
+        username = Controller.deleteWhiteSpacesOfEnd(username);
+        if(username.matches("\\s+"))
             return "please enter a username";
         if(!isUsernameFormatCorrect(username))
             return "username format is not correct";
@@ -24,22 +26,50 @@ public class ProfileMenuController {
 
     public static String changeNickname(Matcher matcher) {
         String nickname = matcher.group("nickname");
-        if(nickname.matches("\\s*"))
+        nickname = Controller.deleteWhiteSpacesOfEnd(nickname);
+        if(nickname.matches("\\s+"))
             return "please enter a nickname";
         User.getCurrentUser().setNickname(nickname);
         return "Done!";
     }
 
+    public static String validChangePassword(Matcher matcher) {
+        String passwords = matcher.group(1);
+        String oldPassword = "";
+        String newPassword = "";
+        if (!(matcher = ProfileMenuCommands.getMatcher(passwords, ProfileMenuCommands.OLDPASSWORD_FIELD)).find())
+            return "you must enter your old password";
+        else {
+            oldPassword = matcher.group("password").replace("\"", "");
+
+
+        }
+        if (!(matcher = ProfileMenuCommands.getMatcher(passwords, ProfileMenuCommands.OLDPASSWORD_FIELD)).find())
+            return "you must enter a new password";
+        return null;
+    }
+
     public static String changePassword(Matcher matcher) {
+
         return null;
     }
 
     public static String changeEmail(Matcher matcher) {
-        return null;
+        String email = matcher.group("email");
+        email = Controller.deleteWhiteSpacesOfEnd(email);
+        if (email.matches("\\s+")) return "Email must doesn't have any space";
+        else if (!isEmailFormatCorrect(email)) return "Email format isn't correct";
+        else if (!isEmailExist(email)) return "This email already exists";
+        User.getCurrentUser().setEmail(email);
+        return "Done!";
     }
 
     public static String changeSlogan(Matcher matcher) {
-        return null;
+        String slogan = matcher.group("slogan");
+        slogan = Controller.deleteWhiteSpacesOfEnd(slogan);
+        slogan = slogan.replace("\"", "");
+        User.getCurrentUser().setSlogan(slogan);
+        return "Done!";
     }
 
     public static Integer showHighScore() {
