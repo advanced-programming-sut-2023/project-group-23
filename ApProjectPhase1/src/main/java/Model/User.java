@@ -159,6 +159,14 @@ public class User {
         return null;
     }
 
+    public static ArrayList<String> getEmails() {
+        return emails;
+    }
+
+    public void setUsername(String newUsername){
+        this.username = newUsername;
+    }
+
     public static User getCurrentUser() {
         return currentUser;
     }
@@ -194,5 +202,9 @@ public class User {
 
     public static String getRandomSloganByKey(int key) {
         return randomSlogans.get(key);
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 }
