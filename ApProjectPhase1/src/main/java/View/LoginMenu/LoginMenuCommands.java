@@ -5,6 +5,7 @@ import java.util.regex.Pattern;
 
 public enum LoginMenuCommands {
     CREATE_USER("\\s*create\\s+user(?<content>(\\s+-[upcnse]\\s+([^\"\\s]+|(\"[^\"]*\")))*)\\s*"),
+    LOGIN_USER("\\s*user\\s+login(?<content>(\\s+-[up]\\s+([^\"\\s]+)\\s*"),
     USERNAME_FIELD ("-u\\s+(?<username>[^\"\\s]+|(\"[^\"]*\"))"),
     PASSWORD_FIELD ("-p\\s+(?<password>[^\"\\s]+|(\"[^\"]*\"))"),
     PASSWORD_CONFIRM_FIELD ("-c\\s+(?<password>[^\"\\s]+|(\"[^\"]*\"))"),

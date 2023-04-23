@@ -36,6 +36,10 @@ public class LoginMenuController {
         return User.getUserByUsername(username) != null;
     }
 
+    public static boolean isPasswordCorrect(String username, String password){
+        return User.checkPasswordByUsername(username, password);
+    }
+
     public static boolean isEmailExist(String emailForCheck){
         return User.getUserByEmail(emailForCheck) != null;
     }
@@ -228,8 +232,23 @@ public class LoginMenuController {
         return "register successfully";
     }
 
-    public static String login(Matcher matcher) {
-        return null;
+    public static String login(String content) {
+        Matcher matcher;
+        if (!(matcher = LoginMenuCommands.getMatcher(content, LoginMenuCommands.USERNAME_FIELD)).find())
+            return "username field is empty";
+        String username = matcher.group("username").replace("\"", "");
+        if (!(matcher = LoginMenuCommands.getMatcher(content, LoginMenuCommands.PASSWORD_FIELD)).find())
+            return "password field is empty";
+        String password = matcher.group("password").replace("\"", "");
+        if (!isUserExist(username))
+            return "this username is not exists";
+        if(!isPasswordCorrect(username,password))
+            return "username and password didn't match!";
+        else{
+            User user = User.getUserByUsername(username);
+            User.setCurrentUser(user);
+            return "log in successful";
+        }
     }
 
     public static String getUserSecurityQuestion(String string) {
