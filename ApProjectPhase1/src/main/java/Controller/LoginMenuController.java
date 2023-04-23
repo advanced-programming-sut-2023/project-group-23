@@ -5,6 +5,7 @@ import View.LoginMenu.LoginMenu;
 import View.LoginMenu.LoginMenuCommands;
 import com.sun.tools.javac.Main;
 
+import java.io.IOException;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -25,6 +26,10 @@ public class LoginMenuController {
 
     public static boolean isNicknameCorrect(String nickname) {
         return LoginMenuCommands.getMatcher(nickname, LoginMenuCommands.VALID_NICKNAME).matches();
+    }
+
+    public static boolean isQuestionNumberFormatCorrect(String questionNUmber) {
+        return LoginMenuCommands.getMatcher(questionNUmber, LoginMenuCommands.VALID_QUESTION_NUMBER).matches();
     }
 
     public static boolean isUserExist(String username){
@@ -66,7 +71,28 @@ public class LoginMenuController {
     }
 
     public static String checkForPickQuestionError(String content) {
+        Matcher matcher;
 
+        if(!(matcher = LoginMenuCommands.getMatcher(content, LoginMenuCommands.QUESTION_NUMBER_FIELD)).find())
+            return "question number field is empty";
+        else if(!isQuestionNumberFormatCorrect(matcher.group("questionNumber")))
+            return "question number format is invalid";
+        int questionNumber = Integer.parseInt(matcher.group("questionNumber"));
+        if(questionNumber > 3 || questionNumber < 1)
+            return "question number is out of bounds";
+
+        if(!(matcher = LoginMenuCommands.getMatcher(content, LoginMenuCommands.ANSWER_FIELD)).find())
+            return "answer field is empty";
+        String answer = matcher.group("answer").replace("\"", "");
+
+        if(!(matcher = LoginMenuCommands.getMatcher(content, LoginMenuCommands.ANSWER_CONFIRMATION_FIELD)).find())
+            return "answer confirmation field is empty";
+        String answerConfirmation = matcher.group("answer").replace("\"", "");
+
+        if(!answerConfirmation.equals(answer))
+            return "answer confirmation doesn't match answer";
+
+        return null;
     }
 
     public static String createUser(Matcher matcher, String command){
@@ -101,13 +127,14 @@ public class LoginMenuController {
         return null;
     }
 
-    public static String register(String content, Scanner scanner) {
+    public static String register(String content, Scanner scanner) throws IOException {
         Matcher matcher;
 
+        String username;
         if (!(matcher = LoginMenuCommands.getMatcher(content, LoginMenuCommands.USERNAME_FIELD)).find())
             return "username field is empty";
         else {
-            String username = matcher.group("username").replace("\"", "");
+            username = matcher.group("username").replace("\"", "");
 
             if (!isUsernameFormatCorrect(username))
                 return "username format is not correct";
@@ -125,7 +152,7 @@ public class LoginMenuController {
             if (!isPasswordFormatCorrect(password))
                 return "password format is not correct";
 
-            if(password.equals("random"))
+            if (password.equals("random"))
                 isPasswordRandom = true;
             else if (strengthOfPassword(password).equals("ok"))
                 return strengthOfPassword(password);
@@ -136,25 +163,27 @@ public class LoginMenuController {
         else if (!isPasswordRandom && !passwordsMatch(password, matcher.group("password").replace("\"", "")))
             return "password and password confirmation are not the same";
 
-        if(!(matcher = LoginMenuCommands.getMatcher(content, LoginMenuCommands.EMAIL_FIELD)).find())
+        String email;
+        if (!(matcher = LoginMenuCommands.getMatcher(content, LoginMenuCommands.EMAIL_FIELD)).find())
             return "email field is empty";
         else {
-            String email = matcher.group("email").replace("\"", "");
+            email = matcher.group("email").replace("\"", "");
 
-            if(!isEmailFormatCorrect(email))
+            if (!isEmailFormatCorrect(email))
                 return "email format is not correct";
-            if(isEmailExist(email))
+            if (isEmailExist(email))
                 return "this email has been used";
         }
 
-        if(!(matcher = LoginMenuCommands.getMatcher(content, LoginMenuCommands.NICKNAME_FIELD)).find())
+        String nickname;
+        if (!(matcher = LoginMenuCommands.getMatcher(content, LoginMenuCommands.NICKNAME_FIELD)).find())
             return "nickname field is empty";
         else {
-            String nickname = matcher.group("nickname").replace("\"", "");
+            nickname = matcher.group("nickname").replace("\"", "");
 
-            if(!isNicknameCorrect(nickname))
+            if (!isNicknameCorrect(nickname))
                 return "nickname format is not correct";
-            if(isNicknameExist(nickname))
+            if (isNicknameExist(nickname))
                 return "this nickname has been used";
         }
 
@@ -163,30 +192,40 @@ public class LoginMenuController {
         if (Pattern.compile("-s\\s*$").matcher(content).find())
             return "slogan field is empty";
 
-        if((matcher = LoginMenuCommands.getMatcher(content, LoginMenuCommands.SLOGAN_FIELD)).find()) {
+        if ((matcher = LoginMenuCommands.getMatcher(content, LoginMenuCommands.SLOGAN_FIELD)).find()) {
             slogan = matcher.group("slogan").replace("\"", "");
 
             isSloganRandom = slogan.equals("random");
         }
 
-        if(isSloganRandom)
+        if (isSloganRandom)
             slogan = setSloganRandomly();
 
-        if(isPasswordRandom)
-            if((password = LoginMenu.setPasswordRandomly(scanner)) == null)
+        if (isPasswordRandom)
+            if ((password = LoginMenu.setPasswordRandomly(scanner)) == null)
                 return "password and password confirmation are not the same";
 
         String securityQuestionContent = LoginMenu.pickSecurityQuestion(scanner);
 
-        if(securityQuestionContent.equals("invalid command"))
+        if (securityQuestionContent.equals("invalid command"))
             return "invalid command";
 
         String message = checkForPickQuestionError(content);
 
-        if(message != null)
+        if (message != null)
             return message;
 
-        return null;
+        matcher = LoginMenuCommands.getMatcher(content, LoginMenuCommands.QUESTION_NUMBER_FIELD);
+        int questionNumber = Integer.parseInt(matcher.group("questionNumber"));
+
+        matcher = LoginMenuCommands.getMatcher(content, LoginMenuCommands.ANSWER_FIELD);
+        String answer = matcher.group("answer");
+
+        User.addUser(new User(username, password, nickname, slogan, email, questionNumber, answer));
+
+        User.updateDatabase();
+
+        return "register successfully";
     }
 
     public static String login(Matcher matcher) {

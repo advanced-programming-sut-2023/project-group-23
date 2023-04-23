@@ -160,7 +160,7 @@ public class User {
     }
 
     public static ArrayList<String> getEmails() {
-        return emails;
+        return null;
     }
 
     public void setUsername(String newUsername){

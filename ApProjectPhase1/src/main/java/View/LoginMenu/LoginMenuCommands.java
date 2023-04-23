@@ -14,10 +14,12 @@ public enum LoginMenuCommands {
     VALID_USERNAME("[a-zA-Z0-9_]+"),
     VALID_PASSWORD ("\\S+"),
     VALID_NICKNAME ("\\S+"),
-    VALID_EMAIL("(?<name>\\S+)@(?<mailServer>\\S+)\\.(?<domain>\\S+)"),
+    VALID_EMAIL("(?<name>[\\w+_.]+)@(?<mailServer>[\\w+_.]+)\\.(?<domain>[\\w+_.]+)"),
     QUESTION_PICK ("\\s*question\\s+pick(?<content>(\\s+-[qac]\\s+([^\"\\s]+|(\"[^\"]*\")))*)\\s*"),
     QUESTION_NUMBER_FIELD ("-q\\s+(?<questionNumber>[^\"\\s]+|(\"[^\"]*\"))"),
-    VALID_QUESTION_NUMBER ("-?\\d+");
+    VALID_QUESTION_NUMBER ("-?\\d+"),
+    ANSWER_FIELD ("-a\\s+(?<answer>[^\"\\s]+|(\"[^\"]*\"))"),
+    ANSWER_CONFIRMATION_FIELD ("-c\\s+(?<answer>[^\"\\s]+|(\"[^\"]*\"))");
 
     private String regex;
 
