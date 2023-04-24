@@ -2,21 +2,54 @@ package View.LoginMenu;
 
 import Controller.LoginMenuController;
 import Model.User;
+import View.MainMenu.MainMenu;
 
+import java.io.IOException;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 
 public class LoginMenu {
 
-    public static void run(Scanner scanner) {
+    public static void run(Scanner scanner) throws IOException {
         String command;
         Matcher matcher;
+
+        if(LoginMenuController.checkForStayLoggedIn()) {
+            System.out.println("logged in as user: " + User.getCurrentUser().getUsername());
+            MainMenu.run(scanner);
+        }
 
         while (true) {
             command = scanner.nextLine();
 
             if((matcher = LoginMenuCommands.getMatcher(command, LoginMenuCommands.CREATE_USER)).matches())
                 System.out.println(LoginMenuController.register(matcher.group("content"), scanner));
+
+            else if((matcher = LoginMenuCommands.getMatcher(command, LoginMenuCommands.LOGIN_USER)).matches()) {
+                String result = LoginMenuController.login(matcher.group("content"));
+                System.out.println(result);
+                if(result.equals("log in successful"))
+                    MainMenu.run(scanner);
+            }
+
+            else if((matcher = LoginMenuCommands.getMatcher(command, LoginMenuCommands.FORGOT_PASSWORD)).matches()) {
+                String username = matcher.group("username").replace("\"", "");
+                String result = LoginMenuController.forgotPassword(username, scanner);
+                System.out.println(result);
+                if(result.equals("set your new password")) {
+                    command = scanner.nextLine();
+                    if((matcher = LoginMenuCommands.getMatcher(command, LoginMenuCommands.SET_NEW_PASSWORD)).matches())
+                        System.out.println(LoginMenuController.setNewPassword(matcher, username, scanner));
+                    else
+                        System.out.println("invalid command");
+                }
+            }
+
+            else if(LoginMenuCommands.getMatcher(command, LoginMenuCommands.EXIT).matches())
+                return;
+
+            else
+                System.out.println("invalid command");
         }
     }
 

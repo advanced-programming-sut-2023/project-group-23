@@ -159,6 +159,10 @@ public class User {
         return null;
     }
 
+    public static boolean checkPasswordByUsername(String username, String password){
+        return getUserByUsername(username).password.equals(password);
+    }
+
     public static ArrayList<String> getEmails() {
         return null;
     }

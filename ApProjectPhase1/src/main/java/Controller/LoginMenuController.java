@@ -3,8 +3,14 @@ package Controller;
 import Model.User;
 import View.LoginMenu.LoginMenu;
 import View.LoginMenu.LoginMenuCommands;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.stream.JsonReader;
 import com.sun.tools.javac.Main;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Random;
 import java.util.Scanner;
@@ -75,6 +81,8 @@ public class LoginMenuController {
 
         if(!(matcher = LoginMenuCommands.getMatcher(content, LoginMenuCommands.QUESTION_NUMBER_FIELD)).find())
             return "question number field is empty";
+        else if(matcher.results().count() > 1)
+            return "invalid command";
         else if(!isQuestionNumberFormatCorrect(matcher.group("questionNumber")))
             return "question number format is invalid";
         int questionNumber = Integer.parseInt(matcher.group("questionNumber"));
@@ -83,10 +91,14 @@ public class LoginMenuController {
 
         if(!(matcher = LoginMenuCommands.getMatcher(content, LoginMenuCommands.ANSWER_FIELD)).find())
             return "answer field is empty";
+        else if(matcher.results().count() > 1)
+            return "invalid command";
         String answer = matcher.group("answer").replace("\"", "");
 
         if(!(matcher = LoginMenuCommands.getMatcher(content, LoginMenuCommands.ANSWER_CONFIRMATION_FIELD)).find())
             return "answer confirmation field is empty";
+        else if(matcher.results().count() > 1)
+            return "invalid command";
         String answerConfirmation = matcher.group("answer").replace("\"", "");
 
         if(!answerConfirmation.equals(answer))
@@ -95,7 +107,7 @@ public class LoginMenuController {
         return null;
     }
 
-    public static String createUser(Matcher matcher, String command){
+    /*public static String createUser(Matcher matcher, String command){
         String username = matcher.group("username");
         String password = matcher.group("password");
         String passwordConfirmation = matcher.group("passwordConfirmation");
@@ -125,7 +137,7 @@ public class LoginMenuController {
         if(!isEmailFormatCorrect(email))
             return "email format is not correct";
         return null;
-    }
+    }*/
 
     public static String register(String content, Scanner scanner) throws IOException {
         Matcher matcher;
@@ -133,6 +145,8 @@ public class LoginMenuController {
         String username;
         if (!(matcher = LoginMenuCommands.getMatcher(content, LoginMenuCommands.USERNAME_FIELD)).find())
             return "username field is empty";
+        else if(matcher.results().count() > 1)
+            return "invalid command";
         else {
             username = matcher.group("username").replace("\"", "");
 
@@ -146,6 +160,8 @@ public class LoginMenuController {
         boolean isPasswordRandom = false;
         if (!(matcher = LoginMenuCommands.getMatcher(content, LoginMenuCommands.PASSWORD_FIELD)).find())
             return "password field is empty";
+        else if(matcher.results().count() > 1)
+            return "invalid command";
         else {
             password = matcher.group("password").replace("\"", "");
 
@@ -154,18 +170,22 @@ public class LoginMenuController {
 
             if (password.equals("random"))
                 isPasswordRandom = true;
-            else if (strengthOfPassword(password).equals("ok"))
+            else if (!strengthOfPassword(password).equals("ok"))
                 return strengthOfPassword(password);
         }
 
         if (!isPasswordRandom && !(matcher = LoginMenuCommands.getMatcher(content, LoginMenuCommands.PASSWORD_CONFIRM_FIELD)).find())
             return "password confirmation field is empty";
+        else if(matcher.results().count() > 1)
+            return "invalid command";
         else if (!isPasswordRandom && !passwordsMatch(password, matcher.group("password").replace("\"", "")))
             return "password and password confirmation are not the same";
 
         String email;
         if (!(matcher = LoginMenuCommands.getMatcher(content, LoginMenuCommands.EMAIL_FIELD)).find())
             return "email field is empty";
+        else if(matcher.results().count() > 1)
+            return "invalid command";
         else {
             email = matcher.group("email").replace("\"", "");
 
@@ -178,6 +198,8 @@ public class LoginMenuController {
         String nickname;
         if (!(matcher = LoginMenuCommands.getMatcher(content, LoginMenuCommands.NICKNAME_FIELD)).find())
             return "nickname field is empty";
+        else if(matcher.results().count() > 1)
+            return "invalid command";
         else {
             nickname = matcher.group("nickname").replace("\"", "");
 
@@ -191,6 +213,8 @@ public class LoginMenuController {
         boolean isSloganRandom = false;
         if (Pattern.compile("-s\\s*$").matcher(content).find())
             return "slogan field is empty";
+        else if(matcher.results().count() > 1)
+            return "invalid command";
 
         if ((matcher = LoginMenuCommands.getMatcher(content, LoginMenuCommands.SLOGAN_FIELD)).find()) {
             slogan = matcher.group("slogan").replace("\"", "");
@@ -228,8 +252,88 @@ public class LoginMenuController {
         return "register successfully";
     }
 
-    public static String login(Matcher matcher) {
-        return null;
+    public static String login(String content) throws IOException {
+        Matcher matcher;
+        if (!(matcher = LoginMenuCommands.getMatcher(content, LoginMenuCommands.USERNAME_FIELD)).find())
+            return "username field is empty";
+        if(matcher.results().count() > 1)
+            return "invalid command";
+        String username = matcher.group("username").replace("\"", "");
+
+        if (!(matcher = LoginMenuCommands.getMatcher(content, LoginMenuCommands.PASSWORD_FIELD)).find())
+            return "password field is empty";
+        if(matcher.results().count() > 1)
+            return "invalid command";
+        String password = matcher.group("password").replace("\"", "");
+
+        if (!isUserExist(username))
+            return "this username does not exists";
+        if(!User.getUserByUsername(username).isPasswordCorrect(password))
+            return "username and password didn't match!";
+
+        if((matcher = LoginMenuCommands.getMatcher(content, LoginMenuCommands.STAY_LOGGED_IN_FLAG)).find()) {
+            if(matcher.results().count() > 1)
+                return "invalid command";
+
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            FileWriter writer = new FileWriter("stayLoggedInData.json");
+            gson.toJson(User.getUserByUsername(username), writer);
+            writer.close();
+        }
+
+        User user = User.getUserByUsername(username);
+        User.setCurrentUser(user);
+        return "log in successful";
+
+    }
+
+    public static boolean checkForStayLoggedIn() throws FileNotFoundException {
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        JsonReader reader = new JsonReader(new FileReader("stayLoggedInData.json"));
+        User user = gson.fromJson(reader, User.class);
+        if(user != null) {
+            User.setCurrentUser(user);
+            return true;
+        }
+        return false;
+    }
+
+    public static String forgotPassword(String username, Scanner scanner) {
+        if(!isUserExist(username))
+            return "no user with this username exists";
+
+        User user = User.getUserByUsername(username);
+        System.out.println(user.getUserSecurityQuestion());
+        String answer = scanner.nextLine();
+        if(!user.getUserAnswerToSecurityQuestion().equals(answer))
+            return "wrong answer";
+
+        return "set your new password";
+    }
+
+    public static String setNewPassword(Matcher matcher, String username, Scanner scanner) {
+        User user = User.getUserByUsername(username);
+        String password = matcher.group("password").replace("\"", "");
+        boolean isPasswordRandom = false;
+        if (!isPasswordFormatCorrect(password))
+            return "password format is not correct";
+        if (password.equals("random"))
+            isPasswordRandom = true;
+        else if (!strengthOfPassword(password).equals("ok"))
+            return strengthOfPassword(password);
+
+        if (isPasswordRandom) {
+            if ((password = LoginMenu.setPasswordRandomly(scanner)) == null)
+                return "password and password confirmation are not the same";
+        }
+        else {
+            String passwordConfirmation = matcher.group("passwordConfirmation").replace("\"", "");
+            if(!password.equals(passwordConfirmation))
+                return "password and password confirmation are not the same";
+        }
+
+        user.setPassword(password);
+        return "password changed successfully";
     }
 
     public static String getUserSecurityQuestion(String string) {
