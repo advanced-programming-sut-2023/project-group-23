@@ -14,8 +14,6 @@ public class Government {
     private int maxPopulation;
     private int population;
     private HashMap<ResourceType, Integer> resources;
-    private HashMap<FoodType, Integer> foodsForSale;
-    private HashMap<ResourceType, Integer> resourcesForSale;
     private ArrayList<Trade> tradeHistory;
     private ArrayList<Trade> tradeList;
     private HashMap<FoodType, Integer> foods;
@@ -84,15 +82,8 @@ public class Government {
 
     public void addResources(ResourceType resource, int amount) {
     }
-    public HashMap<FoodType, Integer> getFoodsForSale() {
-        return foodsForSale;
-    }
 
     public void addFoodForSale(FoodType food, int amount) {
-    }
-
-    public HashMap<ResourceType, Integer> getResourcesForSale() {
-        return resourcesForSale;
     }
 
     public void addResourceForSale(ResourceType resource, int amount) {

@@ -35,25 +35,25 @@ public class ProfileMenuController {
         return "Done!";
     }
 
-    public static String validChangePassword(Matcher matcher) {
+    public static String changePassword(Matcher matcher) {
         String passwords = matcher.group(1);
         String oldPassword = "";
         String newPassword = "";
-        if (!(matcher = ProfileMenuCommands.getMatcher(passwords, ProfileMenuCommands.OLDPASSWORD_FIELD)).find())
+        if (!(matcher = ProfileMenuCommands.getMatcher(passwords, ProfileMenuCommands.OLD_PASSWORD_FIELD)).find())
             return "you must enter your old password";
-        else {
-            oldPassword = matcher.group("password").replace("\"", "");
-
-
-        }
-        if (!(matcher = ProfileMenuCommands.getMatcher(passwords, ProfileMenuCommands.OLDPASSWORD_FIELD)).find())
+        oldPassword = matcher.group("oldpassword").replace("\"", "");
+        if (!User.getCurrentUser().isPasswordCorrect(oldPassword))
+            return "wrong password";
+        if (!(matcher = ProfileMenuCommands.getMatcher(passwords, ProfileMenuCommands.NEW_PASSWORD_FIELD)).find())
             return "you must enter a new password";
-        return null;
-    }
-
-    public static String changePassword(Matcher matcher) {
-
-        return null;
+        newPassword = matcher.group("newpassword").replace("\"", "");
+        if (newPassword.equals(oldPassword)) return "enter a new password";
+        if (!LoginMenuController.isPasswordFormatCorrect(newPassword))
+            return "password format is not correct";
+        if (!LoginMenuController.strengthOfPassword(newPassword).equals("ok"))
+            return LoginMenuController.strengthOfPassword(newPassword);
+        User.getCurrentUser().setPassword(newPassword);
+        return "Done!";
     }
 
     public static String changeEmail(Matcher matcher) {
