@@ -7,6 +7,8 @@ import java.util.regex.Matcher;
 import Controller.LoginMenuController;
 import View.ProfileMenu.ProfileMenuCommands;
 
+import static Controller.LoginMenuController.isUsernameFormatCorrect;
+
 public class ProfileMenuController {
 
     public static String change(String string) {
@@ -58,8 +60,8 @@ public class ProfileMenuController {
         String email = matcher.group("email");
         email = Controller.deleteWhiteSpacesOfEnd(email);
         if (email.matches("\\s+")) return "Email must doesn't have any space";
-        else if (!isEmailFormatCorrect(email)) return "Email format isn't correct";
-        else if (!isEmailExist(email)) return "This email already exists";
+        else if (!LoginMenuController.isEmailFormatCorrect(email)) return "Email format isn't correct";
+        else if (!LoginMenuController.isEmailExist(email)) return "This email already exists";
         User.getCurrentUser().setEmail(email);
         return "Done!";
     }
