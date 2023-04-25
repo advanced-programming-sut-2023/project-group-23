@@ -21,6 +21,7 @@ public class TradeMenuController {
                 return null; //TODO
             }
         }
+        return "Done!";
     }
 
     public void requestTrade(Matcher matcher) {

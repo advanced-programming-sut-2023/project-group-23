@@ -17,6 +17,21 @@ public class MapMenu {
             if ((matcher = MapMenuCommands.getMatcher(command, MapMenuCommands.SHOW_MAP)).matches())
                 System.out.println(MapMenuController.showMap(matcher));
 
+            else if ((matcher = MapMenuCommands.getMatcher(command, MapMenuCommands.SETTEXTTURE)).matches())
+                MapMenuController.setTextture(matcher);
+
+            else if ((matcher = MapMenuCommands.getMatcher(command, MapMenuCommands.SETTEXTTURE_MORE_THAN_ONE)).matches())
+                MapMenuController.setTextture(matcher);
+
+            else if ((matcher = MapMenuCommands.getMatcher(command, MapMenuCommands.DROP_TREE)).matches())
+                MapMenuController.dropTree(matcher);
+
+            else if ((matcher = MapMenuCommands.getMatcher(command, MapMenuCommands.DROP_ROCK)).matches())
+                MapMenuController.dropRock(matcher);
+
+            else if ((matcher = MapMenuCommands.getMatcher(command, MapMenuCommands.CLEAR)).matches())
+                MapMenuController.clearBlock(matcher);
+
             else if((matcher = MapMenuCommands.getMatcher(command, MapMenuCommands.SHOW_DETAILS)).matches())
                 System.out.println(MapMenuController.showDetails(matcher));
 

@@ -3,81 +3,96 @@ package Controller;
 import Model.Game;
 import Model.Government;
 
-import java.util.ArrayList;
 import java.util.regex.Matcher;
 
 public class GameMenuController {
-    private Government currentGovernment;
+    private static Government currentGovernment;
     private Game game;
 
-    public String showPopularityFactors() {
-        return null;
+    public static Government getCurrentGovernment() {
+        return currentGovernment;
     }
 
-    public String showPopularity() {
-        return null;
+    public static void setCurrentGovernment(Government currentGovernment) {
+        GameMenuController.currentGovernment = currentGovernment;
     }
 
-    public String showFoodList() {
-        return null;
+    public static String showPopularityFactors() {
+        String factors = "food\ntax\nreligion\nfear";
+        return factors;
     }
 
-    public void setFoodRate(Matcher matcher) {
+    public static String showPopularity() {
+        String popularityList = "";
+        //TODO : add popularity factors and their amount
+        return popularityList;
     }
 
-    public String showFoodRate() {
-        return null;
+    public static String showFoodList() {
+        String list = "";
+        //TODO : add foods and their amounts
+        return list;
     }
 
-    public void setTaxRate(Matcher matcher) {
+    public static String setFoodRate(Matcher matcher) {
+        return "Done!";
     }
 
-    public String showTaxRate() {
-        return null;
+    public static Integer showFoodRate() {
+         return currentGovernment.getFoodRate();
     }
 
-    public void setFearRate(Matcher matcher) {
+    public static String setTaxRate(Matcher matcher) {
+        return "Done!";
     }
 
-    public void dropBuilding(Matcher matcher) {
+    public static Integer showTaxRate() {
+        return currentGovernment.getTaxRate();
     }
 
-    public void selectBuilding(Matcher matcher) {
+    public static String setFearRate(Matcher matcher) {
+        return "Done!";
     }
 
-    public void createUnit(Matcher matcher) {
+    public static void dropBuilding(Matcher matcher) {
     }
 
-    public void repair() {
+    public static void selectBuilding(Matcher matcher) {
     }
 
-    public void selectUnit(Matcher matcher) {
+    public static void createUnit(Matcher matcher) {
     }
 
-    public void moveUnit(Matcher matcher) {
+    public static void repair() {
     }
 
-    public void patrolUnit(Matcher matcher) {
+    public static void selectUnit(Matcher matcher) {
     }
 
-    public void setState(Matcher matcher) {
+    public static void moveUnit(Matcher matcher) {
     }
 
-    public void attack(Matcher matcher) {
+    public static void patrolUnit(Matcher matcher) {
     }
 
-    public void airAttack(Matcher matcher) {
+    public static void setState(Matcher matcher) {
     }
 
-    public void pourOil(Matcher matcher) {
+    public static void attack(Matcher matcher) {
     }
 
-    public void digTunnel(Matcher matcher) {
+    public static void airAttack(Matcher matcher) {
     }
 
-    public void buildSurroundEquipment(Matcher matcher) {
+    public static void pourOil(Matcher matcher) {
     }
 
-    public void disbandUnit() {
+    public static void digTunnel(Matcher matcher) {
+    }
+
+    public static void buildSurroundEquipment(Matcher matcher) {
+    }
+
+    public static void disbandUnit() {
     }
 }

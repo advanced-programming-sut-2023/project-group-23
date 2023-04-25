@@ -14,7 +14,12 @@ public enum MapMenuCommands {
     UP_DIRECTION ("up(\\s+-?\\d+)?"),
     DOWN_DIRECTION ("down(\\s+-?\\d+)?"),
     LEFT_DIRECTION ("left(\\s+-?\\d+)?"),
-    RIGHT_DIRECTION ("right(\\s+-?\\d+)?")
+    RIGHT_DIRECTION ("right(\\s+-?\\d+)?"),
+    SETTEXTTURE("^\\s*settextture\\s+(.+)$"),
+    SETTEXTTURE_MORE_THAN_ONE("^\\s*settextture\\s+(.+)$"),
+    CLEAR("^\\s*clear\\s+(.+)$"),
+    DROP_ROCK("^\\s*droprock\\s+(.+)$"),
+    DROP_TREE("\\s*droptree\\s+(.+)$"),
     ;
     private String regex;
 
