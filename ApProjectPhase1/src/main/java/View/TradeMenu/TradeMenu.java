@@ -22,12 +22,14 @@ public class TradeMenu {
             if (TradeMenuCommands.getMatcher(command, TradeMenuCommands.TRADE_LIST).matches()) {
                 ArrayList<Trade> tradeList = new ArrayList<>();
                 //TODO: show list of government trades
-            } else if (TradeMenuCommands.getMatcher(command, TradeMenuCommands.TRADE_HISTORY).matches()) {
+            }
+            else if(TradeMenuCommands.getMatcher(command, TradeMenuCommands.TRADE_HISTORY).matches()){
                 //TODO: show history of current government trades
-            } else if ((matcher = TradeMenuCommands.getMatcher(command, TradeMenuCommands.TRADE)).matches()) {
+            }
+            else if((matcher = TradeMenuCommands.getMatcher(command, TradeMenuCommands.TRADE)).matches()){
                 System.out.println(TradeMenuController.trade(matcher.group("content"), scanner));
             }
 
-        }
     }
+
 }
