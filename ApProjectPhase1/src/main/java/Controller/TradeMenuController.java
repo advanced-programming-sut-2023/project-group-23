@@ -7,6 +7,7 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 
 public class TradeMenuController {
+
     public static String trade(String content, Scanner scanner) {
         Matcher matcher;
         //TODO:check valid resource type
@@ -26,14 +27,14 @@ public class TradeMenuController {
     public void requestTrade(Matcher matcher) {
     }
 
-    public String showTradeList() {
+    public static String showTradeList() {
         return null;
     }
 
-    public String showTradeHistory() {
+    public static String showTradeHistory() {
         return null;
     }
 
-    public void acceptTrade(Matcher matcher) {
+    public static String acceptTrade(Matcher matcher) {
     }
 }
