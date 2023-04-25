@@ -16,6 +16,20 @@ public class MapMenu {
 
             if ((matcher = MapMenuCommands.getMatcher(command, MapMenuCommands.SHOW_MAP)).matches())
                 System.out.println(MapMenuController.showMap(matcher));
+
+            else if((matcher = MapMenuCommands.getMatcher(command, MapMenuCommands.SHOW_DETAILS)).matches())
+                System.out.println(MapMenuController.showDetails(matcher));
+
+            else if((matcher = MapMenuCommands.getMatcher(command, MapMenuCommands.MOVE_MAP)).matches())
+                System.out.println(MapMenuController.moveMap(matcher));
+
+            else if(MapMenuCommands.getMatcher(command, MapMenuCommands.BACK).matches()) {
+                System.out.println("returned to game menu");
+                return;
+            }
+
+            else
+                System.out.println("invalid command");
         }
     }
 }

@@ -6,6 +6,7 @@ public class MapCell {
     private Building building;
     private GroundType groundType;
     private ArrayList<Troop> troops;
+    private boolean isPassable;
 
     MapCell(GroundType groundType) {
         this.groundType = groundType;
@@ -33,5 +34,17 @@ public class MapCell {
 
     public void setTroops(ArrayList<Troop> troops) {
         this.troops = troops;
+    }
+
+    public boolean isPassable() {
+        return isPassable;
+    }
+
+    public void setPassable(boolean passable) {
+        isPassable = passable;
+    }
+
+    public String showCell() {
+        return null;
     }
 }
