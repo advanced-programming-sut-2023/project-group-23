@@ -3,6 +3,7 @@ package View.MainMenu;
 import Controller.MainMenuController;
 import View.GameMenu.GameMenu;
 import View.ProfileMenu.ProfileMenu;
+import View.TradeMenu.TradeMenu;
 
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -26,6 +27,12 @@ public class MainMenu {
             else if (MainMenuCommands.getMatcher(command, MainMenuCommands.START_NEW_GAME).matches()) {
                 System.out.println();
                 GameMenu.run(scanner);
+            }
+            else if (MainMenuCommands.getMatcher(command, MainMenuCommands.ENTER_TRADE_MENU).matches()) {
+                System.out.println("you entered profile menu");
+                System.out.println("list of players:");
+                //TODO: show a list of players
+                TradeMenu.run(scanner);
             }
         }
     }

@@ -1,8 +1,13 @@
 package Controller;
 
+import java.util.Scanner;
 import java.util.regex.Matcher;
 
 public class TradeMenuController {
+    public static String trade(String content, Scanner scanner) {
+
+    }
+
     public void requestTrade(Matcher matcher) {
     }
 
