@@ -5,6 +5,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public enum MapMenuCommands {
+    //SHOW_MAP("^\\s*show\\s+map\\s*(.+)$"),
+    SHOW_MAP("\\s*show\\s+map(?<content>(\\s+-[xy]\\s+-?\\d+){2})\\s*"),
+    COORDINATE_X("-x\\s+(?<xCoordinate>(-)?\\d+)"),
+    COORDINATE_Y("^-y\\s+(?<yCoordinate>(-)?\\d+)$"),
     ;
     private String regex;
 

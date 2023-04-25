@@ -10,6 +10,8 @@ public enum ShopMenuCommands {
     ITEM_NAME_FIELD("-i\\s+(?<itemName>[^\"\\s]+|(\"[^\"]*\"))"),
     ITEM_AMOUNT("-a\\s+(?<itemAmount>[^\"\\s]+|(\"[^\"]*\"))"),
     ITEM_AMOUNT_VALIDITY("[0-9]+"),
+    BACK ("\\s*back\\s*"),
+    ENTER_SHOP_MENU("^\\s*enter\\s+shop\\s+menu\\s*$"),
     ;
     private String regex;
 

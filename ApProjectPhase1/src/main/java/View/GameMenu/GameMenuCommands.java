@@ -4,6 +4,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public enum GameMenuCommands {
+    ENTER_SHOP_MENU("^\\s*enter\\s+shop\\s+menu\\s*$"),
     ;
 
     private String regex;

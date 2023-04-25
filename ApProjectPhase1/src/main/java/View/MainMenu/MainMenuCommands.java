@@ -5,7 +5,6 @@ import java.util.regex.Pattern;
 
 public enum MainMenuCommands {
     LOGOUT("^\\s*(l|L)(o|O)(g|G)\\s*(o|O)(u|U)(t|T)\\s*$"),
-    ENTER_SHOP_MENU("^\\s*enter\\s+shop\\s+menu\\s*$"),
     ENTER_PROFILE_MENU("^\\s*enter\\s+profile\\s+menu\\s*$"),
     START_NEW_GAME("^\\s*start\\s+a\\s+new\\s+game\\s*$")
     ;
