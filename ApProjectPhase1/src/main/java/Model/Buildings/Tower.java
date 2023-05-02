@@ -1,6 +1,8 @@
-package Model;
+package Model.Buildings;
 
-public class Tower extends Building{
+import Model.Government;
+
+public class Tower extends Building {
     private int height;
     private boolean isPassableForEnemy;
     private boolean isPassableForFriendly;

@@ -1,4 +1,6 @@
-package Model;
+package Model.People;
+
+import Model.ResourceType;
 
 import java.util.ArrayList;
 

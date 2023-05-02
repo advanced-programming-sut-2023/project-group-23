@@ -1,5 +1,7 @@
-package Model;
+package Model.People;
 
+
+import Model.Government;
 
 public class Person {
     private static enum workStateTypes {

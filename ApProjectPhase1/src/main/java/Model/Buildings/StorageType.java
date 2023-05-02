@@ -1,4 +1,6 @@
-package Model;
+package Model.Buildings;
+
+import Model.ResourceType;
 
 public enum StorageType {
     ;

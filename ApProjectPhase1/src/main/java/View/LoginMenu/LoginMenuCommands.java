@@ -4,8 +4,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public enum LoginMenuCommands {
-    CREATE_USER("\\s*create\\s+user(?<content>(\\s+-[upcnse]\\s+([^\"\\s]+|(\"[^\"]*\")))*)\\s*"),
-    LOGIN_USER("\\s*user\\s+login(?<content>(\\s+((-[up]\\s+([^\"\\s]+|(\"[^\"]*\")))|(--stay-logged-in)))*)\\s*"),
+    CREATE_USER("\\s*create\\s+user(?<content>(\\s+-[upcnse]\\s+([^\"\\s]+|(\"[^\"]*\")))+)\\s*"),
+    LOGIN_USER("\\s*user\\s+login(?<content>(\\s+((-[up]\\s+([^\"\\s]+|(\"[^\"]*\")))|(--stay-logged-in)))+)\\s*"),
     FORGOT_PASSWORD ("\\s*forgot\\s+my\\s+password\\s+-u\\s+(?<username>([^\"\\s]+|(\"[^\"]*\")))\\s*"),
     SET_NEW_PASSWORD ("\\s*(-p\\s+(?<password>([^\"\\s]+|(\"[^\"]*\"))))\\s+(-c\\s+(?<passwordConfirmation>([^\"\\s]+|(\"[^\"]*\"))))\\s*"),
     STAY_LOGGED_IN_FLAG ("--stay-logged-in"),

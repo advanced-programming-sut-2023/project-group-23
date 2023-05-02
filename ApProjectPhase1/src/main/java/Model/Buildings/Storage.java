@@ -1,4 +1,7 @@
-package Model;
+package Model.Buildings;
+
+import Model.Government;
+import Model.ResourceType;
 
 public class Storage extends Building {
     private int amount;

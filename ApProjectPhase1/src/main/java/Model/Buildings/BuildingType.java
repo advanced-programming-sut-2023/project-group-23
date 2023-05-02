@@ -1,4 +1,7 @@
-package Model;
+package Model.Buildings;
+
+import Model.GroundType;
+import Model.ResourceType;
 
 import java.util.HashMap;
 

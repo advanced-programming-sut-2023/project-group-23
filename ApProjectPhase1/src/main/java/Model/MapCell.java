@@ -1,12 +1,17 @@
 package Model;
 
+import Model.Buildings.Building;
+import Model.People.Troop;
+
 import java.util.ArrayList;
 
 public class MapCell {
     private Building building;
     private GroundType groundType;
+    private WaterType waterType;
+    private Tree tree;
     private ArrayList<Troop> troops;
-    private boolean isPassable;
+    private boolean passablity;
 
     MapCell(GroundType groundType) {
         this.groundType = groundType;
@@ -36,12 +41,28 @@ public class MapCell {
         this.troops = troops;
     }
 
-    public boolean isPassable() {
-        return isPassable;
+    public WaterType getWaterType() {
+        return waterType;
     }
 
-    public void setPassable(boolean passable) {
-        isPassable = passable;
+    public void setWaterType(WaterType waterType) {
+        this.waterType = waterType;
+    }
+
+    public Tree getTree() {
+        return tree;
+    }
+
+    public void setTree(Tree tree) {
+        this.tree = tree;
+    }
+
+    public boolean isPassable() {
+        return passablity;
+    }
+
+    public void setPassablity(boolean passablity) {
+        this.passablity = passablity;
     }
 
     public String showCell() {

@@ -1,4 +1,8 @@
-package Model;
+package Model.Buildings;
+
+import Model.Government;
+import Model.GroundType;
+import Model.ResourceType;
 
 import java.util.HashMap;
 

@@ -1,8 +1,11 @@
-package Model;
+package Model.People;
+
+import Model.Government;
+import Model.ResourceType;
 
 import java.util.ArrayList;
 
-public class Troop extends Person{
+public class Troop extends Person {
     private String name;
     private int hitPoint;
     private int humanDamage;

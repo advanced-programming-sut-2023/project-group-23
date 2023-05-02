@@ -1,5 +1,9 @@
 package Model;
 
+import Model.Buildings.Building;
+import Model.People.Person;
+import Model.People.Troop;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 

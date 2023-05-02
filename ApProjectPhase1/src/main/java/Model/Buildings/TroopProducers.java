@@ -1,8 +1,11 @@
-package Model;
+package Model.Buildings;
+
+import Model.Government;
+import Model.People.TroopType;
 
 import java.util.ArrayList;
 
-public class TroopProducers extends Building{
+public class TroopProducers extends Building {
     private ArrayList<TrapType> availableTroops;
     private TroopProducerType troopProducerType;
 

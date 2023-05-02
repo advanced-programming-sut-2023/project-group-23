@@ -1,6 +1,8 @@
-package Model;
+package Model.Buildings;
 
-public class Trap extends Building{
+import Model.Government;
+
+public class Trap extends Building {
     private int damage;
     private TrapType trapType;
 

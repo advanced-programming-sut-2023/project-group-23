@@ -1,6 +1,9 @@
-package Model;
+package Model.Buildings;
 
-public class Producer extends Building{
+import Model.Government;
+import Model.ResourceType;
+
+public class Producer extends Building {
     private ResourceType inputResource;
     private int inputRate;
     private ResourceType outputResource;

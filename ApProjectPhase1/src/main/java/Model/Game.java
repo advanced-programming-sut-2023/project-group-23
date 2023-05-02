@@ -6,6 +6,8 @@ import Model.Map;
 import java.util.ArrayList;
 
 public class Game {
+
+    private static Game currentGame;
     private ArrayList<Government> governments;
     private Map map;
 
@@ -28,5 +30,13 @@ public class Game {
 
     public void setMap(Map map) {
         this.map = map;
+    }
+
+    public static Game getCurrentGame() {
+        return currentGame;
+    }
+
+    public static void setCurrentGame(Game currentGame) {
+        Game.currentGame = currentGame;
     }
 }

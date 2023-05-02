@@ -1,6 +1,8 @@
-package Model;
+package Model.People;
 
-public class Assassin extends Troop{
+import Model.Government;
+
+public class Assassin extends Troop {
 
     private boolean isVisible;
 

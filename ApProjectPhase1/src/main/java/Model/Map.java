@@ -7,10 +7,10 @@ public class Map {
     private int currentX;
     private int currentY;
 
-    public Map(int width, int height,MapCell[][] map) {
-        this.width = width;
-        this.height = height;
-        this.map = new MapCell[height][width];
+    public Map() {
+        //this.width = width;
+        //this.height = height;
+        //this.map = new MapCell[height][width];
     }
 
     public void buildMap() {
