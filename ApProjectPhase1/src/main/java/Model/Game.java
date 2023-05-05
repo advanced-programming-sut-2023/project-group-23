@@ -9,11 +9,13 @@ public class Game {
 
     private static Game currentGame;
     private ArrayList<Government> governments;
+    private ArrayList<Colors> usedGovernmentColors;
     private Map map;
 
     public Game(ArrayList<Government> governments, Map map) {
         this.governments = governments;
         this.map = map;
+        this.usedGovernmentColors = new ArrayList<>();
     }
 
     public ArrayList<Government> getGovernments() {
@@ -38,5 +40,13 @@ public class Game {
 
     public static void setCurrentGame(Game currentGame) {
         Game.currentGame = currentGame;
+    }
+
+    public ArrayList<Colors> getUsedGovernmentColors() {
+        return usedGovernmentColors;
+    }
+
+    public void addToUsedGovernmentColors(Colors governmentColor) {
+        usedGovernmentColors.add(governmentColor);
     }
 }

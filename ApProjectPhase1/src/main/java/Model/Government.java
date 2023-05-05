@@ -9,6 +9,7 @@ import java.util.HashMap;
 
 public class Government {
     private User user;
+    private Colors governmentColor;
     private int gold;
     private int fearRate;
     private int taxRate;
@@ -124,12 +125,20 @@ public class Government {
         people.add(person);
     }
 
+    public void removePerson(Person person) {
+        people.remove(person);
+    }
+
     public ArrayList<Troop> getTroops() {
         return troops;
     }
 
     public void addTroop(Troop troop){
         troops.add(troop);
+    }
+
+    public void removeTroop(Troop troop) {
+        troops.remove(troop);
     }
 
     public ArrayList<Building> getBuildings() {
@@ -148,5 +157,19 @@ public class Government {
     }
 
     public void changePopulation(int amount) {
+    }
+
+    public Colors getGovernmentColor() {
+        return governmentColor;
+    }
+
+    public void setGovernmentColor(Colors governmentColor) {
+        this.governmentColor = governmentColor;
+    }
+    public void addBuilding(Building building) {
+        buildings.add(building);
+    }
+    public void removeBuilding(Building building) {
+        buildings.remove(building);
     }
 }

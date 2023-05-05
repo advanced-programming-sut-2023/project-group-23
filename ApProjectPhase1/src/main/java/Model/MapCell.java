@@ -1,6 +1,7 @@
 package Model;
 
 import Model.Buildings.Building;
+import Model.People.Person;
 import Model.People.Troop;
 
 import java.util.ArrayList;
@@ -10,6 +11,8 @@ public class MapCell {
     private GroundType groundType;
     private WaterType waterType;
     private Tree tree;
+    private Rock rock;
+    private ArrayList<Person> people;
     private ArrayList<Troop> troops;
     private boolean passablity;
 
@@ -33,12 +36,28 @@ public class MapCell {
         this.groundType = groundType;
     }
 
+    public ArrayList<Person> getPeople() {
+        return people;
+    }
+
+    public void addToPeople(Person person) {
+        people.add(person);
+    }
+
+    public void removeFromPeople(Person person) {
+        people.remove(person);
+    }
+
     public ArrayList<Troop> getTroops() {
         return troops;
     }
 
-    public void setTroops(ArrayList<Troop> troops) {
-        this.troops = troops;
+    public void addToTroops(Troop troop) {
+        troops.add(troop);
+    }
+
+    public void removeFromTroops(Troop troop) {
+        troops.remove(troop);
     }
 
     public WaterType getWaterType() {
@@ -55,6 +74,18 @@ public class MapCell {
 
     public void setTree(Tree tree) {
         this.tree = tree;
+    }
+
+    public Rock getRock() {
+        return rock;
+    }
+
+    public void setRock(Rock rock) {
+        this.rock = rock;
+    }
+
+    public boolean isPassablity() {
+        return passablity;
     }
 
     public boolean isPassable() {
