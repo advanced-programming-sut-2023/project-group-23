@@ -8,9 +8,13 @@ public class Map {
     private int currentY;
 
     public Map() {
-        //this.width = width;
-        //this.height = height;
-        //this.map = new MapCell[height][width];
+        this.width = 200;
+        this.height = 200;
+        this.map = new MapCell[height][width];
+
+        for(int i = 0 ; i < height ; i++)
+            for(int j = 0 ; j < width; j++)
+                map[i][j] = new MapCell(GroundType.EARTH);
     }
 
     public void buildMap() {

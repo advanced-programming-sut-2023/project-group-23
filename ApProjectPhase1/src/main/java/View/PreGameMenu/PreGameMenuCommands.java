@@ -25,6 +25,9 @@ public enum PreGameMenuCommands {
             "\\s+-t\\s+(?<type>[^\"\\s]+|(\"[^\"]*\"))\\s*"),
     DROPBUILDING ("\\s*dropbuilding" +
             "\\s+-x\\s+(?<xCoordinate>-?\\d+)\\s+-y\\s+(?<yCoordinate>-?\\d+)" +
+            "\\s+-t\\s+(?<type>[^\"\\s]+|(\"[^\"]*\"))\\s*"),
+    DROPUNIT ("\\s*dropunit" +
+            "\\s+-x\\s+(?<xCoordinate>-?\\d+)\\s+-y\\s+(?<yCoordinate>-?\\d+)" +
             "\\s+-t\\s+(?<type>[^\"\\s]+|(\"[^\"]*\"))\\s*");
 
     private String regex;
