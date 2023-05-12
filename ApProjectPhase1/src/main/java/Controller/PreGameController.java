@@ -336,7 +336,7 @@ public class PreGameController {
         if(y < 0 || y > 199)
             return "y coordinate out of bounds";
 
-
+        return null;
     }
 
     public static Game getCurrentGame() {

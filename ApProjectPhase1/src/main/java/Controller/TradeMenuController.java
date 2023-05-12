@@ -22,6 +22,7 @@ public class TradeMenuController {
                 return null; //TODO
             }
         }
+        return null;
     }
 
     public void requestTrade(Matcher matcher) {
@@ -36,5 +37,6 @@ public class TradeMenuController {
     }
 
     public static String acceptTrade(Matcher matcher) {
+        return null;
     }
 }

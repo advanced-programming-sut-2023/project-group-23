@@ -11,7 +11,7 @@ public class Producer extends Building {
     private ProducerType producerType;
 
     public Producer(BuildingType type, ProducerType producerType, Government government) {
-        super(type, government);
+        super(type, government, 0, 0);
     }
 
     public ResourceType getInputResource() {

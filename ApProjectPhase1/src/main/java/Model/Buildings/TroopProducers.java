@@ -10,7 +10,7 @@ public class TroopProducers extends Building {
     private TroopProducerType troopProducerType;
 
     public TroopProducers(BuildingType type, TroopProducerType troopProducerType, Government government) {
-        super(type, government);
+        super(type, government, 0, 0);
     }
 
     public void produceTroop(TroopType troopType) {

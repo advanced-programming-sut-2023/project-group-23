@@ -146,7 +146,7 @@ public class LoginMenuController {
         if (!(matcher = LoginMenuCommands.getMatcher(content, LoginMenuCommands.USERNAME_FIELD)).find())
             return "username field is empty";
         else if(matcher.results().count() > 1)
-            return "invalid command";
+           return "invalid command";
         else {
             username = matcher.group("username").replace("\"", "");
 
@@ -160,8 +160,8 @@ public class LoginMenuController {
         boolean isPasswordRandom = false;
         if (!(matcher = LoginMenuCommands.getMatcher(content, LoginMenuCommands.PASSWORD_FIELD)).find())
             return "password field is empty";
-        else if(matcher.results().count() > 1)
-            return "invalid command";
+        //else if(matcher.results().count() > 1)
+          //  return "invalid command";
         else {
             password = matcher.group("password").replace("\"", "");
 
@@ -176,16 +176,16 @@ public class LoginMenuController {
 
         if (!isPasswordRandom && !(matcher = LoginMenuCommands.getMatcher(content, LoginMenuCommands.PASSWORD_CONFIRM_FIELD)).find())
             return "password confirmation field is empty";
-        else if(matcher.results().count() > 1)
-            return "invalid command";
+        //else if(matcher.results().count() > 1)
+          //  return "invalid command";
         else if (!isPasswordRandom && !passwordsMatch(password, matcher.group("password").replace("\"", "")))
             return "password and password confirmation are not the same";
 
         String email;
         if (!(matcher = LoginMenuCommands.getMatcher(content, LoginMenuCommands.EMAIL_FIELD)).find())
             return "email field is empty";
-        else if(matcher.results().count() > 1)
-            return "invalid command";
+        //else if(matcher.results().count() > 1)
+          //  return "invalid command";
         else {
             email = matcher.group("email").replace("\"", "");
 
@@ -198,8 +198,8 @@ public class LoginMenuController {
         String nickname;
         if (!(matcher = LoginMenuCommands.getMatcher(content, LoginMenuCommands.NICKNAME_FIELD)).find())
             return "nickname field is empty";
-        else if(matcher.results().count() > 1)
-            return "invalid command";
+        //else if(matcher.results().count() > 1)
+          //  return "invalid command";
         else {
             nickname = matcher.group("nickname").replace("\"", "");
 
@@ -213,8 +213,8 @@ public class LoginMenuController {
         boolean isSloganRandom = false;
         if (Pattern.compile("-s\\s*$").matcher(content).find())
             return "slogan field is empty";
-        else if(matcher.results().count() > 1)
-            return "invalid command";
+        //else if(matcher.results().count() > 1)
+          //  return "invalid command";
 
         if ((matcher = LoginMenuCommands.getMatcher(content, LoginMenuCommands.SLOGAN_FIELD)).find()) {
             slogan = matcher.group("slogan").replace("\"", "");

@@ -9,6 +9,6 @@ public class Storage extends Building {
     private StorageType storageType;
 
     public Storage(BuildingType type, StorageType storageType, Government government) {
-        super(type, government);
+        super(type, government, 0, 0);
     }
 }

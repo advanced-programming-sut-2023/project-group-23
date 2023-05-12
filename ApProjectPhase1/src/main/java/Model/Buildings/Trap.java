@@ -7,7 +7,7 @@ public class Trap extends Building {
     private TrapType trapType;
 
     public Trap(BuildingType type, TrapType trapType, Government government) {
-        super(type, government);
+        super(type, government, 0, 0);
     }
 
 

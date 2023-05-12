@@ -12,7 +12,7 @@ public class Tower extends Building {
     private TowerType towerType;
 
     public Tower(BuildingType type, TowerType towerType, Government government) {
-        super(type, government);
+        super(type, government, 0, 0);
     }
 
     public int getHeight() {
