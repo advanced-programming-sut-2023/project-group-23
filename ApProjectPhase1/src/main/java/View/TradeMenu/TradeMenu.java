@@ -24,8 +24,7 @@ public class TradeMenu {
             } else if (MapMenuCommands.getMatcher(command, MapMenuCommands.BACK).matches()) {
                 System.out.println("returned to game menu");
                 return;
-            } else
-                System.out.println("Invalid command!");
+            } else System.out.println("Invalid command!");
         }
     }
 }

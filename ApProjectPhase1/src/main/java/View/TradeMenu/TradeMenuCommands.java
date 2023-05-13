@@ -5,6 +5,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public enum TradeMenuCommands {
+    BACK("^\\s*back\\s*$"),
+    ENTER_PLAYER("^\\s*(?<playerNumber>[0-9]+)\\s*$"),
     TRADE_LIST("\\s*trade\\s+list\\s*"),
     TRADE_HISTORY("\\s*trade\\s+history\\s*"),
     TRADE("\\s*trade(?<content>(\\s+-[tapm]\\s+([^\"\\s]+|(\"[^\"]*\")))*)\\s*"),
