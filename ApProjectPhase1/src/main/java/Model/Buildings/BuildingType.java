@@ -7,31 +7,38 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public enum BuildingType {
-    KEEP ("keep", BuildingHP.VERY_HIGH, 0, 0, 3, null);
+    KEEP ("keep", 0, 0, 0, 3, null, 0, true),
+    STONE_GATE ("stone gate", 1000, 0, 0, 3, ResourceType.STONE, 20, true),
+    STOCKPILE ("stockpile", 500, 0, 0, 2, null, 0, false),
+    GRANARY ("granary", 500, 0, 0, 2, ResourceType.WOOD, 5, false);
 
     private String name;
-    private BuildingHP hitPoint;
+    private int hitPoint;
     private int workerNeeded;
     private int cost;
     private int size;
-    private HashMap<ResourceType, Integer> resourceCost;
+    private ResourceType resourceCostType;
+    private int resourceCost;
     private boolean isPassable;
     private ArrayList<GroundType> forbiddenGroundTypes;
 
-    BuildingType(String name, BuildingHP hitPoint, int workerNeeded, int cost, int size, HashMap<ResourceType, Integer> resourceCost) {
+    BuildingType(String name, int hitPoint, int workerNeeded, int cost, int size, ResourceType resourceCostType, int resourceCost, boolean isPassable) {
         this.name = name;
         this.hitPoint = hitPoint;
         this.workerNeeded = workerNeeded;
         this.cost = cost;
         this.size = size;
+        this.resourceCostType = resourceCostType;
         this.resourceCost = resourceCost;
+        this.resourceCost = resourceCost;
+        this.isPassable = isPassable;
     }
 
     public String getName() {
         return name;
     }
 
-    public BuildingHP getHitPoint() {
+    public int getHitPoint() {
         return hitPoint;
     }
 
@@ -47,7 +54,15 @@ public enum BuildingType {
         return size;
     }
 
-    public HashMap<ResourceType, Integer> getResourceCost() {
+    public ResourceType getResourceCostType() {
+        return resourceCostType;
+    }
+
+    public int getResourceCost() {
         return resourceCost;
+    }
+
+    public boolean isPassable() {
+        return isPassable;
     }
 }

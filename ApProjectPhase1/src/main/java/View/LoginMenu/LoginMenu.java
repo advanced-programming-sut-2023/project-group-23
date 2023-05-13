@@ -14,10 +14,10 @@ public class LoginMenu {
         String command;
         Matcher matcher;
 
-        //if(LoginMenuController.checkForStayLoggedIn()) {
-        //    System.out.println("logged in as user: " + User.getCurrentUser().getUsername());
-        //    MainMenu.run(scanner);
-        //}
+        if(LoginMenuController.checkForStayLoggedIn()) {
+            System.out.println("logged in as user: " + User.getCurrentUser().getUsername());
+            MainMenu.run(scanner);
+        }
 
         while (true) {
             command = scanner.nextLine();
@@ -88,7 +88,7 @@ public class LoginMenu {
 
     public static String pickSecurityQuestion(Scanner scanner) {
         System.out.println("Pick your security question:");
-        for(int i = 0 ; i < 3 ; i++) {
+        for(int i = 1 ; i <= 3 ; i++) {
             System.out.println(i + ". " + User.getQuestionByKey(i));
         }
 

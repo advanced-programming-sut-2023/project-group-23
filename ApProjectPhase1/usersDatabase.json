@@ -38,5 +38,15 @@
     "userSecurityQuestionNumber": 2,
     "userAnswerToSecurityQuestion": "no",
     "userHighScore": 0
+  },
+  {
+    "username": "username",
+    "password": "9cc3e5abdfaee198a6b74b97ea91e306e1744ddf49876d3dcf6cb936dfd5c9d7",
+    "nickname": "nickname",
+    "slogan": "",
+    "email": "email@gmail.com",
+    "userSecurityQuestionNumber": 1,
+    "userAnswerToSecurityQuestion": "yes",
+    "userHighScore": 0
   }
 ]
