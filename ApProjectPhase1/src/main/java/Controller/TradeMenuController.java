@@ -111,6 +111,6 @@ public class TradeMenuController {
 
 
     public static String acceptTrade(Matcher matcher) {
-        return null;
+        //TODO
     }
 }
