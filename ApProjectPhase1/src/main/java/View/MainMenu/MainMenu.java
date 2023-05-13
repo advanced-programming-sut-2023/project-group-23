@@ -1,9 +1,11 @@
 package View.MainMenu;
 
 import Controller.MainMenuController;
+import Controller.TradeMenuController;
 import View.GameMenu.GameMenu;
 import View.PreGameMenu.PreGameMenu;
 import View.ProfileMenu.ProfileMenu;
+import View.TradeMenu.PreTradeMenu;
 import View.TradeMenu.TradeMenu;
 
 import java.util.Scanner;
@@ -30,13 +32,7 @@ public class MainMenu {
                 System.out.println(result);
                 if(result.equals("set your game settings"))
                     PreGameMenu.run(scanner);
-            }
-            else if (MainMenuCommands.getMatcher(command, MainMenuCommands.ENTER_TRADE_MENU).matches()) {
-                System.out.println("you entered trade menu");
-                System.out.println("list of players:");
-                //TODO: show a list of players
-                TradeMenu.run(scanner);
-            }
+            } else System.out.println("invalid command");
         }
     }
 }

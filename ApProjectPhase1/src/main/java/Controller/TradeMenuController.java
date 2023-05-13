@@ -1,13 +1,37 @@
 package Controller;
 
-import Model.ResourceType;
-import View.LoginMenu.LoginMenuCommands;
+import Model.Government;
+import Model.User;
 import View.TradeMenu.TradeMenuCommands;
 
 import java.util.Scanner;
 import java.util.regex.Matcher;
 
 public class TradeMenuController {
+    private static Government receiverGovernment;
+    private static Government requesterGovernment;
+
+    public static void setReceiverGovernment(Government receiverGovernment) {
+        receiverGovernment = receiverGovernment;
+    }
+
+    public static void setRequesterGovernment(Government requesterGovernment) {
+        requesterGovernment = requesterGovernment;
+    }
+
+    public static String checkValidNumber(Integer number, Government[] governments) {
+        if (number > governments.length || number.equals(0)) return "invalid command";
+        return "ok";
+    }
+
+    public static String listOfPlayers(Government[] governments) {
+        String showGovernments = "players:\n";
+        for (int i = 0; i < governments.length; i++) {
+            showGovernments += ((i + 1) + ". player Nickname : " + governments[i].getUser().getNickname());
+            if (i < governments.length - 1) showGovernments += "\n";
+        }
+        return showGovernments;
+    }
 
     public static String trade(String content, Scanner scanner) {
         Matcher matcher;

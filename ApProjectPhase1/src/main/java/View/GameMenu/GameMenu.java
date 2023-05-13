@@ -1,6 +1,8 @@
 package View.GameMenu;
 import Controller.GameMenuController;
+import View.MainMenu.MainMenuCommands;
 import View.ShopMenu.ShopMenu;
+import View.TradeMenu.PreTradeMenu;
 
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -75,6 +77,10 @@ public class GameMenu {
                 GameMenuController.selectBuilding(matcher);
             else if (GameMenuCommands.getMatcher(command, GameMenuCommands.DISBAND_UNIT).matches())
                 GameMenuController.disbandUnit();
+            else if (GameMenuCommands.getMatcher(command, GameMenuCommands.ENTER_TRADE_MENU).matches()) {
+                System.out.println("you entered trade menu");
+                PreTradeMenu.run(scanner);
+            }
             else System.out.println("invalid command");
         }
     }

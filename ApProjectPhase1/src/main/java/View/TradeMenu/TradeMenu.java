@@ -22,10 +22,8 @@ public class TradeMenu {
             } else if ((matcher = TradeMenuCommands.getMatcher(command, TradeMenuCommands.TRADE_ACCEPT)).matches()) {
                 System.out.println(TradeMenuController.acceptTrade(matcher));
             } else if (MapMenuCommands.getMatcher(command, MapMenuCommands.BACK).matches()) {
-                System.out.println("returned to game menu");
                 return;
-            } else
-                System.out.println("Invalid command!");
+            } else System.out.println("Invalid command!");
         }
     }
 }
