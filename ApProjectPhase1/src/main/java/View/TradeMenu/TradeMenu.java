@@ -18,7 +18,7 @@ public class TradeMenu {
             } else if (TradeMenuCommands.getMatcher(command, TradeMenuCommands.TRADE_HISTORY).matches()) {
                 System.out.println(TradeMenuController.showTradeHistory());
             } else if ((matcher = TradeMenuCommands.getMatcher(command, TradeMenuCommands.TRADE)).matches()) {
-                System.out.println(TradeMenuController.trade(matcher.group("content"), scanner));
+                System.out.println(TradeMenuController.trade(matcher.group("content")));
             } else if ((matcher = TradeMenuCommands.getMatcher(command, TradeMenuCommands.TRADE_ACCEPT)).matches()) {
                 System.out.println(TradeMenuController.acceptTrade(matcher));
             } else if (MapMenuCommands.getMatcher(command, MapMenuCommands.BACK).matches()) {
