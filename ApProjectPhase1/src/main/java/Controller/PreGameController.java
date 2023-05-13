@@ -3,6 +3,8 @@ package Controller;
 import Model.*;
 import Model.Buildings.Building;
 import Model.Buildings.BuildingType;
+import Model.Buildings.Storage;
+import Model.Buildings.StorageType;
 import Model.People.Person;
 import Model.People.Troop;
 
@@ -194,6 +196,13 @@ public class PreGameController {
         Building building = new Building(BuildingType.KEEP, currentGovernment, x, y);
         for(int i = x; i < x + 3; i++) {
             for (int j = y; j < y + 3; j++) {
+                cell = currentGame.getMap().getCellByCoordinate(i, j);
+                cell.setBuilding(building);
+            }
+        }
+        building = new Storage(BuildingType.STOCKPILE, StorageType.STOCKPILE, currentGovernment, x + 1, y + 3);
+        for(int i = x + 1; i < x + 3 ; i++) {
+            for(int j = y + 3 ; j < y + 5 ; j++) {
                 cell = currentGame.getMap().getCellByCoordinate(i, j);
                 cell.setBuilding(building);
             }

@@ -3,13 +3,16 @@ package Model.Buildings;
 import Model.ResourceType;
 
 public enum StorageType {
-    ;
+    STOCKPILE ("stockpile"),
+    GRANARY ("granary");
 
-    private int amount;
-    private ResourceType resource;
+    private String name;
 
-    StorageType(int amount, ResourceType resource) {
-        this.amount = amount;
-        this.resource = resource;
+    StorageType(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
     }
 }

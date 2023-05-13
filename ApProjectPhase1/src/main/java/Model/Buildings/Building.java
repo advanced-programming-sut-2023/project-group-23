@@ -16,7 +16,8 @@ public class Building {
     private BuildingType type;
     private int cost;
     private int size;
-    private HashMap<ResourceType, Integer> resourceCost;
+    private ResourceType resourceCostType;
+    private int resourceCost;
     private boolean isPassable;
     private static ArrayList<GroundType> forbiddenGroundTypes = new ArrayList<>() {{
         add(GroundType.WATER);
@@ -33,11 +34,13 @@ public class Building {
         this.yCoordinate = y;
         government.addBuilding(this);
         this.name = type.getName();
-        this.hitPoint = type.getHitPoint().hitPoint;
+        this.hitPoint = type.getHitPoint();
         this.workerNeeded = type.getWorkerNeeded();
         this.cost = type.getCost();
         this.size = type.getSize();
+        this.resourceCostType = type.getResourceCostType();
         this.resourceCost = type.getResourceCost();
+        this.isPassable = type.isPassable();
     }
 
     public Building(BuildingType type, Government government) {
@@ -83,12 +86,16 @@ public class Building {
         this.cost = cost;
     }
 
-    public HashMap<ResourceType, Integer> getResourceCost() {
+    public ResourceType getResourceCostType() {
+        return resourceCostType;
+    }
+
+    public int getResourceCost() {
         return resourceCost;
     }
 
-    public void setResourceCost(HashMap<ResourceType, Integer> resourceCost) {
-        this.resourceCost = resourceCost;
+    public boolean isPassable() {
+        return isPassable;
     }
 
     public int getSize() {

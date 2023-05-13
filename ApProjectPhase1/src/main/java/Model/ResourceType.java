@@ -12,7 +12,13 @@ public enum ResourceType {
     MEAT ("meat"),
     APPLE ("apple"),
     BREAD ("bread"),
-    CHEESE ("cheese");
+    CHEESE ("cheese"),
+    HORSE ("horse"),
+    BOW ("bow"),
+    SWORD ("sword"),
+    SPEAR ("spear"),
+    LEATHER_ARMOR ("leather armor"),
+    METAL_ARMOR ("metal armor");
 
     private String name;
 
