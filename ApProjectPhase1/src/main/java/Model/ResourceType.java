@@ -22,7 +22,21 @@ public enum  ResourceType {
     LEATHER_ARMOR ("leather armor"),
     METAL_ARMOR ("metal armor");
 
+    public String getName() {
+        return name;
+    }
+
+    public Integer getBuyPrice() {
+        return buyPrice;
+    }
+
+    public Integer getSellPrice() {
+        return sellPrice;
+    }
+
     private String name;
+    private Integer buyPrice;
+    private Integer sellPrice;
 
     public static ArrayList<ResourceType> weapons = new ArrayList<>() {{
         add(HORSE);
@@ -36,4 +50,5 @@ public enum  ResourceType {
     ResourceType(String name) {
         this.name = name;
     }
+
 }

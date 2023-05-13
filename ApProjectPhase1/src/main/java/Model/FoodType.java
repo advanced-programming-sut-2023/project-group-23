@@ -7,6 +7,8 @@ public enum FoodType {
     CHEESE ("cheese");
 
     private String name;
+    private Integer sellPrice;
+    private Integer buyPrice;
 
     FoodType(String name) {
         this.name = name;
@@ -14,5 +16,13 @@ public enum FoodType {
 
     public String getName() {
         return name;
+    }
+
+    public Integer getSellPrice() {
+        return sellPrice;
+    }
+
+    public Integer getBuyPrice() {
+        return buyPrice;
     }
 }
