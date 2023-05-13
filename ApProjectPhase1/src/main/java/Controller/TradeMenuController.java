@@ -85,6 +85,16 @@ public class TradeMenuController {
     public static String showTradeList() {
         String tradeList = "trade list:\n";
         ArrayList<Trade> trades = requesterGovernment.getTradeList();
+        return getOutput(tradeList, trades);
+    }
+
+    public static String showTradeHistory() {
+        String tradeList = "trade history:\n";
+        ArrayList<Trade> trades = requesterGovernment.getTradeHistory();
+        return getOutput(tradeList, trades);
+    }
+
+    private static String getOutput(String tradeList, ArrayList<Trade> trades) {
         for (int i = 0; i < trades.size(); i++) {
             if(trades.get(i).getPrice() != 0)
                 tradeList += ("trade no." + (i + 1) + " type: " + trades.get(i).getResourceType() + " price: " +
@@ -99,9 +109,6 @@ public class TradeMenuController {
         return tradeList;
     }
 
-    public static String showTradeHistory() {
-        return null;
-    }
 
     public static String acceptTrade(Matcher matcher) {
         return null;
