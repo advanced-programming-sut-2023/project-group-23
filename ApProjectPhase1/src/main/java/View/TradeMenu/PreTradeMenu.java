@@ -9,6 +9,7 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 
 public class PreTradeMenu {
+    //TODO: HAMASHO BEBAR TO KHODE TRADE AGHA SADRA!
     private static Government currentGovernment;
     private static Government[] createArrayOfGovernments() {
         int size = 0;
@@ -33,6 +34,7 @@ public class PreTradeMenu {
         Government[] governmentList = createArrayOfGovernments();
         String list = TradeMenuController.listOfPlayers(governmentList);
         Integer playerSelected = 0;
+        TradeMenuController.setRequesterGovernment(currentGovernment);
 
         while (true) {
             System.out.println(list);
@@ -47,7 +49,6 @@ public class PreTradeMenu {
                 else {
                     Government receiver = governmentList[playerSelected - 1];
                     System.out.println("now you can trade with " + receiver.getUser().getNickname());
-                    TradeMenuController.setRequesterGovernment(currentGovernment);
                     TradeMenuController.setReceiverGovernment(receiver);
                     TradeMenu.run(scanner);
                 }

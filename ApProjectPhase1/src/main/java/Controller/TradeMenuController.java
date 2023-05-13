@@ -7,6 +7,7 @@ import Model.User;
 import View.TradeMenu.TradeMenuCommands;
 
 import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 
@@ -81,11 +82,21 @@ public class TradeMenuController {
         return "your request has been sent to the desired government";
     }
 
-    public void requestTrade(Matcher matcher) {
-    }
-
     public static String showTradeList() {
-        return null;
+        String tradeList = "trade list:\n";
+        ArrayList<Trade> trades = requesterGovernment.getTradeList();
+        for (int i = 0; i < trades.size(); i++) {
+            if(trades.get(i).getPrice() != 0)
+                tradeList += ("trade no." + (i + 1) + " type: " + trades.get(i).getResourceType() + " price: " +
+                        trades.get(i).getPrice() + " amount: " + trades.get(i).getResourceAmount() + " message: " +
+                        trades.get(i).getMessage());
+            else
+                tradeList += ("trade no." + (i + 1) + " type: " + trades.get(i).getResourceType() + " # donate request # " +
+                        trades.get(i).getPrice() + " amount: " + trades.get(i).getResourceAmount() + " message: " +
+                        trades.get(i).getMessage());
+            if (i < trades.size() - 1) tradeList += "\n";
+        }
+        return tradeList;
     }
 
     public static String showTradeHistory() {
