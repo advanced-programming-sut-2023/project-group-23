@@ -32,11 +32,7 @@ public class MainMenu {
                 System.out.println(result);
                 if(result.equals("set your game settings"))
                     PreGameMenu.run(scanner);
-            }
-            else if (MainMenuCommands.getMatcher(command, MainMenuCommands.ENTER_TRADE_MENU).matches()) {
-                System.out.println("you entered trade menu");
-                PreTradeMenu.run(scanner);
-            }
+            } else System.out.println("invalid command");
         }
     }
 }

@@ -38,7 +38,7 @@ public class PreTradeMenu {
             System.out.println(list);
             command = scanner.nextLine();
             if (TradeMenuCommands.getMatcher(command, TradeMenuCommands.BACK).matches()) {
-                System.out.println("returned to main menu");
+                System.out.println("returned to game menu");
                 return;
             }
             else if ((matcher = TradeMenuCommands.getMatcher(command, TradeMenuCommands.ENTER_PLAYER)).matches()) {
