@@ -1,5 +1,6 @@
 package Controller;
 
+import Model.ResourceType;
 import View.LoginMenu.LoginMenuCommands;
 import View.TradeMenu.TradeMenuCommands;
 
@@ -10,6 +11,7 @@ public class TradeMenuController {
 
     public static String trade(String content, Scanner scanner) {
         Matcher matcher;
+
         //TODO:check valid resource type
         int price;
         if (!(matcher = TradeMenuCommands.getMatcher(content, TradeMenuCommands.RESOURCE_PRICE_FIELD)).find())

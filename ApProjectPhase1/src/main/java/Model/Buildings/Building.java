@@ -40,6 +40,9 @@ public class Building {
         this.resourceCost = type.getResourceCost();
     }
 
+    public Building(BuildingType type, Government government) {
+    }
+
     public String getName() {
         return name;
     }

@@ -32,7 +32,7 @@ public class MainMenu {
                     PreGameMenu.run(scanner);
             }
             else if (MainMenuCommands.getMatcher(command, MainMenuCommands.ENTER_TRADE_MENU).matches()) {
-                System.out.println("you entered profile menu");
+                System.out.println("you entered trade menu");
                 System.out.println("list of players:");
                 //TODO: show a list of players
                 TradeMenu.run(scanner);

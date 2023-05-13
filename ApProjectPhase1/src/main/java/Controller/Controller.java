@@ -1,5 +1,7 @@
 package Controller;
 
+import java.util.regex.Matcher;
+
 public class Controller {
     public static String deleteWhiteSpacesOfEnd(String string) {
         int lastIndex = string.length() - 1;
@@ -11,5 +13,14 @@ public class Controller {
             result += string.charAt(i);
         }
         return result;
+    }
+
+    public static Integer findCounter(Matcher matcher) {
+        Integer count = 0;
+        if (matcher.find(0)) count++;
+        while (matcher.find()) {
+            count++;
+        }
+        return count;
     }
 }
