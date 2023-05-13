@@ -7,7 +7,6 @@ import Model.People.Troop;
 import View.MapMenu.MapMenuCommands;
 
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.regex.Matcher;
 
 public class MapMenuController {
@@ -47,7 +46,7 @@ public class MapMenuController {
             System.out.printf("%3d", i);
             for(int j = Math.max(y - 10, 0) ; j <= Math.min(y + 10, 199) ; j++) {
                 cell = Game.getCurrentGame().getMap().getCellByCoordinate(i, j);
-                if(cell.getPeople().size() > 0) c = 's';
+                if(cell.getTroops().size() > 0) c = 's';
                 else if(cell.getBuilding() != null) c = 'B';
                 else if(cell.getTree() != null) c = 'T';
                 else c = '#';

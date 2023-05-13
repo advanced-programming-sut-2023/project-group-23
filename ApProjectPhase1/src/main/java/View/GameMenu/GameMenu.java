@@ -18,22 +18,31 @@ public class GameMenu {
                 System.out.println("you entered shop menu");
                 ShopMenu.run(scanner);
             }
+
             else if (GameMenuCommands.getMatcher(command, GameMenuCommands.SHOW_POPULARITY_FACTORS).matches())
-                System.out.println(GameMenuController.showPopularityFactors());
+                GameMenuController.showPopularityFactors();
+
             else if (GameMenuCommands.getMatcher(command, GameMenuCommands.SHOW_POPULARITY).matches())
                 System.out.println(GameMenuController.showPopularity());
+
             else if (GameMenuCommands.getMatcher(command, GameMenuCommands.SHOW_FOOD_LIST).matches())
-                System.out.println(GameMenuController.showFoodList());
+                GameMenuController.showFoodList();
+
             else if ((matcher = GameMenuCommands.getMatcher(command, GameMenuCommands.FOOD_RATE)).matches())
                 System.out.println(GameMenuController.setFoodRate(matcher));
+
             else if (GameMenuCommands.getMatcher(command, GameMenuCommands.FOOD_RATE_SHOW).matches())
                 System.out.println(GameMenuController.showFoodRate());
+
             else if ((matcher = GameMenuCommands.getMatcher(command, GameMenuCommands.TAX_RATE)).matches())
                 System.out.println(GameMenuController.setTaxRate(matcher));
+
             else if (GameMenuCommands.getMatcher(command, GameMenuCommands.TAX_RATE_SHOW).matches())
                 System.out.println(GameMenuController.showTaxRate());
+
             else if ((matcher = GameMenuCommands.getMatcher(command, GameMenuCommands.FEAR_RATE)).matches())
                 System.out.println(GameMenuController.setFearRate(matcher));
+
             else if ((matcher = GameMenuCommands.getMatcher(command, GameMenuCommands.DROP_BUILDING)).matches())
                 GameMenuController.dropBuilding(matcher);
             else if ((matcher = GameMenuCommands.getMatcher(command, GameMenuCommands.SELECT_BUILDING)).matches())

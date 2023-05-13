@@ -17,6 +17,7 @@ public class Building {
     private int cost;
     private int size;
     private HashMap<ResourceType, Integer> resourceCost;
+    private boolean isPassable;
     private static ArrayList<GroundType> forbiddenGroundTypes = new ArrayList<>() {{
         add(GroundType.WATER);
         add(GroundType.SLATE);

@@ -1,8 +1,18 @@
 package Model;
 
 public enum FoodType {
-    MEAT,
-    APPLE,
-    BREAD,
-    CHEESE;
+    MEAT ("meat"),
+    APPLE ("apple"),
+    BREAD ("bread"),
+    CHEESE ("cheese");
+
+    private String name;
+
+    FoodType(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
 }

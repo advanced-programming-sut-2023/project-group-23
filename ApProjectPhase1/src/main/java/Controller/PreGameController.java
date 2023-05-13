@@ -2,12 +2,10 @@ package Controller;
 
 import Model.*;
 import Model.Buildings.Building;
-import Model.Buildings.BuildingHP;
 import Model.Buildings.BuildingType;
 import Model.People.Person;
 import Model.People.Troop;
 
-import java.util.Map;
 import java.util.Random;
 import java.util.regex.Matcher;
 
@@ -41,7 +39,7 @@ public class PreGameController {
         MapCell cell = currentGame.getMap().getCellByCoordinate(x, y);
         if(cell.getBuilding() != null ||
                 cell.getTree() != null ||
-                cell.getPeople().size() > 0)
+                cell.getTroops().size() > 0)
             return "tile is not clear";
 
         cell.setGroundType(groundType);
@@ -89,7 +87,7 @@ public class PreGameController {
                 cell = currentGame.getMap().getCellByCoordinate(i, j);
                 if(cell.getBuilding() != null ||
                         cell.getTree() != null ||
-                        cell.getPeople().size() > 0 ||
+                        cell.getTroops().size() > 0 ||
                         cell.getRock() != null)
                     return "tile at x: " + i + ", y: " + j + " is not clear";
             }
@@ -123,7 +121,7 @@ public class PreGameController {
                 cell = currentGame.getMap().getCellByCoordinate(i, j);
                 if(cell.getBuilding() != null ||
                         cell.getTree() != null ||
-                        cell.getPeople().size() > 0 ||
+                        cell.getTroops().size() > 0 ||
                         cell.getRock() != null)
                     return "tile at x: " + i + ", y: " + j + " is not clear";
             }
@@ -177,16 +175,16 @@ public class PreGameController {
 
         if(x + 3 > 200 || x < 0)
             return "x coordinate out of bound";
-        if(y + 3 > 200 || y < 0)
+        if(y + 5 > 200 || y < 0)
             return "y coordinate out of bound";
 
         MapCell cell;
         for(int i = x; i < x + 3; i++) {
-            for(int j = y; j < y + 3; j++) {
+            for(int j = y; j < y + 5; j++) {
                 cell = currentGame.getMap().getCellByCoordinate(i, j);
                 if(Building.getForbiddenGroundTypes().contains(cell.getGroundType()))
                     return "tile x: " + i + ", y: " + j + " ground type is invalid";
-                if(cell.getPeople().size() > 0 ||
+                if(cell.getTroops().size() > 0 ||
                         cell.getBuilding() != null ||
                         cell.getTree() != null ||
                         cell.getRock() != null)
@@ -231,8 +229,8 @@ public class PreGameController {
 
     public static void clearTroops(MapCell cell) {
         Person person;
-        for(int i = cell.getPeople().size() - 1 ; i >= 0 ; i--) {
-            person = cell.getPeople().get(i);
+        for(int i = cell.getTroops().size() - 1; i >= 0 ; i--) {
+            person = cell.getTroops().get(i);
             person.getGovernment().removePerson(person);
             cell.removeFromPeople(person);
 
@@ -273,7 +271,7 @@ public class PreGameController {
         if(cell.getRock() != null ||
             cell.getTree() != null ||
             cell.getBuilding() != null ||
-            cell.getPeople().size() > 0)
+            cell.getTroops().size() > 0)
             return "tile is not clear";
 
         for(Directions direction : Directions.values()) {

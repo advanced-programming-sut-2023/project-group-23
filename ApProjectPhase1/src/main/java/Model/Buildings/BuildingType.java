@@ -15,6 +15,7 @@ public enum BuildingType {
     private int cost;
     private int size;
     private HashMap<ResourceType, Integer> resourceCost;
+    private boolean isPassable;
     private ArrayList<GroundType> forbiddenGroundTypes;
 
     BuildingType(String name, BuildingHP hitPoint, int workerNeeded, int cost, int size, HashMap<ResourceType, Integer> resourceCost) {

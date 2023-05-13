@@ -10,7 +10,7 @@ import java.util.HashMap;
 public class Government {
     private User user;
     private Colors governmentColor;
-    private int gold;
+    private double gold;
     private int fearRate;
     private int taxRate;
     private int foodRate;
@@ -18,6 +18,9 @@ public class Government {
     private int religiousRate;
     private int maxPopulation;
     private int population;
+    private int peasantPopulation;
+    private int workerPopulation;
+    private int troopsPopulation;
     private HashMap<ResourceType, Integer> resources;
     private ArrayList<Trade> tradeHistory;
     private ArrayList<Trade> tradeList;
@@ -29,6 +32,22 @@ public class Government {
 
     public Government(User user) {
         this.user = user;
+        this.maxPopulation = 24;
+        this.peasantPopulation = 8;
+        this.workerPopulation = 0;
+        this.taxRate = 0;
+        this.foodRate = 0;
+        this.religiousRate = 0;
+        this.fearRate = 0;
+        foods = new HashMap<>() {{
+            put(FoodType.BREAD, 200);
+            put(FoodType.APPLE, 0);
+            put(FoodType.CHEESE, 0);
+            put(FoodType.MEAT, 0);
+        }};
+        this.gold = 1000;
+        troops = new ArrayList<>();
+        buildings = new ArrayList<>();
     }
 
     public User getUser() {
@@ -77,7 +96,7 @@ public class Government {
         this.religiousRate = religiousRate;
     }
 
-    public int getGold() {
+    public double getGold() {
         return gold;
     }
 
