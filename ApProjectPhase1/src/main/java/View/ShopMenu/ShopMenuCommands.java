@@ -9,7 +9,7 @@ public enum ShopMenuCommands {
     SELL_ITEM("^\\s*sell\\s+(.+)$"),
     ITEM_NAME_FIELD("-i\\s+(?<itemName>[^\"\\s]+|(\"[^\"]*\"))"),
     ITEM_AMOUNT("-a\\s+(?<itemAmount>[^\"\\s]+|(\"[^\"]*\"))"),
-    ITEM_AMOUNT_VALIDITY("[0-9]+"),
+    ITEM_AMOUNT_VALIDITY("(?<amount>(-)?[0-9]+)"),
     BACK ("\\s*back\\s*"),
     ENTER_SHOP_MENU("^\\s*enter\\s+shop\\s+menu\\s*$"),
     ;
