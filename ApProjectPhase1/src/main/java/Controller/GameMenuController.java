@@ -26,7 +26,7 @@ public class GameMenuController {
             if(amount > 0)
                 foodDiversity++;
         }
-        int foodPopularity = Math.max(foodDiversity, 0) + currentGovernment.getFoodRate() * 4;
+        int foodPopularity = Math.max(foodDiversity, 0) + currentGovernment.getFoodRate() * 4 + currentGovernment.getInnPopularity();
         System.out.println("food popularity: " + foodPopularity);
 
         int taxPopularity;

@@ -4,7 +4,8 @@ import Model.ResourceType;
 
 public enum StorageType {
     STOCKPILE ("stockpile"),
-    GRANARY ("granary");
+    GRANARY ("granary"),
+    ARMOURY ("armoury");
 
     private String name;
 

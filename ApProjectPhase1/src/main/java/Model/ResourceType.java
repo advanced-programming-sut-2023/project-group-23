@@ -1,5 +1,7 @@
 package Model;
 
+import java.util.ArrayList;
+
 public enum  ResourceType {
     STONE ("stone"),
     IRON ("iron"),
@@ -21,6 +23,15 @@ public enum  ResourceType {
     METAL_ARMOR ("metal armor");
 
     private String name;
+
+    public static ArrayList<ResourceType> weapons = new ArrayList<>() {{
+        add(HORSE);
+        add(BOW);
+        add(SWORD);
+        add(SPEAR);
+        add(LEATHER_ARMOR);
+        add(METAL_ARMOR);
+    }};
 
     ResourceType(String name) {
         this.name = name;

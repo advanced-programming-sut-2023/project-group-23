@@ -1,8 +1,7 @@
 package Model.Buildings;
 
 public enum TowerType {
-    KEEP ("keep", 0, true, true, 0, 0, 8),
-    STONE_GATE ("stone gate", 0, true, true, 0, 0, 10);
+    ;
 
     private int height;
     private boolean isPassableForEnemy;

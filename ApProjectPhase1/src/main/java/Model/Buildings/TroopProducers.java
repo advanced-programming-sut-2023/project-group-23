@@ -9,8 +9,13 @@ public class TroopProducers extends Building {
     private ArrayList<TrapType> availableTroops;
     private TroopProducerType troopProducerType;
 
-    public TroopProducers(BuildingType type, TroopProducerType troopProducerType, Government government) {
-        super(type, government, 0, 0);
+    public TroopProducers(BuildingType type, TroopProducerType troopProducerType, Government government, int x, int y) {
+        super(type, government, x, y);
+        this.troopProducerType = troopProducerType;
+    }
+
+    public TroopProducerType getTroopProducerType() {
+        return troopProducerType;
     }
 
     public void produceTroop(TroopType troopType) {

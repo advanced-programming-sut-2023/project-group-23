@@ -11,6 +11,11 @@ public class Storage extends Building {
     public Storage(BuildingType type, StorageType storageType, Government government, int x, int y) {
         super(type, government, x, y);
         this.storageType = storageType;
+
+        government.setMaxFoodStorage(government.getMaxFoodStorage() + maxFoodCapacity);
+        government.setMaxWeaponStorage(government.getMaxWeaponStorage() + maxResourceCapacity);
+        if(storageType.equals(StorageType.STOCKPILE))
+            government.setMaxResourceStorage(government.getMaxResourceStorage() + maxResourceCapacity);
     }
 
     public static int getMaxResourceCapacity() {
