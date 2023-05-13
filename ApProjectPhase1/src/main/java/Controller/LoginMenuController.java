@@ -8,10 +8,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
 import com.sun.tools.javac.Main;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -81,8 +78,8 @@ public class LoginMenuController {
 
         if(!(matcher = LoginMenuCommands.getMatcher(content, LoginMenuCommands.QUESTION_NUMBER_FIELD)).find())
             return "question number field is empty";
-        else if(matcher.results().count() > 1)
-            return "invalid command";
+        //else if(matcher.results().count() > 1)
+        //    return "invalid command";
         else if(!isQuestionNumberFormatCorrect(matcher.group("questionNumber")))
             return "question number format is invalid";
         int questionNumber = Integer.parseInt(matcher.group("questionNumber"));
@@ -91,14 +88,14 @@ public class LoginMenuController {
 
         if(!(matcher = LoginMenuCommands.getMatcher(content, LoginMenuCommands.ANSWER_FIELD)).find())
             return "answer field is empty";
-        else if(matcher.results().count() > 1)
-            return "invalid command";
+        //else if(matcher.results().count() > 1)
+          //  return "invalid command";
         String answer = matcher.group("answer").replace("\"", "");
 
         if(!(matcher = LoginMenuCommands.getMatcher(content, LoginMenuCommands.ANSWER_CONFIRMATION_FIELD)).find())
             return "answer confirmation field is empty";
-        else if(matcher.results().count() > 1)
-            return "invalid command";
+        //else if(matcher.results().count() > 1)
+          //  return "invalid command";
         String answerConfirmation = matcher.group("answer").replace("\"", "");
 
         if(!answerConfirmation.equals(answer))
@@ -238,15 +235,17 @@ public class LoginMenuController {
         if (securityQuestionContent.equals("invalid command"))
             return "invalid command";
 
-        String message = checkForPickQuestionError(content);
+        String message = checkForPickQuestionError(securityQuestionContent);
 
         if (message != null)
             return message;
 
-        matcher = LoginMenuCommands.getMatcher(content, LoginMenuCommands.QUESTION_NUMBER_FIELD);
+        matcher = LoginMenuCommands.getMatcher(securityQuestionContent, LoginMenuCommands.QUESTION_NUMBER_FIELD);
+        matcher.find();
         int questionNumber = Integer.parseInt(matcher.group("questionNumber"));
 
-        matcher = LoginMenuCommands.getMatcher(content, LoginMenuCommands.ANSWER_FIELD);
+        matcher = LoginMenuCommands.getMatcher(securityQuestionContent, LoginMenuCommands.ANSWER_FIELD);
+        matcher.find();
         String answer = matcher.group("answer");
 
         User.addUser(new User(username, password, nickname, slogan, email, questionNumber, answer));
@@ -285,10 +284,13 @@ public class LoginMenuController {
         User user = User.getUserByUsername(username);
         User.setCurrentUser(user);
         return "log in successful";
+
     }
 
-    public static boolean checkForStayLoggedIn() throws FileNotFoundException {
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    public static boolean checkForStayLoggedIn() throws IOException {
+        Gson gson = new GsonBuilder()
+                .setPrettyPrinting()
+                .create();
         JsonReader reader = new JsonReader(new FileReader("stayLoggedInData.json"));
         User user = gson.fromJson(reader, User.class);
         if(user != null) {
