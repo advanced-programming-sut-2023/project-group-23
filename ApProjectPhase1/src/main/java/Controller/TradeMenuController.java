@@ -56,7 +56,6 @@ public class TradeMenuController {
         int price;
         if (!(matcher = TradeMenuCommands.getMatcher(content, TradeMenuCommands.RESOURCE_PRICE_FIELD)).find())
             return "price field is empty";
-        //TODO:CHECK COUNT OF FIELDS
         else {
             price = Integer.parseInt(matcher.group("price"));
             if (price < 0) {
@@ -70,7 +69,7 @@ public class TradeMenuController {
         else {
             amount = Integer.parseInt(matcher.group("resourceAmount"));
             if (amount <= 0) {
-                return "resource amount must not less than or equal to zero";
+                return "resource amount can not be less than or equal to zero";
             }
         }
         matcher = TradeMenuCommands.getMatcher(content, TradeMenuCommands.MESSAGE_FIELD);

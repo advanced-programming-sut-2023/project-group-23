@@ -15,7 +15,7 @@ public class ShopMenu {
             command = scanner.nextLine();
 
             if (ShopMenuCommands.getMatcher(command, ShopMenuCommands.SHOW_PRICE_LIST).matches())
-                System.out.println(ShopMenuController.showPriceList());
+                System.out.print(ShopMenuController.showPriceList());
             else if ((matcher = ShopMenuCommands.getMatcher(command, ShopMenuCommands.BUY_ITEM)).matches())
                 System.out.println(ShopMenuController.buyItem(matcher));
             else if ((matcher = ShopMenuCommands.getMatcher(command, ShopMenuCommands.SELL_ITEM)).matches())

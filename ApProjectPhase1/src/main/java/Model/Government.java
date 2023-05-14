@@ -285,4 +285,8 @@ public class Government {
     public void removeBuilding(Building building) {
         buildings.remove(building);
     }
+
+    public void setGold(double gold) {
+        this.gold = gold;
+    }
 }

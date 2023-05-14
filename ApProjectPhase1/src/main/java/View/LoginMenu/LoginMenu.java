@@ -14,10 +14,10 @@ public class LoginMenu {
         String command;
         Matcher matcher;
 
-        if(LoginMenuController.checkForStayLoggedIn()) {
-            System.out.println("logged in as user: " + User.getCurrentUser().getUsername());
-            MainMenu.run(scanner);
-        }
+//        if(LoginMenuController.checkForStayLoggedIn()) {
+//            System.out.println("logged in as user: " + User.getCurrentUser().getUsername());
+//            MainMenu.run(scanner);
+//        }
 
         while (true) {
             command = scanner.nextLine();
