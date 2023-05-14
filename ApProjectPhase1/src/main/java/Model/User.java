@@ -18,15 +18,15 @@ public class User {
     private static User currentUser;
     private static ArrayList<User> users = new ArrayList<>();
     private static HashMap<Integer, String> numberToSecurityQuestion = new HashMap<>() {{
-        put(1, "What is my father’s name?");
-        put(2, "What was my first pet’s name?");
-        put(3, "What is my mother’s last name?");
+        put(1, "What is my father's name?");
+        put(2, "What was my first pet's name?");
+        put(3, "What is my mother's last name?");
     }};
 
     private static HashMap<Integer, String> randomSlogans = new HashMap<>() {{
         put(1, "I shall have my revenge, in this life or the next");
-        put(2, "slogan2");
-        put(3, "slogan3");
+        put(2, "I may have my revenge, in this life or the next");
+        put(3, "I won't have my revenge, in this life or the next");
     }};
 
     private String username;

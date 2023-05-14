@@ -16,4 +16,16 @@ public enum TroopProducerType {
     TroopProducerType(String name) {
         this.name = name;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public static TroopProducerType getTroopProducerTypeByName(String name) {
+        for(TroopProducerType troopProducerType : TroopProducerType.values())
+            if(troopProducerType.getName().equals(name))
+                return troopProducerType;
+
+        return null;
+    }
 }

@@ -20,4 +20,16 @@ public enum TowerType {
         this.defendRange = defendRange;
         this.maxPopulationIncrease = maxPopulationIncrease;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public static TowerType getTowerTypeByName(String name) {
+        for(TowerType towerType : TowerType.values())
+            if(towerType.getName().equals(name))
+                return towerType;
+
+        return null;
+    }
 }

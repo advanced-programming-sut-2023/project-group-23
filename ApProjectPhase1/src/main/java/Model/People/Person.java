@@ -16,9 +16,11 @@ public class Person {
     private int x;
     private int y;
 
-    public Person(Government government) {
+    public Person(Government government, int x, int y) {
         this.government = government;
         this.workState = workStateTypes.PEASANT;
+        this.x = x;
+        this.y = y;
     }
 
     public Government getGovernment() {

@@ -16,4 +16,12 @@ public enum StorageType {
     public String getName() {
         return name;
     }
+
+    public static StorageType getStorageTypeByName(String name) {
+        for(StorageType storageType : StorageType.values())
+            if(storageType.getName().equals(name))
+                return storageType;
+
+        return null;
+    }
 }

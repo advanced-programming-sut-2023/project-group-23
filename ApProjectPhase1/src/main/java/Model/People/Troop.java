@@ -20,8 +20,9 @@ public class Troop extends Person {
     private TroopState state;
 
 
-    public Troop(Government government, TroopType type) {
-        super(government);
+    public Troop(Government government, TroopType type, int x, int y) {
+        super(government, x, y);
+        government.addTroop(this);
     }
 
     public String getName() {

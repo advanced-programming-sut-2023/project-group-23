@@ -32,4 +32,56 @@ public enum TroopType {
         this.requirements = requirements;
         this.type = type;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getHitPoint() {
+        return hitPoint;
+    }
+
+    public int getHumanDamage() {
+        return humanDamage;
+    }
+
+    public int getBuildingDamage() {
+        return buildingDamage;
+    }
+
+    public int getSpeed() {
+        return speed;
+    }
+
+    public int getFireRange() {
+        return fireRange;
+    }
+
+    public int getCost() {
+        return cost;
+    }
+
+    public boolean isHasLadder() {
+        return hasLadder;
+    }
+
+    public boolean isCanClimb() {
+        return canClimb;
+    }
+
+    public ArrayList<ResourceType> getRequirements() {
+        return requirements;
+    }
+
+    public TroopType getType() {
+        return type;
+    }
+
+    public static TroopType getTroopTypeByName(String name) {
+        for(TroopType troopType : TroopType.values())
+            if(troopType.getName().equals(name))
+                return troopType;
+
+        return null;
+    }
 }

@@ -88,7 +88,7 @@ public class LoginMenu {
 
     public static String pickSecurityQuestion(Scanner scanner) {
         System.out.println("Pick your security question:");
-        for(int i = 1 ; i <= 3 ; i++) {
+        for(int i = 1 ; i <=  3 ; i++) {
             System.out.println(i + ". " + User.getQuestionByKey(i));
         }
 

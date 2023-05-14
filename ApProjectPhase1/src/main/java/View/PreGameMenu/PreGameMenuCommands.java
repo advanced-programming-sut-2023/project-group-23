@@ -28,7 +28,9 @@ public enum PreGameMenuCommands {
             "\\s+-t\\s+(?<type>[^\"\\s]+|(\"[^\"]*\"))\\s*"),
     DROPUNIT ("\\s*dropunit" +
             "\\s+-x\\s+(?<xCoordinate>-?\\d+)\\s+-y\\s+(?<yCoordinate>-?\\d+)" +
-            "\\s+-t\\s+(?<type>[^\"\\s]+|(\"[^\"]*\"))\\s*");
+            "\\s+-t\\s+(?<type>[^\"\\s]+|(\"[^\"]*\"))" +
+            "\\s+-c\\s+(?<count>-?\\d+)\\s*"),
+    DONE ("\\s*done\\s*");
 
     private String regex;
 

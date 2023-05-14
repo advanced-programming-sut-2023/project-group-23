@@ -68,4 +68,12 @@ public enum ProducerType {
     public String getName() {
         return name;
     }
+
+    public static ProducerType getProducerTypeByName(String name) {
+        for(ProducerType producerType : ProducerType.values())
+            if(producerType.getName().equals(name))
+                return producerType;
+
+        return null;
+    }
 }

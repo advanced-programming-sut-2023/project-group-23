@@ -11,8 +11,8 @@ public class Tower extends Building {
     private int maxPopulationIncrease;
     private TowerType towerType;
 
-    public Tower(BuildingType type, TowerType towerType, Government government) {
-        super(type, government, 0, 0);
+    public Tower(BuildingType type, TowerType towerType, Government government, int x, int y) {
+        super(type, government, x, y);
     }
 
     public int getHeight() {

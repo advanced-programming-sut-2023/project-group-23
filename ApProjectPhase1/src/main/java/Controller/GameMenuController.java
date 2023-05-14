@@ -10,7 +10,7 @@ import java.util.regex.Matcher;
 
 public class GameMenuController {
     private static Government currentGovernment;
-    private Game game;
+    private static Game currentGame;
 
     public static Government getCurrentGovernment() {
         return currentGovernment;
@@ -131,6 +131,18 @@ public class GameMenuController {
         return "set fear rate successfully";
     }
 
+    public static void endGame() {
+
+    }
+
+    public static void nextTurn() {
+
+    }
+
+    public static boolean isGameOver() {
+        return false;
+    }
+
     public static void dropBuilding(Matcher matcher) {
     }
 
@@ -171,5 +183,13 @@ public class GameMenuController {
     }
 
     public static void disbandUnit() {
+    }
+
+    public static Game getCurrentGame() {
+        return currentGame;
+    }
+
+    public static void setCurrentGame(Game currentGame) {
+        GameMenuController.currentGame = currentGame;
     }
 }

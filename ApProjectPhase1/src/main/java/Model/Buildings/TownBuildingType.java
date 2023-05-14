@@ -35,4 +35,12 @@ public enum TownBuildingType {
     public boolean isReligious() {
         return isReligious;
     }
+
+    public static TownBuildingType getTownBuildingTypeByName(String name) {
+        for(TownBuildingType townBuildingType : TownBuildingType.values())
+            if(townBuildingType.getName().equals(name))
+                return townBuildingType;
+
+        return null;
+    }
 }

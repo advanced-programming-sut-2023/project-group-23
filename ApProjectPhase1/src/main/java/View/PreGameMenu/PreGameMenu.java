@@ -4,6 +4,7 @@ import Controller.PreGameController;
 import Model.Colors;
 import Model.Game;
 import Model.Government;
+import View.GameMenu.GameMenu;
 
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -20,6 +21,7 @@ public class PreGameMenu {
 
         for(Government government : currentGame.getGovernments()) {
             PreGameController.setCurrentGovernment(government);
+            System.out.println(government.getUser().getNickname() + " is editing game settings");
 
             if(pickGovernmentColor(scanner).equals("back")) {
                 System.out.println("back to main menu");
@@ -52,6 +54,12 @@ public class PreGameMenu {
                 else if((matcher = PreGameMenuCommands.getMatcher(command, PreGameMenuCommands.DROPBUILDING)).matches())
                     System.out.println(PreGameController.dropbuilding(matcher));
 
+                else if((matcher = PreGameMenuCommands.getMatcher(command, PreGameMenuCommands.DROPUNIT)).matches())
+                    System.out.println(PreGameController.dropunit(matcher));
+
+                else if(PreGameMenuCommands.getMatcher(command, PreGameMenuCommands.DONE).matches())
+                    break;
+
                 else if(PreGameMenuCommands.getMatcher(command, PreGameMenuCommands.BACK).matches()) {
                     System.out.println("back to main menu");
                     return;
@@ -61,6 +69,8 @@ public class PreGameMenu {
                     System.out.println("invalid command");
             }
         }
+
+        GameMenu.run(scanner);
     }
 
     public static Game getCurrentGame() {

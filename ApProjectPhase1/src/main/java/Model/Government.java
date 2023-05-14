@@ -53,7 +53,10 @@ public class Government {
             put(FoodType.CHEESE, 0);
             put(FoodType.MEAT, 0);
         }};
-        this.gold = 1000;
+        this.maxFoodStorage = 0;
+        this.maxResourceStorage = 0;
+        this.maxWeaponStorage = 0;
+        this.gold = 10000;
         troops = new ArrayList<>();
         buildings = new ArrayList<>();
     }

@@ -31,7 +31,11 @@ public enum BuildingType {
     BAKERY ("bakery", 300, 1, 0, 2, ResourceType.WOOD, 10, false, false),
     BREWERY ("brewery", 300, 1, 0, 2, ResourceType.WOOD, 10, false, false),
     HUNT_POST ("hunt post", 300, 1, 0, 1, ResourceType.WOOD, 5, false, false),
-    PITCH_RIG ("pitch rig", 300, 1, 0, 2, ResourceType.WOOD, 20, true, false);
+    PITCH_RIG ("pitch rig", 300, 1, 0, 2, ResourceType.WOOD, 20, true, false),
+    BARRACK ("barrack", 500, 0, 0, 3, ResourceType.STONE, 15, true, false),
+    MERCENARY_POST ("mercenary post", 300, 0, 0, 3, ResourceType.WOOD, 10, true, false),
+    ENGINEER_GUILD ("engineer guild", 300, 0, 100, 3, ResourceType.WOOD, 10, true, false),
+    ;
 
     private String name;
     private int hitPoint;
@@ -91,5 +95,13 @@ public enum BuildingType {
 
     public boolean isRepairable() {
         return isRepairable;
+    }
+
+    public static BuildingType getBuildingTypeByName(String name) {
+        for (BuildingType buildingType : BuildingType.values())
+            if(buildingType.getName().equals(name))
+                return buildingType;
+
+        return null;
     }
 }

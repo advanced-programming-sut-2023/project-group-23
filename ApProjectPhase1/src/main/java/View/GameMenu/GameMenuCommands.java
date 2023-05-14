@@ -27,7 +27,9 @@ public enum GameMenuCommands {
     DIG_TUNNEL("^\\s*dig\\s+tunnel\\s+(.+)$"),
     BUILD_EQUIPMENT("^\\s*build\\s+-q\\s+(?<equipmentName>[^\"\\s]+|(\"[^\"]*\"))$"),
     DISBAND_UNIT("^\\s*disband\\s+unit\\s*$"),
-    ENTER_TRADE_MENU("^\\s*enter\\s+trade\\s+menu\\s*$")
+    ENTER_TRADE_MENU("^\\s*enter\\s+trade\\s+menu\\s*$"),
+    END_GAME ("\\s*end\\s+game\\s*"),
+    DONE ("\\s*done\\s*")
     ;
 
     private String regex;

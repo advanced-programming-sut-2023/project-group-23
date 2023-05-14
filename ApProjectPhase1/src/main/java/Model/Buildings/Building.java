@@ -137,4 +137,5 @@ public class Building {
     public void setyCoordinate(int yCoordinate) {
         this.yCoordinate = yCoordinate;
     }
+
 }
