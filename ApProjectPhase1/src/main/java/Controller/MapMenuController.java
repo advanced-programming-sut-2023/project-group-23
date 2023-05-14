@@ -2,7 +2,6 @@ package Controller;
 
 import Model.*;
 import Model.Buildings.Building;
-import Model.Buildings.Storage;
 import Model.People.Troop;
 import View.MapMenu.MapMenuCommands;
 
@@ -116,9 +115,6 @@ public class MapMenuController {
                     ", government: " + building.getGovernment() +
                     ", hitpoint: " + building.getHitPoint());
 
-        if(building instanceof Storage) {
-            //TODO
-        }
 
         ArrayList<Troop> troops = cell.getTroops();
         Troop troop;
@@ -133,5 +129,54 @@ public class MapMenuController {
         }
 
         return null;
+    }
+
+    private static int[][] createMapForMove() {
+        int[][] map = new int[200][200];
+        for (int j = 0; j < 200; j++) {
+            map[0][j] = -1;
+            map[199][j] = -1;
+        }
+        for (int i = 0; i < 200; i++) {
+            map[i][0] = -1;
+            map[i][199] = -1;
+        }
+        MapCell[][] mapCell = Game.getCurrentGame().getMap().getMap();
+        for (int i = 1; i < 199; i++) {
+            for (int j = 1; j < 199; j++) {
+                if (mapCell[i][j].getGroundType().getName().equals("rock") || mapCell[i][j].getGroundType().getName().equals("water"))
+                    map[i][j] = -1;
+                else if (mapCell[i][j].getRock() != null) map[i][j] = -1;
+                else if (mapCell[i][j].getBuilding() != null) {
+                    if (!mapCell[i][j].getBuilding().isPassable())
+                        map[i][j] = -1;
+                    else map[i][j] = 0;
+                } else map[i][j] = 0;
+            }
+        }
+        return map;
+    }
+
+    public static boolean move(int x, int y, int xI, int yI, int xF, int yF, int[][] map, int speed) {
+        if (x == xF && y == yF && speed >= 0) return true;
+        if (speed == 0) return false;
+        if (map[x + 1][y] == 0) {
+            map[x + 1][y] = 1;
+            if (!move(x + 1, y, xI, yI, xF, yF, map, speed - 1)) map[x + 1][y] = 0;
+            else return true;
+        } else if (map[x][y + 1] == 0) {
+            map[x][y + 1] = 1;
+            if (!move(x, y + 1, xI, yI, xF, yF, map, speed - 1)) map[x][y + 1] = 0;
+            else return true;
+        } else if (map[x - 1][y] == 0) {
+            map[x - 1][y] = 1;
+            if (!move(x - 1, y, xI, yI, xF, yF, map, speed - 1)) map[x - 1][y] = 0;
+            else return true;
+        } else if (map[x][y - 1] == 0) {
+            map[x][y - 1] = 1;
+            if (!move(x, y - 1, xI, yI, xF, yF, map, speed - 1)) map[x][y - 1] = 0;
+            else return true;
+        }
+        return false;
     }
 }
