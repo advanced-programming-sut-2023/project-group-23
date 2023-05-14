@@ -75,32 +75,28 @@ public class LoginMenuController {
 
     public static String checkForPickQuestionError(String content) {
         Matcher matcher;
-
+        String answer = null;
+        String answerConfirmation = null;
         if(!(matcher = LoginMenuCommands.getMatcher(content, LoginMenuCommands.QUESTION_NUMBER_FIELD)).find())
             return "question number field is empty";
-        //else if(matcher.results().count() > 1)
-        //    return "invalid command";
-        else if(!isQuestionNumberFormatCorrect(matcher.group("questionNumber")))
-            return "question number format is invalid";
+        else if (Controller.findCounter(matcher) > 1) return "invalid command";
+        else if (matcher.find(0))
+            if(!isQuestionNumberFormatCorrect(matcher.group("questionNumber")))
+                return "question number format is invalid";
         int questionNumber = Integer.parseInt(matcher.group("questionNumber"));
         if(questionNumber > 3 || questionNumber < 1)
             return "question number is out of bounds";
 
         if(!(matcher = LoginMenuCommands.getMatcher(content, LoginMenuCommands.ANSWER_FIELD)).find())
             return "answer field is empty";
-        //else if(matcher.results().count() > 1)
-          //  return "invalid command";
-        String answer = matcher.group("answer").replace("\"", "");
-
+        else if (Controller.findCounter(matcher) > 1) return "invalid command";
+        else if (matcher.find(0)) answer = matcher.group("answer").replace("\"", "");
         if(!(matcher = LoginMenuCommands.getMatcher(content, LoginMenuCommands.ANSWER_CONFIRMATION_FIELD)).find())
             return "answer confirmation field is empty";
-        //else if(matcher.results().count() > 1)
-          //  return "invalid command";
-        String answerConfirmation = matcher.group("answer").replace("\"", "");
-
+        else if (Controller.findCounter(matcher) > 1) return "invalid command";
+        else if (matcher.find(0)) answerConfirmation = matcher.group("answer").replace("\"", "");
         if(!answerConfirmation.equals(answer))
             return "answer confirmation doesn't match answer";
-
         return null;
     }
 

@@ -13,17 +13,12 @@ public class TradeMenu {
 
         while (true) {
             command = scanner.nextLine();
-            if (TradeMenuCommands.getMatcher(command, TradeMenuCommands.TRADE_LIST).matches()) {
-                System.out.println(TradeMenuController.showTradeList());
-            } else if (TradeMenuCommands.getMatcher(command, TradeMenuCommands.TRADE_HISTORY).matches()) {
-                System.out.println(TradeMenuController.showTradeHistory());
-            } else if ((matcher = TradeMenuCommands.getMatcher(command, TradeMenuCommands.TRADE)).matches()) {
+
+            if ((matcher = TradeMenuCommands.getMatcher(command, TradeMenuCommands.TRADE)).matches())
                 System.out.println(TradeMenuController.trade(matcher.group("content")));
-            } else if ((matcher = TradeMenuCommands.getMatcher(command, TradeMenuCommands.TRADE_ACCEPT)).matches()) {
-                System.out.println(TradeMenuController.acceptTrade(matcher));
-            } else if (MapMenuCommands.getMatcher(command, MapMenuCommands.BACK).matches()) {
+            else if (MapMenuCommands.getMatcher(command, MapMenuCommands.BACK).matches())
                 return;
-            } else System.out.println("Invalid command!");
+            else System.out.println("Invalid command!");
         }
     }
 }

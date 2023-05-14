@@ -6,7 +6,6 @@ import Model.Trade;
 import Model.User;
 import View.TradeMenu.TradeMenuCommands;
 
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -112,5 +111,6 @@ public class TradeMenuController {
 
     public static String acceptTrade(Matcher matcher) {
         //TODO
+        return null;
     }
 }

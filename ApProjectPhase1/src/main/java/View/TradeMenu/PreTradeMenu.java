@@ -9,7 +9,6 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 
 public class PreTradeMenu {
-    //TODO: HAMASHO BEBAR TO KHODE TRADE AGHA SADRA!
     private static Government currentGovernment;
     private static Government[] createArrayOfGovernments() {
         int size = 0;
@@ -35,15 +34,13 @@ public class PreTradeMenu {
         String list = TradeMenuController.listOfPlayers(governmentList);
         Integer playerSelected = 0;
         TradeMenuController.setRequesterGovernment(currentGovernment);
-
+        System.out.println(list);
         while (true) {
-            System.out.println(list);
             command = scanner.nextLine();
             if (TradeMenuCommands.getMatcher(command, TradeMenuCommands.BACK).matches()) {
                 System.out.println("returned to game menu");
                 return;
-            }
-            else if ((matcher = TradeMenuCommands.getMatcher(command, TradeMenuCommands.ENTER_PLAYER)).matches()) {
+            } else if ((matcher = TradeMenuCommands.getMatcher(command, TradeMenuCommands.ENTER_PLAYER)).matches()) {
                 if (!(respond = TradeMenuController.checkValidNumber(playerSelected = Integer.parseInt(matcher.group("playerNumber")), governmentList)).equals("ok"))
                     System.out.println(respond);
                 else {
@@ -52,7 +49,13 @@ public class PreTradeMenu {
                     TradeMenuController.setReceiverGovernment(receiver);
                     TradeMenu.run(scanner);
                 }
-            } else System.out.println("invalid command");
+            } else if (TradeMenuCommands.getMatcher(command, TradeMenuCommands.TRADE_LIST).matches())
+                System.out.println(TradeMenuController.showTradeList());
+            else if (TradeMenuCommands.getMatcher(command, TradeMenuCommands.TRADE_HISTORY).matches())
+                System.out.println(TradeMenuController.showTradeHistory());
+            else if ((matcher = TradeMenuCommands.getMatcher(command, TradeMenuCommands.TRADE_ACCEPT)).matches())
+                System.out.println(TradeMenuController.acceptTrade(matcher));
+            else System.out.println("invalid command");
         }
     }
 }
