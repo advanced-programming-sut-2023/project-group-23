@@ -22,7 +22,7 @@ public class Map {
     }
 
     public MapCell getCellByCoordinate(int x, int y) {
-        return null;
+        return map[x][y];
     }
 
     public MapCell[][] getMap() {
