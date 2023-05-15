@@ -10,6 +10,11 @@ import java.util.regex.Matcher;
 
 public class PreTradeMenu {
     private static Government currentGovernment;
+
+    public static void setCurrentGovernment(Government currentGovernment) {
+        PreTradeMenu.currentGovernment = currentGovernment;
+    }
+
     private static Government[] createArrayOfGovernments() {
         int size = 0;
         for (Government government : Game.getCurrentGame().getGovernments()) {
@@ -35,7 +40,7 @@ public class PreTradeMenu {
         String list = TradeMenuController.listOfPlayers(governmentList);
         Integer playerSelected = 0;
         TradeMenuController.setRequesterGovernment(currentGovernment);
-        TradeMenuController.setRequesterGovernment(currentGovernment);
+        TradeMenuController.setReceiverGovernment(currentGovernment);
         System.out.println(list);
         while (true) {
             notification = TradeMenuController.notification();

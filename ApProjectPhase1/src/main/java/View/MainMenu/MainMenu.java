@@ -8,12 +8,13 @@ import View.ProfileMenu.ProfileMenu;
 import View.TradeMenu.PreTradeMenu;
 import View.TradeMenu.TradeMenu;
 
+import java.io.IOException;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 
 public class MainMenu {
 
-    public static void run(Scanner scanner) {
+    public static void run(Scanner scanner) throws IOException {
         String command;
         Matcher matcher;
 

@@ -11,7 +11,7 @@ public enum PreGameMenuCommands {
             "\\s+-t\\s+(?<type>[^\"\\s]+|(\"[^\"]*\"))\\s*"),
     SET_TEXTURE_ZONE ("\\s*set\\s+texture" +
             "\\s+-x1\\s+(?<x1Coordinate>-?\\d+)\\s+-y1\\s+(?<y1Coordinate>-?\\d+)" +
-            "\\s+-x1\\s+(?<x1Coordinate>-?\\d+)\\s+-y1\\s+(?<y1Coordinate>-?\\d+)" +
+            "\\s+-x2\\s+(?<x2Coordinate>-?\\d+)\\s+-y2\\s+(?<y2Coordinate>-?\\d+)" +
             "\\s+-t\\s+(?<type>[^\"\\s]+|(\"[^\"]*\"))\\s*"),
     TEXT_INPUT ("\\s*(?<content>[^\"\\s]+|(\"[^\"]*\"))\\s*"),
     BACK ("\\s*back\\s*"),

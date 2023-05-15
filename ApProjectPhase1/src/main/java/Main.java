@@ -18,6 +18,13 @@ public class Main {
 
     public static Scanner scanner = new Scanner(System.in);
     public static void main(String[] args) throws IOException {
+//        Gson gson = new GsonBuilder()
+//                .setPrettyPrinting()
+//                .create();
+//        FileWriter writer = new FileWriter("usersDatabase.json");
+//        gson.toJson(User.getUsers(), writer);
+//        writer.close();
+
         User.initializeUsersFromDatabase();
 
         LoginMenu.run(scanner);

@@ -113,7 +113,7 @@ public class PreGameMenu {
                 String result = PreGameController.pickGovernmentColor(inputColor);
                 System.out.println(result);
                 if(!result.equals("invalid color"))
-                    return null;
+                    return "ok";
             }
             else if(PreGameMenuCommands.getMatcher(command, PreGameMenuCommands.BACK).matches())
                 return "back";
@@ -133,7 +133,7 @@ public class PreGameMenu {
                 int y = Integer.parseInt(matcher.group("yCoordinate"));
                 String result = PreGameController.placeKeep(x, y);
                 if (result.equals("placed building successfully"))
-                    return null;
+                    return "ok";
             } else if (PreGameMenuCommands.getMatcher(command, PreGameMenuCommands.BACK).matches())
                 return "back";
             else

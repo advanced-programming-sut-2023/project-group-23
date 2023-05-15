@@ -7,8 +7,8 @@ public enum FoodType {
     CHEESE ("cheese", 8, 4);
 
     private String name;
-    private Integer sellPrice;
     private Integer buyPrice;
+    private Integer sellPrice;
 
 
     public String getName() {
@@ -23,7 +23,7 @@ public enum FoodType {
         return buyPrice;
     }
 
-    FoodType(String name, Integer sellPrice, Integer buyPrice) {
+    FoodType(String name, Integer buyPrice, Integer sellPrice) {
         this.name = name;
         this.sellPrice = sellPrice;
         this.buyPrice = buyPrice;

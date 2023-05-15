@@ -43,7 +43,7 @@ public class GameMenuController {
 
         System.out.println("religious popularity: " + currentGovernment.getReligiousRate());
 
-        int totalPopularity = foodPopularity + taxPopularity +
+        int totalPopularity = foodPopularity + taxPopularity -
                 currentGovernment.getFearRate() +
                 currentGovernment.getReligiousRate();
         System.out.println("total popularity rate: " + totalPopularity);
@@ -66,7 +66,7 @@ public class GameMenuController {
         else
             taxPopularity = 4 * taxRate - 8;
 
-        int totalPopularity = foodPopularity + taxPopularity +
+        int totalPopularity = foodPopularity + taxPopularity -
                 currentGovernment.getFearRate() +
                 currentGovernment.getReligiousRate();
         return "total popularity rate: " + totalPopularity;

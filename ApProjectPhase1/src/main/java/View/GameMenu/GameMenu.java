@@ -1,5 +1,6 @@
 package View.GameMenu;
 import Controller.GameMenuController;
+import Controller.ShopMenuController;
 import Model.Buildings.Building;
 import Model.Buildings.BuildingHP;
 import Model.Game;
@@ -7,6 +8,7 @@ import Model.Government;
 import Model.MapCell;
 import View.BuildlingMenu.BuildingMenu;
 import View.MainMenu.MainMenuCommands;
+import View.MapMenu.MapMenu;
 import View.ShopMenu.ShopMenu;
 import View.TradeMenu.PreTradeMenu;
 import View.UnitMenu.UnitMenu;
@@ -39,6 +41,7 @@ public class GameMenu {
 
                     if (GameMenuCommands.getMatcher(command, GameMenuCommands.ENTER_SHOP_MENU).matches()) {
                         System.out.println("you entered shop menu");
+                        ShopMenuController.setCurrentGovernment(GameMenuController.getCurrentGovernment());
                         ShopMenu.run(scanner);
                     }
 
@@ -48,7 +51,10 @@ public class GameMenu {
                     else if (GameMenuCommands.getMatcher(command, GameMenuCommands.SHOW_POPULARITY).matches())
                         System.out.println(GameMenuController.showPopularity());
 
-                    else if (GameMenuCommands.getMatcher(command, GameMenuCommands.SHOW_FOOD_LIST).matches())
+                    else if (GameMenuCommands.getMatcher(command, GameMenuCommands.ENTER_MAP_MENU).matches()) {
+                        System.out.println("you entered map menu");
+                        MapMenu.run(scanner);
+                    } else if (GameMenuCommands.getMatcher(command, GameMenuCommands.SHOW_FOOD_LIST).matches())
                         GameMenuController.showFoodList();
 
                     else if ((matcher = GameMenuCommands.getMatcher(command, GameMenuCommands.FOOD_RATE)).matches())
@@ -107,6 +113,7 @@ public class GameMenu {
                         GameMenuController.disbandUnit();
                     else if (GameMenuCommands.getMatcher(command, GameMenuCommands.ENTER_TRADE_MENU).matches()) {
                         System.out.println("you entered trade menu");
+                        PreTradeMenu.setCurrentGovernment(GameMenuController.getCurrentGovernment());
                         PreTradeMenu.run(scanner);
                     } else System.out.println("invalid command");
                 }

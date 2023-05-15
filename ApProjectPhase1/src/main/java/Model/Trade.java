@@ -19,7 +19,7 @@ public class Trade {
         this.requester = requester;
         this.receiver = receiver;
         this.isAccepted = 0;
-        this.requesterMessage = "receiver hasn't accepted trade request";
+        this.receiverMessage = "receiver hasn't accepted trade request";
         this.isShowed = false;
     }
 

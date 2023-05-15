@@ -111,8 +111,8 @@ public class MapMenuController {
 
         Building building;
         if((building = cell.getBuilding()) != null)
-            System.out.println("\n" + "building: " + building.getName() +
-                    ", government: " + building.getGovernment() +
+            System.out.println("building: " + building.getName() +
+                    ", government: " + building.getGovernment().getUser().getNickname() +
                     ", hitpoint: " + building.getHitPoint());
 
 

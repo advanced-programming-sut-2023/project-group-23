@@ -32,11 +32,11 @@ public class PreGameController {
             return "x coordinate out of bounds";
         if(y > 199 || y < 0)
             return "y coordinate out of bounds";
-
-        if(waterType.equals(WaterType.BIG_POND) ||
-            waterType.equals(WaterType.SMALL_POND))
-            return setTextureToPond(x, y, waterType);
-
+        if (waterType != null) {
+            if (waterType.equals(WaterType.BIG_POND) ||
+                    waterType.equals(WaterType.SMALL_POND))
+                return setTextureToPond(x, y, waterType);
+        }
         MapCell cell = currentGame.getMap().getCellByCoordinate(x, y);
         if(cell.getBuilding() != null ||
                 cell.getTree() != null ||

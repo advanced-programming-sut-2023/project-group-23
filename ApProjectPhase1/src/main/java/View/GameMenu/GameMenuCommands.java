@@ -5,6 +5,7 @@ import java.util.regex.Pattern;
 
 public enum GameMenuCommands {
     ENTER_SHOP_MENU("^\\s*enter\\s+shop\\s+menu\\s*$"),
+    ENTER_MAP_MENU("^\\s*enter\\s+map\\s+menu\\s*$"),
     SHOW_POPULARITY_FACTORS("^\\s*show\\s+popularity\\s+factors\\s*$"),
     SHOW_POPULARITY("^\\s*show\\s+popularity\\s*$"),
     SHOW_FOOD_LIST("^\\s*show\\s+food\\s+list\\s*$"),

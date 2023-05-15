@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public enum BuildingType {
-    KEEP ("keep", 0, 0, 0, 3, null, 0, true, true),
+    KEEP ("keep", 500, 0, 0, 3, null, 0, true, true),
     STONE_GATE ("stone gate", 1000, 0, 0, 3, ResourceType.STONE, 20, true, true),
     HOVEL ("hovel", 100, 0, 0, 2, ResourceType.WOOD, 6, true, false),
     CHURCH ("church", 800, 0, 250, 2, null, 0, false, false),

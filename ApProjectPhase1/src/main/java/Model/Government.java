@@ -58,6 +58,11 @@ public class Government {
         this.gold = 10000;
         troops = new ArrayList<>();
         buildings = new ArrayList<>();
+        resources = new HashMap<>() {{
+            put(ResourceType.WOOD, 200);
+        }};
+        tradeHistory = new ArrayList<>();
+        tradeList = new ArrayList<>();
     }
 
     public User getUser() {
