@@ -3,6 +3,7 @@ package Controller;
 import Model.*;
 import Model.Buildings.*;
 import Model.People.Troop;
+import Model.People.TroopType;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -136,6 +137,49 @@ public class GameMenuController {
     }
 
     public static void nextTurn() {
+        for(Government government : Game.getCurrentGame().getGovernments()) {
+            for(Building building : government.getBuildings()) {
+                if(building instanceof Producer)
+                    ((Producer) building).produce(government);
+            }
+            int foodAmount = (int) ((government.getFoodRate() + 2) * government.getPeasantPopulation() * 0.5);
+            int newAmount;
+            for(Map.Entry<FoodType, Integer> entry : government.getFoods().entrySet()) {
+                newAmount = entry.getValue() - Math.min(foodAmount, entry.getValue());
+                foodAmount -= Math.min(foodAmount, entry.getValue());
+                government.changeFoodAmount(entry.getKey(), newAmount);
+            }
+            double tax;
+            if(government.getTaxRate() < 0)
+                tax = -0.6 + (government.getTaxRate() + 1) * 0.2;
+            else if(government.getTaxRate() == 0)
+                tax = 0;
+            else
+                tax = 0.6 + (government.getTaxRate() - 1) * 0.2;
+            if(tax <= 0)
+                government.setGold(government.getGold() - Math.min(government.getGold(), -tax * government.getPeasantPopulation()));
+            else
+                government.setGold(government.getGold() + tax * government.getPeasantPopulation());
+            if(government.getTroops().size() > 0) {
+                for (Troop troop : government.getTroops()) {
+                    if (!troop.getType().equals(TroopType.LORD) &&
+                            troop.getHitPoint() < 1) {
+                        Game.getCurrentGame().getMap().getCellByCoordinate(troop.getX(), troop.getY()).removeFromTroops(troop);
+                    }
+                }
+            }
+            if(government.getBuildings().size() > 0) {
+                for(Building building : government.getBuildings()) {
+                    if(building.getHitPoint() < 1)
+                        for(int i = building.getxCoordinate() ; i < building.getxCoordinate() + building.getSize() ; i++)
+                            for(int j = building.getyCoordinate(); j < building.getyCoordinate() + building.getSize(); j++) {
+                                Game.getCurrentGame().getMap().getCellByCoordinate(i, j).setBuilding(null);
+                            }
+                }
+            }
+            if(government.getLord().getHitPoint() < 1)
+                government.
+        }
 
     }
 
@@ -284,14 +328,11 @@ public class GameMenuController {
         return cell;
     }
 
-    public static void moveUnit(Matcher matcher) {
-    }
 
     public static void patrolUnit(Matcher matcher) {
     }
 
-    public static void setState(Matcher matcher) {
-    }
+
 
     public static void attack(Matcher matcher) {
     }

@@ -30,7 +30,7 @@ public class GameMenu {
         while (true) {
             currentGame.setRounds(currentGame.getRounds() + 1);
             for (Government government : currentGame.getGovernments()) {
-                if(government.getLord().getHitPoint() == 0)
+                if(government.getLord().getHitPoint() < 1)
                     continue;
                 GameMenuController.setCurrentGovernment(government);
                 System.out.println("round " + currentGame.getRounds());
@@ -97,12 +97,6 @@ public class GameMenu {
 
                     else if ((matcher = GameMenuCommands.getMatcher(command, GameMenuCommands.PATROL_UNIT)).matches())
                         GameMenuController.patrolUnit(matcher);
-                    else if ((matcher = GameMenuCommands.getMatcher(command, GameMenuCommands.SET)).matches())
-                        GameMenuController.setState(matcher);
-                    else if ((matcher = GameMenuCommands.getMatcher(command, GameMenuCommands.ATTACK_ENEMY)).matches())
-                        GameMenuController.attack(matcher);
-                    else if ((matcher = GameMenuCommands.getMatcher(command, GameMenuCommands.AIR_ATTACK)).matches())
-                        GameMenuController.airAttack(matcher);
                     else if ((matcher = GameMenuCommands.getMatcher(command, GameMenuCommands.POUR_OIL)).matches())
                         GameMenuController.pourOil(matcher);
                     else if ((matcher = GameMenuCommands.getMatcher(command, GameMenuCommands.DIG_TUNNEL)).matches())

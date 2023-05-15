@@ -1,5 +1,8 @@
 package Controller;
 
+import Model.Buildings.Building;
+import Model.Buildings.BuildingType;
+import Model.Buildings.TroopProducerType;
 import Model.Game;
 import Model.Government;
 import Model.GroundType;
@@ -198,11 +201,34 @@ public class UnitMenuController {
     }
 
     public static String disbandUnit(Government government, MapCell cell) {
-        for(Troop troop : cell.getTroops()) {
-            if(troop.getGovernment().equals(government)) {
-
+        if(cell.getTroops().size() > 0) {
+            for (Troop troop : cell.getTroops()) {
+                if (troop.getGovernment().equals(government)) {
+                    if(troop.getType().getTroopProducerType().equals(TroopProducerType.BARRACK))
+                        for(Building building : government.getBuildings()) {
+                            if (building.getType().equals(BuildingType.BARRACK)) {
+                                troop.setX(building.getxCoordinate());
+                                troop.setY(building.getyCoordinate());
+                            }
+                        }
+                    else if(troop.getType().getTroopProducerType().equals(TroopProducerType.MERCENARY_POST))
+                        for(Building building : government.getBuildings()) {
+                            if (building.getType().equals(BuildingType.MERCENARY_POST)) {
+                                troop.setX(building.getxCoordinate());
+                                troop.setY(building.getyCoordinate());
+                            }
+                        }
+                    else if(troop.getType().getTroopProducerType().equals(TroopProducerType.ENGINEER_GUILD))
+                        for(Building building : government.getBuildings()) {
+                            if (building.getType().equals(BuildingType.ENGINEER_GUILD)) {
+                                troop.setX(building.getxCoordinate());
+                                troop.setY(building.getyCoordinate());
+                            }
+                        }
+                }
             }
         }
-        return null;
+
+        return "done";
     }
 }
