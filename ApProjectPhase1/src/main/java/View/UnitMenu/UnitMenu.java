@@ -35,6 +35,9 @@ public class UnitMenu {
             else if((matcher = UnitMenuCommands.getMatcher(command, UnitMenuCommands.AIR_ATTACK)).matches())
                 System.out.println(UnitMenuController.airAttack(matcher, GameMenuController.getCurrentGovernment(), cell));
 
+            else if(UnitMenuCommands.getMatcher(command, UnitMenuCommands.DISBAND_UNIT).matches())
+                System.out.println(UnitMenuController.disbandUnit(GameMenuController.getCurrentGovernment(), cell));
+
             else
                 System.out.println("invalid command");
         }

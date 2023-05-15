@@ -10,6 +10,7 @@ import java.util.HashMap;
 
 public class Government {
     private User user;
+    private Lord lord;
     private Colors governmentColor;
     private double gold;
     private int fearRate;
@@ -281,5 +282,13 @@ public class Government {
 
     public void setGold(double gold) {
         this.gold = gold;
+    }
+
+    public Lord getLord() {
+        return lord;
+    }
+
+    public void setLord(Lord lord) {
+        this.lord = lord;
     }
 }

@@ -196,4 +196,13 @@ public class UnitMenuController {
 
         return "done";
     }
+
+    public static String disbandUnit(Government government, MapCell cell) {
+        for(Troop troop : cell.getTroops()) {
+            if(troop.getGovernment().equals(government)) {
+
+            }
+        }
+        return null;
+    }
 }
