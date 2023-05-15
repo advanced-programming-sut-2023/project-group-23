@@ -19,6 +19,8 @@ public class MapCell {
     private int y;
 
     MapCell(GroundType groundType, int x, int y) {
+        people = new ArrayList<>();
+        troops = new ArrayList<>();
         this.groundType = groundType;
         this.x = x;
         this.y = y;
