@@ -38,6 +38,8 @@ public class UnitMenuController {
                 move(initialCell.getX(), initialCell.getY(), initialCell.getX(), initialCell.getY(), x, y, mapForMove, troop.getType().getSpeed())) {
                 troop.setX(x);
                 troop.setY(y);
+                initialCell.removeFromTroops(troop);
+                destinationCell.addToTroops(troop);
                 System.out.println("moved troop: " + troop.getType().getName() +
                         ", hitpoint: " + troop.getHitPoint() +
                         ", government: " + troop.getGovernment().getUser().getNickname());
@@ -149,6 +151,8 @@ public class UnitMenuController {
                     totalUnitMeleeDamage += troop.getHumanDamage();
                     troop.setX(x);
                     troop.setY(y);
+                    cell.removeFromTroops(troop);
+                    enemyCell.addToTroops(troop);
                 }
             }
         }
@@ -209,6 +213,8 @@ public class UnitMenuController {
                             if (building.getType().equals(BuildingType.BARRACK)) {
                                 troop.setX(building.getxCoordinate());
                                 troop.setY(building.getyCoordinate());
+                                cell.removeFromTroops(troop);
+                                Game.getCurrentGame().getMap().getCellByCoordinate(building.getxCoordinate(), building.getyCoordinate()).addToTroops(troop);
                             }
                         }
                     else if(troop.getType().getTroopProducerType().equals(TroopProducerType.MERCENARY_POST))
@@ -216,6 +222,8 @@ public class UnitMenuController {
                             if (building.getType().equals(BuildingType.MERCENARY_POST)) {
                                 troop.setX(building.getxCoordinate());
                                 troop.setY(building.getyCoordinate());
+                                cell.removeFromTroops(troop);
+                                Game.getCurrentGame().getMap().getCellByCoordinate(building.getxCoordinate(), building.getyCoordinate()).addToTroops(troop);
                             }
                         }
                     else if(troop.getType().getTroopProducerType().equals(TroopProducerType.ENGINEER_GUILD))
@@ -223,6 +231,8 @@ public class UnitMenuController {
                             if (building.getType().equals(BuildingType.ENGINEER_GUILD)) {
                                 troop.setX(building.getxCoordinate());
                                 troop.setY(building.getyCoordinate());
+                                cell.removeFromTroops(troop);
+                                Game.getCurrentGame().getMap().getCellByCoordinate(building.getxCoordinate(), building.getyCoordinate()).addToTroops(troop);
                             }
                         }
                 }

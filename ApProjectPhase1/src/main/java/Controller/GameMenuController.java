@@ -196,8 +196,8 @@ public class GameMenuController {
                             }
                 }
             }
-            if(government.getLord().getHitPoint() < 1)
-                government.
+            if(government.getLord().getHitPoint() < 1 && government.getRoundLost() == 1)
+                government.setRoundLost(Game.getCurrentGame().getRounds());
         }
 
     }
