@@ -13,8 +13,11 @@ public enum GameMenuCommands {
     TAX_RATE("^\\s*tax\\s+rate\\s+-r\\s+(?<rateNumber>(-)?\\d+)\\s*$"),
     TAX_RATE_SHOW("^\\s*tax\\s+rate\\s+show\\s*$"),
     FEAR_RATE("^\\s*fear\\s+rate\\s+-r\\s+(?<rateNumber>(-)?\\d+)\\s*$"),
-    DROP_BUILDING("^\\s*dropbuilding\\s+(.+)$"),
-    SELECT_BUILDING("^\\s*select\\s+building\\s+(.+)$"),
+    DROP_BUILDING("\\s*dropbuilding" +
+            "\\s+-x\\s+(?<xCoordinate>-?\\d+)\\s+-y\\s+(?<yCoordinate>-?\\d+)" +
+            "\\s+-t\\s+(?<type>[^\"\\s]+|(\"[^\"]*\"))\\s*"),
+    SELECT_BUILDING("\\s*select\\s+building" +
+            "\\s+-x\\s+(?<xCoordinate>-?\\d+)\\s+-y\\s+(?<yCoordinate>-?\\d+)"),
     CREATE_UNIT("^\\s*createunit\\s+(.+)$"),
     REPAIR("^\\s*repair\\s*$"),
     SELECT_UNIT("^\\s*select\\s+unit\\s+(.+)$"),

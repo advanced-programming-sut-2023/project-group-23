@@ -67,8 +67,9 @@ public class User {
         return this.password.equals(encryptedInputPassword);
     }
 
-    public void setPassword(String password) {
+    public void setPassword(String password) throws IOException {
         this.password = DigestUtils.sha256Hex(password);
+        User.updateDatabase();
     }
 
     public String getNickname() {
@@ -214,5 +215,10 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public void setUserHighScore(int userHighScore) throws IOException {
+        this.userHighScore = userHighScore;
+        User.updateDatabase();
     }
 }

@@ -2,6 +2,7 @@ package Controller;
 
 import Model.User;
 
+import java.io.IOException;
 import java.util.regex.Matcher;
 
 import Controller.LoginMenuController;
@@ -35,7 +36,7 @@ public class ProfileMenuController {
         return "Done!";
     }
 
-    public static String changePassword(Matcher matcher) {
+    public static String changePassword(Matcher matcher) throws IOException {
         String passwords = matcher.group(1);
         String oldPassword = "";
         String newPassword = "";

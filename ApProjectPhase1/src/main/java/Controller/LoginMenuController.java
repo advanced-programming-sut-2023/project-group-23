@@ -309,7 +309,7 @@ public class LoginMenuController {
         return "set your new password";
     }
 
-    public static String setNewPassword(Matcher matcher, String username, Scanner scanner) {
+    public static String setNewPassword(Matcher matcher, String username, Scanner scanner) throws IOException {
         User user = User.getUserByUsername(username);
         String password = matcher.group("password").replace("\"", "");
         boolean isPasswordRandom = false;

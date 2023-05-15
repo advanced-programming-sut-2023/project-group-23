@@ -393,6 +393,8 @@ public class PreGameController {
         else if((troopProducerType = TroopProducerType.getTroopProducerTypeByName(typeInput)) != null)
             building = new TroopProducers(buildingType, troopProducerType, currentGovernment, x, y);
 
+        building.setWorkerNeeded(0);
+
         for(int i = x ; i < x + buildingType.getSize() ; i++)
             for(int j = y ; j < y + buildingType.getSize() ; j++) {
                 cell = currentGame.getMap().getCellByCoordinate(i, j);

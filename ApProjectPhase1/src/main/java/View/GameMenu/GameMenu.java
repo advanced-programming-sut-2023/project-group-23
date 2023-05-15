@@ -1,7 +1,10 @@
 package View.GameMenu;
 import Controller.GameMenuController;
+import Model.Buildings.Building;
+import Model.Buildings.BuildingHP;
 import Model.Game;
 import Model.Government;
+import View.BuildlingMenu.BuildingMenu;
 import View.MainMenu.MainMenuCommands;
 import View.ShopMenu.ShopMenu;
 import View.TradeMenu.PreTradeMenu;
@@ -67,21 +70,20 @@ public class GameMenu {
                         break;
 
                     else if ((matcher = GameMenuCommands.getMatcher(command, GameMenuCommands.DROP_BUILDING)).matches())
-                        GameMenuController.dropBuilding(matcher);
-                    else if ((matcher = GameMenuCommands.getMatcher(command, GameMenuCommands.SELECT_BUILDING)).matches())
-                        GameMenuController.selectBuilding(matcher);
-                    else if ((matcher = GameMenuCommands.getMatcher(command, GameMenuCommands.CREATE_UNIT)).matches())
-                        GameMenuController.createUnit(matcher);
-                    else if (GameMenuCommands.getMatcher(command, GameMenuCommands.REPAIR).matches())
-                        GameMenuController.repair();
+                        System.out.println(GameMenuController.dropBuilding(matcher));
+
+                    else if ((matcher = GameMenuCommands.getMatcher(command, GameMenuCommands.SELECT_BUILDING)).matches()) {
+                        Building building = GameMenuController.selectBuilding(matcher);
+                        if(building != null)
+                            BuildingMenu.run(scanner, building);
+                    }
+
                     else if ((matcher = GameMenuCommands.getMatcher(command, GameMenuCommands.SELECT_UNIT)).matches())
                         GameMenuController.selectUnit(matcher);
                     else if ((matcher = GameMenuCommands.getMatcher(command, GameMenuCommands.MOVE_UNIT)).matches())
                         GameMenuController.moveUnit(matcher);
                     else if ((matcher = GameMenuCommands.getMatcher(command, GameMenuCommands.PATROL_UNIT)).matches())
                         GameMenuController.patrolUnit(matcher);
-                    else if ((matcher = GameMenuCommands.getMatcher(command, GameMenuCommands.SELECT_BUILDING)).matches())
-                        GameMenuController.selectBuilding(matcher);
                     else if ((matcher = GameMenuCommands.getMatcher(command, GameMenuCommands.SET)).matches())
                         GameMenuController.setState(matcher);
                     else if ((matcher = GameMenuCommands.getMatcher(command, GameMenuCommands.ATTACK_ENEMY)).matches())
@@ -94,8 +96,6 @@ public class GameMenu {
                         GameMenuController.digTunnel(matcher);
                     else if ((matcher = GameMenuCommands.getMatcher(command, GameMenuCommands.BUILD_EQUIPMENT)).matches())
                         GameMenuController.buildSurroundEquipment(matcher);
-                    else if ((matcher = GameMenuCommands.getMatcher(command, GameMenuCommands.SELECT_BUILDING)).matches())
-                        GameMenuController.selectBuilding(matcher);
                     else if (GameMenuCommands.getMatcher(command, GameMenuCommands.DISBAND_UNIT).matches())
                         GameMenuController.disbandUnit();
                     else if (GameMenuCommands.getMatcher(command, GameMenuCommands.ENTER_TRADE_MENU).matches()) {

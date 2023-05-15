@@ -1,8 +1,7 @@
 package Controller;
 
-import Model.FoodType;
-import Model.Game;
-import Model.Government;
+import Model.*;
+import Model.Buildings.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -143,10 +142,113 @@ public class GameMenuController {
         return false;
     }
 
-    public static void dropBuilding(Matcher matcher) {
+    public static String dropBuilding(Matcher matcher) {
+        matcher.matches();
+        int x = Integer.parseInt(matcher.group("xCoordinate"));
+        int y = Integer.parseInt(matcher.group("yCoordinate"));
+        String typeInput = matcher.group("type").replace("\"", "");
+        BuildingType buildingType;
+        ProducerType producerType;
+        StorageType storageType;
+        TowerType towerType;
+        TownBuildingType townBuildingType;
+        TroopProducerType troopProducerType;
+
+        if(x < 0 || x > 199)
+            return "x coordinate out of bounds";
+        if(y < 0 || y > 199)
+            return "y coordinate out of bounds";
+
+        buildingType = BuildingType.getBuildingTypeByName(typeInput);
+        if(buildingType == null)
+            return "invalid building type";
+
+        MapCell cell;
+        for(int i = x ; i < x + buildingType.getSize() ; i++)
+            for(int j = y ; j < y + buildingType.getSize() ; j++) {
+                cell = currentGame.getMap().getCellByCoordinate(i, j);
+                if(cell.getBuilding() != null ||
+                        cell.getTree() != null ||
+                        cell.getRock() != null ||
+                        (!buildingType.isPassable() && cell.getTroops().size() > 0))
+                    return "tile x: " + x + ", y: " + y + " is not clear";
+            }
+
+        producerType = ProducerType.getProducerTypeByName(typeInput);
+        if(producerType != null && producerType.getSpecialGroundType() != null)
+            for(int i = x ; i < x + buildingType.getSize() ; i++)
+                for(int j = y ; j < y + buildingType.getSize() ; j++) {
+                    cell = currentGame.getMap().getCellByCoordinate(i, j);
+                    if(!cell.getGroundType().equals(producerType.getSpecialGroundType()) ||
+                            (cell.getWaterType() != null && !cell.getWaterType().equals(WaterType.PLAIN)))
+                        return "tile x: " + x + ", y: " + y + " has invalid ground type";
+                }
+        else {
+            for(int i = x ; i < x + buildingType.getSize() ; i++)
+                for(int j = y ; j < y + buildingType.getSize() ; j++) {
+                    cell = currentGame.getMap().getCellByCoordinate(i, j);
+                    if(Building.getForbiddenGroundTypes().contains(cell.getGroundType()))
+                        return "tile x: " + x + ", y: " + y + " has invalid ground type";
+                }
+        }
+
+        if(buildingType.getCost() > currentGovernment.getGold())
+            return "you don't have enough gold";
+        ResourceType resourceCostType = buildingType.getResourceCostType();
+        int resourceCost = buildingType.getResourceCost();
+        if(currentGovernment.getAmountByResource(resourceCostType) < resourceCost)
+            return "you don't have enough " + resourceCostType.getName();
+
+        currentGovernment.setGold(currentGovernment.getGold() - buildingType.getCost());
+        currentGovernment.changeAmountOfResource(resourceCostType, currentGovernment.getAmountByResource(resourceCostType) - resourceCost);
+
+        Building building = null;
+        if(producerType != null)
+            building = new Producer(buildingType, producerType, currentGovernment, x, y);
+        else if((storageType = StorageType.getStorageTypeByName(typeInput)) != null)
+            building = new Storage(buildingType, storageType, currentGovernment, x, y);
+        else if((towerType = TowerType.getTowerTypeByName(typeInput)) != null)
+            building = new Tower(buildingType, towerType, currentGovernment, x, y);
+        else if((townBuildingType = TownBuildingType.getTownBuildingTypeByName(typeInput)) != null)
+            building = new TownBuilding(buildingType, townBuildingType, currentGovernment, x, y);
+        else if((troopProducerType = TroopProducerType.getTroopProducerTypeByName(typeInput)) != null)
+            building = new TroopProducers(buildingType, troopProducerType, currentGovernment, x, y);
+
+        for(int i = x ; i < x + buildingType.getSize() ; i++)
+            for(int j = y ; j < y + buildingType.getSize() ; j++) {
+                cell = currentGame.getMap().getCellByCoordinate(i, j);
+                cell.setBuilding(building);
+            }
+
+        int workersNeeded = building.getWorkerNeeded();
+        building.setWorkerNeeded(workersNeeded - Math.min(workersNeeded, currentGovernment.getPeasantPopulation()));
+        currentGovernment.setPeasantPopulation(currentGovernment.getPeasantPopulation() - Math.min(workersNeeded, currentGovernment.getPeasantPopulation()));
+
+        return "dropped building successfully";
     }
 
-    public static void selectBuilding(Matcher matcher) {
+    public static Building selectBuilding(Matcher matcher) {
+        matcher.matches();
+        int x = Integer.parseInt(matcher.group("xCoordinate"));
+        int y = Integer.parseInt(matcher.group("yCoordinate"));
+
+        Building building;
+        MapCell cell = currentGame.getMap().getCellByCoordinate(x, y);
+        if((building = cell.getBuilding()) == null) {
+            System.out.println("this tile is empty");
+            return null;
+        }
+
+        System.out.println("building type: " + building.getType().getName() +
+                ", government: " + building.getGovernment().getUser().getNickname() +
+                ", building hitpoint: " + building.getHitPoint());
+
+        if(!building.getGovernment().equals(currentGovernment)) {
+            System.out.println("not accessable");
+            return null;
+        }
+
+        return building;
     }
 
     public static void createUnit(Matcher matcher) {
