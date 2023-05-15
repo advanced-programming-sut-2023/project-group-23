@@ -13,6 +13,7 @@ import View.ShopMenu.ShopMenu;
 import View.TradeMenu.PreTradeMenu;
 import View.UnitMenu.UnitMenu;
 
+import java.io.IOException;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 
@@ -20,7 +21,7 @@ public class GameMenu {
 
     private static Game currentGame;
 
-    public static void run(Scanner scanner) {
+    public static void run(Scanner scanner) throws IOException {
         GameMenu.setCurrentGame(Game.getCurrentGame());
         GameMenuController.setCurrentGame(Game.getCurrentGame());
 

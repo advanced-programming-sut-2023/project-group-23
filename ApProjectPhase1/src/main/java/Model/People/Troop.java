@@ -23,6 +23,7 @@ public class Troop extends Person {
     public Troop(Government government, TroopType type, int x, int y) {
         super(government, x, y);
         government.addTroop(this);
+        this.type = type;
         this.state = TroopState.STAY;
         this.hitPoint = type.getHitPoint();
     }

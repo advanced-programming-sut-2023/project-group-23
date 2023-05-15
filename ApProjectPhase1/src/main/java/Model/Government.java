@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Government {
+    private int roundLost;
     private User user;
     private Lord lord;
     private Colors governmentColor;
@@ -63,6 +64,7 @@ public class Government {
         }};
         tradeHistory = new ArrayList<>();
         tradeList = new ArrayList<>();
+        roundLost = 0;
     }
 
     public User getUser() {
@@ -295,5 +297,13 @@ public class Government {
 
     public void setLord(Lord lord) {
         this.lord = lord;
+    }
+
+    public int getRoundLost() {
+        return roundLost;
+    }
+
+    public void setRoundLost(int roundLost) {
+        this.roundLost = roundLost;
     }
 }

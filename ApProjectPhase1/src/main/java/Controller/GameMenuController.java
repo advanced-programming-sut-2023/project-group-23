@@ -4,6 +4,9 @@ import Model.*;
 import Model.Buildings.*;
 import Model.People.Troop;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -131,8 +134,24 @@ public class GameMenuController {
         return "set fear rate successfully";
     }
 
-    public static void endGame() {
-
+    public static void endGame() throws IOException {
+        ArrayList<Government> governments = new ArrayList<>();
+        governments.addAll(currentGame.getGovernments());
+        for (int i = 1; i < governments.size(); i++) {
+            for (int j = 0; j < i; j ++) {
+                if (governments.get(j).getRoundLost() < governments.get(i).getRoundLost()) {
+                    Collections.swap(governments, i, j);
+                }
+            }
+        }
+        String result = "";
+        int i = 1;
+        for (Government government : governments) {
+            result += (i + ". user Nickname : " + government.getUser().getNickname() + " , round lost : " + government.getRoundLost() + "\n");
+            i++;
+            if (government.getUser().getUserHighScore() < 50 * government.getRoundLost()) government.getUser().setUserHighScore(government.getRoundLost() * 50);
+        }
+        System.out.print(result);
     }
 
     public static void nextTurn() {
@@ -140,6 +159,11 @@ public class GameMenuController {
     }
 
     public static boolean isGameOver() {
+        int aliveCounter = currentGame.getGovernments().size();
+        for (Government government : currentGame.getGovernments()) {
+           if (government.getLord().getHitPoint() < 1) aliveCounter--;
+        }
+        if (aliveCounter <= 1) return true;
         return false;
     }
 
