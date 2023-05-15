@@ -28,14 +28,18 @@ public class PreTradeMenu {
 
     public static void run(Scanner scanner) {
         String command;
+        String notification;
         Matcher matcher;
         String respond;
         Government[] governmentList = createArrayOfGovernments();
         String list = TradeMenuController.listOfPlayers(governmentList);
         Integer playerSelected = 0;
         TradeMenuController.setRequesterGovernment(currentGovernment);
+        TradeMenuController.setRequesterGovernment(currentGovernment);
         System.out.println(list);
         while (true) {
+            notification = TradeMenuController.notification();
+            if (!notification.equals("")) System.out.print(notification);
             command = scanner.nextLine();
             if (TradeMenuCommands.getMatcher(command, TradeMenuCommands.BACK).matches()) {
                 System.out.println("returned to game menu");
@@ -48,6 +52,7 @@ public class PreTradeMenu {
                     System.out.println("now you can trade with " + receiver.getUser().getNickname());
                     TradeMenuController.setReceiverGovernment(receiver);
                     TradeMenu.run(scanner);
+                    TradeMenuController.setReceiverGovernment(currentGovernment);
                 }
             } else if (TradeMenuCommands.getMatcher(command, TradeMenuCommands.TRADE_LIST).matches())
                 System.out.println(TradeMenuController.showTradeList());

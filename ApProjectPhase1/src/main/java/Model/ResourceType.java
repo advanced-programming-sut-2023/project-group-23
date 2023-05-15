@@ -2,7 +2,7 @@ package Model;
 
 import java.util.ArrayList;
 
-public enum  ResourceType {
+public enum  ResourceType{
     STONE ("stone", 4, 1),
     IRON ("iron", 45, 23),
     WOOD ("wood", 4, 1),
@@ -16,7 +16,11 @@ public enum  ResourceType {
     SWORD ("sword", 58, 30),
     SPEAR ("spear", 20, 10),
     LEATHER_ARMOR ("leather armor", 25, 12),
-    METAL_ARMOR ("metal armor", 58, 30);
+    METAL_ARMOR ("metal armor", 58, 30),
+    MEAT ("meat", 8, 4),
+    APPLE ("apple", 8, 4),
+    BREAD ("bread", 8, 4),
+    CHEESE ("cheese", 8, 4);
 
     public String getName() {
         return name;

@@ -10,12 +10,13 @@ public enum TradeMenuCommands {
     TRADE_LIST("\\s*trade\\s+list\\s*"),
     TRADE_HISTORY("\\s*trade\\s+history\\s*"),
     TRADE("\\s*trade(?<content>(\\s+-[tapm]\\s+([^\"\\s]+|(\"[^\"]*\")))*)\\s*"),
-    TRADE_ACCEPT("\\s*trade\\s+accept(?<content>(\\s+-[im]\\s+([^\"\\s]+|(\"[^\"]*\")))*)\\s*"),
+    TRADE_ACCEPT("\\s*trade\\s+((accept)|(reject))(?<content>(\\s+-[im]\\s+([^\"\\s]+|(\"[^\"]*\")))*)\\s*"),
     RESOURCE_TYPE_FIELD("-t\\s+(?<resourceType>[^\"\\s]+|(\"[^\"]*\"))"),
     RESOURCE_AMOUNT_FIELD("-a\\s+(?<resourceAmount>[^\"\\s]+|(\"[^\"]*\"))"),
-    RESOURCE_PRICE_FIELD("-a\\s+(?<price>[^\"\\s]+|(\"[^\"]*\"))"),
-    MESSAGE_FIELD("-a\\s+(?<message>[^\"\\s]+|(\"[^\"]*\"))"),
+    RESOURCE_PRICE_FIELD("-p\\s+(?<price>[^\"\\s]+|(\"[^\"]*\"))"),
+    MESSAGE_FIELD("-m\\s+(?<message>[^\"\\s]+|(\"[^\"]*\"))"),
     ID_FIELD("-i\\s+(?<id>[^\"\\s]+|(\"[^\"]*\"))"),
+    ID_VALIDITY("\\s*(\\d+)\\s*"),
     VALID_NUMBER_INPUT("-?\\d+");
     private String regex;
 

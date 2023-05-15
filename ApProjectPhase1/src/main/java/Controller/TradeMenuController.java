@@ -1,9 +1,6 @@
 package Controller;
 
-import Model.Government;
-import Model.ResourceType;
-import Model.Trade;
-import Model.User;
+import Model.*;
 import View.TradeMenu.TradeMenuCommands;
 
 import java.util.ArrayList;
@@ -20,6 +17,17 @@ public class TradeMenuController {
 
     public static void setRequesterGovernment(Government requesterGovernment) {
         requesterGovernment = requesterGovernment;
+    }
+
+    public static String notification() {
+        String result = "";
+        for (Trade trade : receiverGovernment.getTradeList()) {
+            if (!trade.isShowed()) {
+                result += ("you hava a new trade request from " + trade.getRequester().getUser().getNickname() + "\n");
+                trade.setShowed(true);
+            }
+        }
+        return result;
     }
 
     public static String checkValidNumber(Integer number, Government[] governments) {
@@ -44,13 +52,13 @@ public class TradeMenuController {
             return "resource type field is empty";
         else {
             for (ResourceType value : ResourceType.values()) {
-                if(matcher.group("resourceType").equals(value.name())) {
+                if (matcher.group("resourceType").equals(value.name())) {
                     resourceType = value;
                     break;
                 }
             }
         }
-        if(resourceType == null)
+        if (resourceType == null)
             return "resource type in not valid";
 
         int price;
@@ -75,8 +83,8 @@ public class TradeMenuController {
         matcher = TradeMenuCommands.getMatcher(content, TradeMenuCommands.MESSAGE_FIELD);
         String message = matcher.group("message");
         Trade trade = new Trade(price, message, resourceType, amount, requesterGovernment, receiverGovernment);
-        receiverGovernment.addToTradeHistory(trade);
-        requesterGovernment.addToTradeList(trade);
+        requesterGovernment.addToTradeHistory(trade);
+        receiverGovernment.addToTradeList(trade);
         return "your request has been sent to the desired government";
     }
 
@@ -92,16 +100,17 @@ public class TradeMenuController {
         return getOutput(tradeList, trades);
     }
 
+
     private static String getOutput(String tradeList, ArrayList<Trade> trades) {
         for (int i = 0; i < trades.size(); i++) {
-            if(trades.get(i).getPrice() != 0)
+            if (trades.get(i).getPrice() != 0)
                 tradeList += ("trade no." + (i + 1) + " type: " + trades.get(i).getResourceType() + " price: " +
-                        trades.get(i).getPrice() + " amount: " + trades.get(i).getResourceAmount() + " message: " +
-                        trades.get(i).getMessage());
+                        trades.get(i).getPrice() + " amount: " + trades.get(i).getResourceAmount() + " requester message: " +
+                        trades.get(i).getRequesterMessage() + " receiver message: " + trades.get(i).getReceiverMessage());
             else
                 tradeList += ("trade no." + (i + 1) + " type: " + trades.get(i).getResourceType() + " # donate request # " +
-                        trades.get(i).getPrice() + " amount: " + trades.get(i).getResourceAmount() + " message: " +
-                        trades.get(i).getMessage());
+                        trades.get(i).getPrice() + " amount: " + trades.get(i).getResourceAmount() + " requester message: " +
+                        trades.get(i).getRequesterMessage() + " receiver message: " + trades.get(i).getReceiverMessage());
             if (i < trades.size() - 1) tradeList += "\n";
         }
         return tradeList;
@@ -109,7 +118,78 @@ public class TradeMenuController {
 
 
     public static String acceptTrade(Matcher matcher) {
-        //TODO
+        String acceptReject = matcher.group(1);
+        Matcher matcher1, matcher2;
+        Integer id = null;
+        String receiverMessage = null;
+        matcher1 = TradeMenuCommands.getMatcher(matcher.group(4), TradeMenuCommands.ID_FIELD);
+        if (!matcher1.find()) return "id field is empty";
+        else if (Controller.findCounter(matcher1) > 1) return "invalid command";
+        else {
+            matcher2 = TradeMenuCommands.getMatcher(matcher1.group(1).replace("\"", ""), TradeMenuCommands.ID_VALIDITY);
+            if (matcher2.find(0)) id = Integer.parseInt(matcher2.group(1));
+            else return "id is an integer";
+            if (id <= 0 || id > receiverGovernment.getTradeList().size())
+                return "there isn't any trade request with this id";
+        }
+        matcher1 = TradeMenuCommands.getMatcher(matcher.group(4), TradeMenuCommands.MESSAGE_FIELD);
+        if (!matcher1.find()) return "message field is empty";
+        else if (Controller.findCounter(matcher1) > 1) return "invalid command";
+        else {
+            if (matcher1.find(0)) receiverMessage = matcher1.group(1).replace("\"", "");
+        }
+        Trade trade = receiverGovernment.getTradeList().get(id);
+        if (trade.getPrice() > trade.getRequester().getGold()) return "the requester doesn't have enough gold";
+        if (acceptReject.equals("reject")) {
+            trade.setAccepted(-1);
+            trade.setReceiverMessage(receiverMessage);
+            receiverGovernment.getTradeList().remove(trade);
+            return "trade rejected";
+        }
+        int newAmount = 0;
+        String resourceName = trade.getResourceType().getName();
+        FoodType foodType = null;
+        ResourceType resourceType = getResourceByName(resourceName);
+        if (isFood(resourceName, foodType)) {
+            newAmount = trade.getRequester().getFoodAmountByFood(foodType) + trade.getResourceAmount();
+            if (trade.getRequester().getMaxFoodStorage() >= newAmount) {
+                if (receiverGovernment.getFoodAmountByFood(foodType) < trade.getResourceAmount()) return "receiver doesn't have enough resource";
+                trade.getRequester().changeFoodAmount(foodType, newAmount);
+                receiverGovernment.changeFoodAmount(foodType, receiverGovernment.getFoodAmountByFood(foodType) - trade.getResourceAmount());
+                trade.getRequester().setGold(trade.getRequester().getGold() - trade.getPrice());
+                receiverGovernment.setGold(receiverGovernment.getGold() + trade.getPrice());
+            } else return "requester doesn't have enough space for this resource";
+        } else {
+            newAmount = trade.getRequester().getAmountByResource(resourceType) + trade.getResourceAmount();
+            if (trade.getRequester().getMaxResourceStorage() >= newAmount) {
+                if (receiverGovernment.getAmountByResource(resourceType) < trade.getResourceAmount()) return "receiver doesn't have enough resource";
+                trade.getRequester().changeAmountOfResource(resourceType, newAmount);
+                receiverGovernment.changeAmountOfResource(resourceType, receiverGovernment.getAmountByResource(resourceType) - trade.getResourceAmount());
+                trade.getRequester().setGold(trade.getRequester().getGold() - trade.getPrice());
+                receiverGovernment.setGold(receiverGovernment.getGold() + trade.getPrice());
+            } else return "requester doesn't have enough space for this resource";
+        }
+        trade.setAccepted(1);
+        trade.setReceiverMessage(receiverMessage);
+        receiverGovernment.getTradeList().remove(trade);
+        return "trade done successfully";
+    }
+
+    private static boolean isFood(String name, FoodType foodType) {
+        for (FoodType value : FoodType.values()) {
+            if (value.getName().equals(name)) {
+                foodType = value;
+                return true;
+            }
+        }
+        foodType = null;
+        return false;
+    }
+
+    private static ResourceType getResourceByName(String name) {
+        for (ResourceType value : ResourceType.values()) {
+            if (value.getName().equals(name)) return value;
+        }
         return null;
     }
 }

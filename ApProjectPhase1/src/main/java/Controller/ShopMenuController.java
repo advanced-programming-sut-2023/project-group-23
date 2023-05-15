@@ -14,6 +14,7 @@ public class ShopMenuController {
     public static String showPriceList() {
         String result = "Resources:\n";
         for (ResourceType value : ResourceType.values()) {
+            if (value.getName().equals("meat") || value.getName().equals("apple") || value.getName().equals("bread") || value.getName().equals("cheese")) continue;
             result += ("resource name : " + value.getName() + " , buy price : " + value.getBuyPrice() + " , sell price : " + value.getSellPrice());
             result += (", storage : ");
             if (currentGovernment.getResources().containsKey(value)) result += (currentGovernment.getResources().get(value));
@@ -66,15 +67,7 @@ public class ShopMenuController {
         ResourceType resourceType = isResource(itemName);
         FoodType foodType = isFood(itemName);
         if (resourceType == null && foodType == null) return "there isn't any item with this name";
-        if (resourceType != null) {
-            newAmount += (currentGovernment.getAmountByResource(resourceType) + buyAmount);
-            if (newAmount > currentGovernment.getMaxResourceStorage()) return "you don't have enough space for this resource";
-            totalPrice = buyAmount * resourceType.getBuyPrice();
-            if (totalPrice > currentGovernment.getGold()) return "you don't have enough gold for buying this resource";
-            currentGovernment.changeAmountOfResource(resourceType, newAmount);
-            currentGovernment.setGold(currentGovernment.getGold() - totalPrice);
-            return "you bought " + buyAmount + " of " + resourceType.getName() + " with total price " + totalPrice;
-        } else {
+        if (foodType != null){
             newAmount += (currentGovernment.getFoodAmountByFood(foodType) + buyAmount);
             if (newAmount > currentGovernment.getMaxFoodStorage()) return "you don't have enough space for this food";
             totalPrice = buyAmount * foodType.getBuyPrice();
@@ -83,6 +76,13 @@ public class ShopMenuController {
             currentGovernment.setGold(currentGovernment.getGold() - totalPrice);
             return "you bought " + buyAmount + " of " + foodType.getName() + " with total price " + totalPrice;
         }
+        newAmount += (currentGovernment.getAmountByResource(resourceType) + buyAmount);
+        if (newAmount > currentGovernment.getMaxResourceStorage()) return "you don't have enough space for this resource";
+        totalPrice = buyAmount * resourceType.getBuyPrice();
+        if (totalPrice > currentGovernment.getGold()) return "you don't have enough gold for buying this resource";
+        currentGovernment.changeAmountOfResource(resourceType, newAmount);
+        currentGovernment.setGold(currentGovernment.getGold() - totalPrice);
+        return "you bought " + buyAmount + " of " + resourceType.getName() + " with total price " + totalPrice;
     }
 
     public static String sellItem(Matcher matcher) {
@@ -106,14 +106,7 @@ public class ShopMenuController {
         ResourceType resourceType = isResource(itemName);
         FoodType foodType = isFood(itemName);
         if (resourceType == null && foodType == null) return "there isn't any item with this name";
-        if (resourceType != null) {
-            newAmount += (currentGovernment.getAmountByResource(resourceType) - sellAmount);
-            if (newAmount < 0) return "you can't sell resources more than your Storages balance";
-            totalPrice = sellAmount * resourceType.getSellPrice();
-            currentGovernment.changeAmountOfResource(resourceType, newAmount);
-            currentGovernment.setGold(currentGovernment.getGold() - totalPrice);
-            return "you sold " + sellAmount + " of " + resourceType.getName() + " with total price " + totalPrice;
-        } else {
+        if (foodType != null) {
             newAmount += (currentGovernment.getAmountByResource(resourceType) - sellAmount);
             if (newAmount < 0) return "you can't sell foods more than your Storages balance";
             totalPrice = sellAmount * resourceType.getSellPrice();
@@ -121,5 +114,11 @@ public class ShopMenuController {
             currentGovernment.setGold(currentGovernment.getGold() - totalPrice);
             return "you sold " + sellAmount + " of " + resourceType.getName() + " with total price " + totalPrice;
         }
+        newAmount += (currentGovernment.getAmountByResource(resourceType) - sellAmount);
+        if (newAmount < 0) return "you can't sell resources more than your Storages balance";
+        totalPrice = sellAmount * resourceType.getSellPrice();
+        currentGovernment.changeAmountOfResource(resourceType, newAmount);
+        currentGovernment.setGold(currentGovernment.getGold() - totalPrice);
+        return "you sold " + sellAmount + " of " + resourceType.getName() + " with total price " + totalPrice;
     }
 }

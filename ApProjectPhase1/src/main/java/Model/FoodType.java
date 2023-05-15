@@ -10,9 +10,6 @@ public enum FoodType {
     private Integer sellPrice;
     private Integer buyPrice;
 
-    FoodType(String name) {
-        this.name = name;
-    }
 
     public String getName() {
         return name;
