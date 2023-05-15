@@ -1,6 +1,7 @@
 package View.UnitMenu;
 
 import Controller.BuildingMenuController;
+import Controller.GameMenuController;
 import Controller.UnitMenuController;
 import Model.Game;
 import Model.MapCell;
@@ -23,7 +24,16 @@ public class UnitMenu {
             }
 
             else if((matcher = UnitMenuCommands.getMatcher(command, UnitMenuCommands.MOVE_UNIT)).matches())
-                System.out.println(UnitMenuController.moveUnit(matcher, game, cell));
+                System.out.println(UnitMenuController.moveUnit(matcher, GameMenuController.getCurrentGovernment(), cell));
+
+            else if((matcher = UnitMenuCommands.getMatcher(command, UnitMenuCommands.SET_STATE)).matches())
+                System.out.println(UnitMenuController.setState(matcher, GameMenuController.getCurrentGovernment(), cell));
+
+            else if((matcher = UnitMenuCommands.getMatcher(command, UnitMenuCommands.ATTACK)).matches())
+                System.out.println(UnitMenuController.attack(matcher, GameMenuController.getCurrentGovernment(), cell));
+
+            else if((matcher = UnitMenuCommands.getMatcher(command, UnitMenuCommands.AIR_ATTACK)).matches())
+                System.out.println(UnitMenuController.airAttack(matcher, GameMenuController.getCurrentGovernment(), cell));
 
             else
                 System.out.println("invalid command");

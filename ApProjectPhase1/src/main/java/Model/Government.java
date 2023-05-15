@@ -11,7 +11,6 @@ import java.util.HashMap;
 public class Government {
     private User user;
     private Colors governmentColor;
-    private Lord lord;
     private double gold;
     private int fearRate;
     private int taxRate;
@@ -116,14 +115,6 @@ public class Government {
 
     public double getGold() {
         return gold;
-    }
-
-    public Lord getLord() {
-        return lord;
-    }
-
-    public void setLord(Lord lord) {
-        this.lord = lord;
     }
 
     public HashMap<ResourceType, Integer> getResources() {

@@ -1,10 +1,14 @@
 package View.PreGameMenu;
 
 import Controller.PreGameController;
+import Model.Buildings.Building;
+import Model.Buildings.BuildingType;
 import Model.Colors;
 import Model.Game;
 import Model.Government;
 import Model.People.Lord;
+import Model.People.Troop;
+import Model.People.TroopType;
 import View.GameMenu.GameMenu;
 
 import java.util.Scanner;
@@ -34,7 +38,14 @@ public class PreGameMenu {
                 return;
             }
 
-            government.setLord(new Lord(government));
+            int keepXCoordinate = 0;
+            int keepYCoordinate = 0;
+            for(Building building : government.getBuildings())
+                if(building.getType().equals(BuildingType.KEEP)) {
+                    keepXCoordinate = building.getxCoordinate();
+                    keepYCoordinate = building.getyCoordinate();
+                }
+            currentGame.getMap().getCellByCoordinate(keepXCoordinate, keepYCoordinate).addToTroops(new Lord(government, TroopType.LORD, keepXCoordinate, keepYCoordinate));
 
             while (true) {
                 command = scanner.nextLine();

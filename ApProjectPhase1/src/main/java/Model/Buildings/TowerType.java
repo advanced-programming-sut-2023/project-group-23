@@ -1,24 +1,19 @@
 package Model.Buildings;
 
+import Model.ResourceType;
+
 public enum TowerType {
+    WOODEN_TOWER ("wooden tower"),
+    PERIMETER_TOWER ("perimeter tower"),
+    DEFENSE_TURRET ("defense turret"),
+    SQUARE_TOWER ("square tower"),
+    ROUND_TOWER ("round tower"),
     ;
 
-    private int height;
-    private boolean isPassableForEnemy;
-    private boolean isPassableForFriendly;
-    private int fireRange;
-    private int defendRange;
-    private int maxPopulationIncrease;
     private String name;
 
-    TowerType(String name, int height, boolean isPassableForEnemy, boolean isPassableForFriendly, int fireRange, int defendRange, int maxPopulationIncrease) {
+    TowerType(String name) {
         this.name = name;
-        this.height = height;
-        this.isPassableForEnemy = isPassableForEnemy;
-        this.isPassableForFriendly = isPassableForFriendly;
-        this.fireRange = fireRange;
-        this.defendRange = defendRange;
-        this.maxPopulationIncrease = maxPopulationIncrease;
     }
 
     public String getName() {

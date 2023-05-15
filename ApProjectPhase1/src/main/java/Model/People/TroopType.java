@@ -6,6 +6,7 @@ import Model.ResourceType;
 import java.util.ArrayList;
 
 public enum TroopType {
+    LORD ("lord", 2000, 100, 100, 3, 0, 0, null, null, null, null),
     SPEARMAN ("spearman", 100, 60, 60, 3, 0, 8, null, ResourceType.SPEAR, null, TroopProducerType.BARRACK),
     ARCHER ("archer", 150, 20, 20, 4, 5, 12, null, ResourceType.BOW, null, TroopProducerType.BARRACK),
     CROSSBOWMAN ("crossbowman", 200, 20, 20, 2, 3, 20, ResourceType.LEATHER_ARMOR, ResourceType.BOW, null, TroopProducerType.BARRACK),
@@ -18,7 +19,8 @@ public enum TroopType {
     SLINGER ("slinger", 100, 20, 20, 4, 2, 12, null, null, null, TroopProducerType.MERCENARY_POST),
     HORSE_ARCHER ("hors earcher", 200, 20, 20, 5, 5, 80, null, null, null, TroopProducerType.MERCENARY_POST),
     ARABIAN_SWORDMAN ("arabian swordman", 300, 80, 80, 5, 0, 80, null, null, null, TroopProducerType.MERCENARY_POST),
-    FIRE_THROWER ("fire thrower", 150, 80, 80, 5, 2, 100, null, null, null, TroopProducerType.MERCENARY_POST);
+    FIRE_THROWER ("fire thrower", 150, 80, 80, 5, 2, 100, null, null, null, TroopProducerType.MERCENARY_POST),
+    TUNNELER ("tunneler", 100, 40, 5000, 4, 0, 30, null, null, null, TroopProducerType.ENGINEER_GUILD);
 
     private String name;
     private int hitPoint;

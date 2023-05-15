@@ -9,7 +9,12 @@ public enum UnitMenuCommands {
     BACK ("\\s*back\\s*"),
     MOVE_UNIT("\\s*move\\s+unit\\s+to" +
             "\\s+-x\\s+(?<xCoordinate>-?\\d+)\\s+-y\\s+(?<yCoordinate>-?\\d+)"),
-    ;
+    SET_STATE ("\\s*set" +
+            "\\s+-s\\s+(?<state>[^\"\\s]+|(\"[^\"]*\"))\\s*"),
+    ATTACK ("\\s*attack\\s+-e\\s+(?<xCoordinate>-?\\d+)\\s+(?<yCoordinate>-?\\d+)\\s*"),
+    AIR_ATTACK ("\\s*attack" +
+            "\\s+-x\\s+(?<xCoordinate>-?\\d+)\\s+-y\\s+(?<yCoordinate>-?\\d+)"),
+    DISBAND_UNIT ("\\s*disband\\s+unit\\s*");
 
     private String regex;
 

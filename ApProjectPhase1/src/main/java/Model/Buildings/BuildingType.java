@@ -35,6 +35,11 @@ public enum BuildingType {
     BARRACK ("barrack", 500, 0, 0, 3, ResourceType.STONE, 15, true, false),
     MERCENARY_POST ("mercenary post", 300, 0, 0, 3, ResourceType.WOOD, 10, true, false),
     ENGINEER_GUILD ("engineer guild", 300, 0, 100, 3, ResourceType.WOOD, 10, true, false),
+    WOODEN_TOWER ("wooden tower", 200, 0, 0, 1, ResourceType.STONE, 10, false, true),
+    PERIMETER_TOWER ("perimeter tower", 1000, 0, 0, 2, ResourceType.STONE, 10, false, true),
+    DEFENSE_TURRET ("defense turret", 1200, 0, 0, 2, ResourceType.STONE, 15, false, true),
+    SQUARE_TOWER ("square tower", 1600, 0, 0, 3, ResourceType.STONE, 35, false, true),
+    ROUND_TOWER ("round tower", 2000, 0, 0, 3, ResourceType.STONE, 40, false, true),
     ;
 
     private String name;

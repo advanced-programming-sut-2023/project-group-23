@@ -30,6 +30,8 @@ public class MainMenuController {
         for(String username : usernamesArray) {
             if((user = User.getUserByUsername(username)) == null)
                 return "no user with username \"" + username + "\" exists";
+            if(User.getCurrentUser().getUsername().equals(username))
+                return "you can't enter your own username";
             tempGovernmentsList.add(new Government(user));
         }
 

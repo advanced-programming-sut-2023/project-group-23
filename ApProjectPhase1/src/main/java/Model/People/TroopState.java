@@ -11,7 +11,7 @@ public enum TroopState {
         this.command = command;
     }
 
-    public TroopState getStateByCommand(String command) {
-        return null;
+    public String getCommand() {
+        return command;
     }
 }
