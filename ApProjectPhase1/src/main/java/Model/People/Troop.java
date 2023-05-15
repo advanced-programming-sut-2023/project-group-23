@@ -24,6 +24,7 @@ public class Troop extends Person {
         super(government, x, y);
         government.addTroop(this);
         this.state = TroopState.STAY;
+        this.hitPoint = type.getHitPoint();
     }
 
     public String getName() {

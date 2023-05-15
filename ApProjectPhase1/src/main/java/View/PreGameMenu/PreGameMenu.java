@@ -44,6 +44,7 @@ public class PreGameMenu {
                 if(building.getType().equals(BuildingType.KEEP)) {
                     keepXCoordinate = building.getxCoordinate();
                     keepYCoordinate = building.getyCoordinate();
+                    break;
                 }
             Lord lord = new Lord(government, TroopType.LORD, keepXCoordinate, keepYCoordinate);
             currentGame.getMap().getCellByCoordinate(keepXCoordinate, keepYCoordinate).addToTroops(lord);
