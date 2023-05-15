@@ -4,6 +4,7 @@ import Controller.PreGameController;
 import Model.Colors;
 import Model.Game;
 import Model.Government;
+import Model.People.Lord;
 import View.GameMenu.GameMenu;
 
 import java.util.Scanner;
@@ -32,6 +33,8 @@ public class PreGameMenu {
                 System.out.println("back to main menu");
                 return;
             }
+
+            government.setLord(new Lord(government));
 
             while (true) {
                 command = scanner.nextLine();

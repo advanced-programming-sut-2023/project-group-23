@@ -15,9 +15,13 @@ public class MapCell {
     private ArrayList<Person> people;
     private ArrayList<Troop> troops;
     private boolean passablity;
+    private int x;
+    private int y;
 
-    MapCell(GroundType groundType) {
+    MapCell(GroundType groundType, int x, int y) {
         this.groundType = groundType;
+        this.x = x;
+        this.y = y;
     }
 
     public Building getBuilding() {
@@ -98,5 +102,13 @@ public class MapCell {
 
     public String showCell() {
         return null;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
     }
 }

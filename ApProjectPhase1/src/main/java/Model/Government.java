@@ -38,7 +38,6 @@ public class Government {
 
     public Government(User user) {
         this.user = user;
-        this.lord = new Lord(this);
         this.maxPopulation = 8;
         this.peasantPopulation = 8;
         this.workerPopulation = 0;

@@ -4,10 +4,12 @@ import Model.Buildings.Building;
 import Model.Buildings.BuildingHP;
 import Model.Game;
 import Model.Government;
+import Model.MapCell;
 import View.BuildlingMenu.BuildingMenu;
 import View.MainMenu.MainMenuCommands;
 import View.ShopMenu.ShopMenu;
 import View.TradeMenu.PreTradeMenu;
+import View.UnitMenu.UnitMenu;
 
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -29,6 +31,7 @@ public class GameMenu {
                 if(government.getLord().getHitPoint() == 0)
                     continue;
                 GameMenuController.setCurrentGovernment(government);
+                System.out.println("round " + currentGame.getRounds());
                 System.out.println(government.getUser().getNickname() + " is playing now");
 
                 while (true) {
@@ -37,7 +40,9 @@ public class GameMenu {
                     if (GameMenuCommands.getMatcher(command, GameMenuCommands.ENTER_SHOP_MENU).matches()) {
                         System.out.println("you entered shop menu");
                         ShopMenu.run(scanner);
-                    } else if (GameMenuCommands.getMatcher(command, GameMenuCommands.SHOW_POPULARITY_FACTORS).matches())
+                    }
+
+                    else if (GameMenuCommands.getMatcher(command, GameMenuCommands.SHOW_POPULARITY_FACTORS).matches())
                         GameMenuController.showPopularityFactors();
 
                     else if (GameMenuCommands.getMatcher(command, GameMenuCommands.SHOW_POPULARITY).matches())
@@ -78,10 +83,12 @@ public class GameMenu {
                             BuildingMenu.run(scanner, building);
                     }
 
-                    else if ((matcher = GameMenuCommands.getMatcher(command, GameMenuCommands.SELECT_UNIT)).matches())
-                        GameMenuController.selectUnit(matcher);
-                    else if ((matcher = GameMenuCommands.getMatcher(command, GameMenuCommands.MOVE_UNIT)).matches())
-                        GameMenuController.moveUnit(matcher);
+                    else if ((matcher = GameMenuCommands.getMatcher(command, GameMenuCommands.SELECT_UNIT)).matches()) {
+                        MapCell cell = GameMenuController.selectUnit(matcher);
+                        if(cell != null)
+                            UnitMenu.run(scanner, currentGame, cell);
+                    }
+
                     else if ((matcher = GameMenuCommands.getMatcher(command, GameMenuCommands.PATROL_UNIT)).matches())
                         GameMenuController.patrolUnit(matcher);
                     else if ((matcher = GameMenuCommands.getMatcher(command, GameMenuCommands.SET)).matches())

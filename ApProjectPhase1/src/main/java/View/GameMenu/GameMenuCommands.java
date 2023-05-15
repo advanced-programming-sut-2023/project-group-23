@@ -20,8 +20,8 @@ public enum GameMenuCommands {
             "\\s+-x\\s+(?<xCoordinate>-?\\d+)\\s+-y\\s+(?<yCoordinate>-?\\d+)"),
     CREATE_UNIT("^\\s*createunit\\s+(.+)$"),
     REPAIR("^\\s*repair\\s*$"),
-    SELECT_UNIT("^\\s*select\\s+unit\\s+(.+)$"),
-    MOVE_UNIT("^\\s*move\\s+unit\\s+to\\s+(.+)$"),
+    SELECT_UNIT("\\s*select\\s+unit" +
+            "\\s+-x\\s+(?<xCoordinate>-?\\d+)\\s+-y\\s+(?<yCoordinate>-?\\d+)"),
     PATROL_UNIT("^\\s*patrol\\s+unit\\s+(.+)$"),
     SET("^\\s*set\\s+(.+)$"),
     ATTACK_ENEMY("^\\s*attack\\s+-e\\s+(?<xCoordinate>(-)?\\d+)\\s+(?<yCoordinate>(-)?\\d+)\\s*$"),

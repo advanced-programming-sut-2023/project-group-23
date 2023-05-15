@@ -14,7 +14,7 @@ public class Map {
 
         for(int i = 0 ; i < height ; i++)
             for(int j = 0 ; j < width; j++)
-                map[i][j] = new MapCell(GroundType.EARTH);
+                map[i][j] = new MapCell(GroundType.EARTH, i, j);
     }
 
     public void buildMap() {

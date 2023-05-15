@@ -2,6 +2,7 @@ package Controller;
 
 import Model.*;
 import Model.Buildings.*;
+import Model.People.Troop;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -232,6 +233,15 @@ public class GameMenuController {
         int x = Integer.parseInt(matcher.group("xCoordinate"));
         int y = Integer.parseInt(matcher.group("yCoordinate"));
 
+        if(x < 0 || x > 199) {
+            System.out.println("x coordinate out of bounds");
+            return null;
+        }
+        if(y < 0 || y > 199) {
+            System.out.println("y coordinate out of bounds");
+            return null;
+        }
+
         Building building;
         MapCell cell = currentGame.getMap().getCellByCoordinate(x, y);
         if((building = cell.getBuilding()) == null) {
@@ -251,13 +261,27 @@ public class GameMenuController {
         return building;
     }
 
-    public static void createUnit(Matcher matcher) {
-    }
+    public static MapCell selectUnit(Matcher matcher) {
+        matcher.matches();
+        int x = Integer.parseInt(matcher.group("xCoordinate"));
+        int y = Integer.parseInt(matcher.group("yCoordinate"));
 
-    public static void repair() {
-    }
+        if(x < 0 || x > 199) {
+            System.out.println("x coordinate out of bounds");
+            return null;
+        }
+        if(y < 0 || y > 199) {
+            System.out.println("y coordinate out of bounds");
+            return null;
+        }
 
-    public static void selectUnit(Matcher matcher) {
+        MapCell cell = currentGame.getMap().getCellByCoordinate(x, y);
+        for(Troop troop : cell.getTroops())
+            System.out.println("troop: " + troop.getType().getName() +
+                        ", hitpoint: " + troop.getHitPoint() +
+                    ", government: " + troop.getGovernment().getUser().getNickname());
+
+        return cell;
     }
 
     public static void moveUnit(Matcher matcher) {
