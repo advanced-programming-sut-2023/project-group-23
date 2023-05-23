@@ -148,7 +148,6 @@ public class TradeMenuController {
             if (matcher1.find(0)) receiverMessage = matcher1.group(1).replace("\"", "");
         }
         Trade trade = receiverGovernment.getTradeList().get(id - 1);
-        if (trade.getPrice() > trade.getRequester().getGold()) return "the requester doesn't have enough gold";
         if (acceptReject.equals("reject")) {
             trade.setAccepted(-1);
             trade.setReceiverMessage(receiverMessage);
@@ -156,6 +155,7 @@ public class TradeMenuController {
             receiverGovernment.getTradeHistory().add(trade);
             return "trade rejected";
         }
+        if (trade.getPrice() > trade.getRequester().getGold()) return "the requester doesn't have enough gold";
         int newAmount = 0;
         String resourceName = trade.getResourceType().getName();
         FoodType foodType = isFood(resourceName);

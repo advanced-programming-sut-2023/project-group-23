@@ -96,7 +96,7 @@ public class ShopMenuController {
         Matcher matcher1 = ShopMenuCommands.getMatcher(command, ShopMenuCommands.ITEM_NAME_FIELD);
         if (!matcher1.find()) return "item field is empty";
         else if (Controller.findCounter(matcher1) > 1) return "invalid command";
-        if (matcher1.find(0)) itemName = matcher1.group("itemName");
+        if (matcher1.find(0)) itemName = matcher1.group("itemName").replace("\"", "");
         if (!(matcher1 = ShopMenuCommands.getMatcher(command, ShopMenuCommands.ITEM_AMOUNT)).find()) return "amount field is empty";
         else if (Controller.findCounter(matcher1) > 1) return "invalid command";
         if (matcher1.find(0)) itemAmountField = matcher1.group("itemAmount");
@@ -112,14 +112,14 @@ public class ShopMenuController {
             if (newAmount < 0) return "you can't sell foods more than your storages balance";
             totalPrice = sellAmount * resourceType.getSellPrice();
             currentGovernment.changeAmountOfResource(resourceType, newAmount);
-            currentGovernment.setGold(currentGovernment.getGold() - totalPrice);
+            currentGovernment.setGold(currentGovernment.getGold() + totalPrice);
             return "you sold " + sellAmount + " of " + resourceType.getName() + " with total price " + totalPrice;
         }
         newAmount = (currentGovernment.getAmountByResource(resourceType) - sellAmount);
         if (newAmount < 0) return "you can't sell resources more than your storages balance";
         totalPrice = sellAmount * resourceType.getSellPrice();
         currentGovernment.changeAmountOfResource(resourceType, newAmount);
-        currentGovernment.setGold(currentGovernment.getGold() - totalPrice);
+        currentGovernment.setGold(currentGovernment.getGold() + totalPrice);
         return "you sold " + sellAmount + " of " + resourceType.getName() + " with total price " + totalPrice;
     }
 

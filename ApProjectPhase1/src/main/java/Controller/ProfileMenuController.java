@@ -44,6 +44,8 @@ public class ProfileMenuController {
         nickname = Controller.deleteWhiteSpacesOfEnd(nickname);
         if(nickname.matches("\\s+"))
             return "please enter a nickname";
+        else if (LoginMenuController.isNicknameExist(nickname))
+            return "this nickname has been used";
         User.getCurrentUser().setNickname(nickname);
         return "Done!";
     }

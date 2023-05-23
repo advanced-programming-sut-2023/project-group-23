@@ -296,6 +296,15 @@ public class LoginMenuController {
         return false;
     }
 
+    public static void exit() throws IOException {
+        Gson gson = new GsonBuilder()
+                .setPrettyPrinting()
+                .create();
+        FileWriter writer = new FileWriter("stayLoggedInData.json");
+        gson.toJson(null, writer);
+        writer.close();
+    }
+
     public static String forgotPassword(String username, Scanner scanner) {
         if(!isUserExist(username))
             return "no user with this username exists";

@@ -43,7 +43,7 @@ public class GameMenuController {
             taxPopularity = 4 * taxRate - 8;
         System.out.println("tax popularity: " + taxPopularity);
 
-        System.out.println("fear popularity: " + currentGovernment.getFearRate());
+        System.out.println("fear popularity: " + (-currentGovernment.getFearRate()));
 
         System.out.println("religious popularity: " + currentGovernment.getReligiousRate());
 

@@ -165,6 +165,7 @@ public class PreGameController {
                     return "invalid color";
                 else {
                     currentGovernment.setGovernmentColor(color);
+                    currentGame.addToUsedGovernmentColors(color);
                     return "you picked " + color.getName() + " color";
                 }
             }
@@ -220,7 +221,7 @@ public class PreGameController {
             return "y coordinate out of bounds";
 
         MapCell cell = currentGame.getMap().getCellByCoordinate(x, y);
-        if(cell.getBuilding().getType().equals(BuildingType.KEEP))
+        if(cell.getBuilding() != null && cell.getBuilding().getType().equals(BuildingType.KEEP))
             return "can't clear a tile containing a keep";
 
         cell.setTree(null);
@@ -251,15 +252,17 @@ public class PreGameController {
 
     public static void clearBuilding(MapCell cell) {
         Building building = cell.getBuilding();
-        building.getGovernment().removeBuilding(building);
-        MapCell cellIterator;
-        int x = building.getxCoordinate();
-        int y = building.getyCoordinate();
-        int size = building.getSize();
-        for(int i = x; i < x + size; i++) {
-            for(int j = y; j < y + size; j++) {
-                cellIterator = getCurrentGame().getMap().getCellByCoordinate(i, j);
-                cellIterator.setBuilding(null);
+        if(building != null) {
+            building.getGovernment().removeBuilding(building);
+            MapCell cellIterator;
+            int x = building.getxCoordinate();
+            int y = building.getyCoordinate();
+            int size = building.getSize();
+            for (int i = x; i < x + size; i++) {
+                for (int j = y; j < y + size; j++) {
+                    cellIterator = getCurrentGame().getMap().getCellByCoordinate(i, j);
+                    cellIterator.setBuilding(null);
+                }
             }
         }
     }

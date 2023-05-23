@@ -105,7 +105,7 @@ public class PreGameMenu {
         while (true) {
             System.out.println("choose one of these colors as your government color:");
             for (Colors color : Colors.values()) {
-                if (!currentGame.getUsedGovernmentColors().contains(color))
+                if (!currentGame.getUsedGovernmentColors().contains(color) || !color.equals(Colors.RESET))
                     System.out.println(color.getName());
             }
             command = scanner.nextLine();

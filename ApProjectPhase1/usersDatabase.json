@@ -1,52 +1,32 @@
 [
   {
-    "username": "dwight",
-    "password": "kurt",
-    "nickname": "Dr.Zeus",
-    "slogan": "hey",
-    "email": "gmail",
-    "userSecurityQuestionNumber": 1,
-    "userAnswerToSecurityQuestion": "yes",
-    "userHighScore": 0
-  },
-  {
-    "username": "dwight",
-    "password": "kurt",
-    "nickname": "Dr.Zeus",
-    "slogan": "hey",
-    "email": "gmail",
-    "userSecurityQuestionNumber": 2,
-    "userAnswerToSecurityQuestion": "no",
-    "userHighScore": 0
-  },
-  {
-    "username": "dwight",
-    "password": "kurt",
-    "nickname": "Dr.Zeus",
-    "slogan": "hey",
-    "email": "gmail",
-    "userSecurityQuestionNumber": 1,
-    "userAnswerToSecurityQuestion": "yes",
-    "userHighScore": 0
-  },
-  {
-    "username": "dwight",
-    "password": "kurt",
-    "nickname": "Dr.Zeus",
-    "slogan": "hey",
-    "email": "gmail",
-    "userSecurityQuestionNumber": 2,
-    "userAnswerToSecurityQuestion": "no",
-    "userHighScore": 0
-  },
-  {
-    "username": "username",
+    "username": "scott",
     "password": "9cc3e5abdfaee198a6b74b97ea91e306e1744ddf49876d3dcf6cb936dfd5c9d7",
-    "nickname": "nickname",
+    "nickname": "mike",
     "slogan": "",
-    "email": "email@gmail.com",
+    "email": "scott@gmail.com",
     "userSecurityQuestionNumber": 1,
-    "userAnswerToSecurityQuestion": "yes",
+    "userAnswerToSecurityQuestion": "jim",
+    "userHighScore": 0
+  },
+  {
+    "username": "scott1",
+    "password": "e0119262478ac04597d10d3718531d6bf66ea0400a198e90864beb2d1aa6f117",
+    "nickname": "asghar",
+    "slogan": "",
+    "email": "asghar@gmail.com",
+    "userSecurityQuestionNumber": 3,
+    "userAnswerToSecurityQuestion": "bagheri",
+    "userHighScore": 0
+  },
+  {
+    "username": "shrute1",
+    "password": "9cc3e5abdfaee198a6b74b97ea91e306e1744ddf49876d3dcf6cb936dfd5c9d7",
+    "nickname": "dwight",
+    "slogan": "I may have my revenge, in this life or the next",
+    "email": "shrute@gmail.com",
+    "userSecurityQuestionNumber": 1,
+    "userAnswerToSecurityQuestion": "kurt",
     "userHighScore": 0
   }
 ]
