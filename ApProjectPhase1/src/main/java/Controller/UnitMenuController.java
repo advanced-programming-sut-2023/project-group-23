@@ -32,10 +32,12 @@ public class UnitMenuController {
                 (destinationCell.getBuilding() != null && !destinationCell.getBuilding().getType().isPassable()))
             return "destination cell is not clear";
 
-        for(Troop troop : initialCell.getTroops())
-            if(troop.getGovernment().equals(government) &&
-                troop.getType().getSpeed() >= Math.abs(x - initialCell.getX()) + Math.abs(y - initialCell.getY()) &&
-                move(initialCell.getX(), initialCell.getY(), initialCell.getX(), initialCell.getY(), x, y, mapForMove, troop.getType().getSpeed())) {
+        Troop troop;
+        for(int j = initialCell.getTroops().size() - 1 ; j >= 0 ; j--) {
+            troop = initialCell.getTroops().get(j);
+            if (troop.getGovernment().equals(government) &&
+                    troop.getType().getSpeed() >= Math.abs(x - initialCell.getX()) + Math.abs(y - initialCell.getY()) &&
+                    move(initialCell.getX(), initialCell.getY(), initialCell.getX(), initialCell.getY(), x, y, mapForMove, troop.getType().getSpeed())) {
                 troop.setX(x);
                 troop.setY(y);
                 initialCell.removeFromTroops(troop);
@@ -44,29 +46,30 @@ public class UnitMenuController {
                         ", hitpoint: " + troop.getHitPoint() +
                         ", government: " + troop.getGovernment().getUser().getNickname());
             }
+        }
 
 
         return "done";
     }
 
     private static int[][] createMapForMove() {
-        int[][] map = new int[200][200];
-        for (int j = 0; j < 200; j++) {
+        int[][] map = new int[202][202];
+        for (int j = 0; j < 202; j++) {
             map[0][j] = -1;
-            map[199][j] = -1;
+            map[201][j] = -1;
         }
-        for (int i = 0; i < 200; i++) {
+        for (int i = 0; i < 202; i++) {
             map[i][0] = -1;
-            map[i][199] = -1;
+            map[i][201] = -1;
         }
         MapCell[][] mapCell = Game.getCurrentGame().getMap().getMap();
-        for (int i = 1; i < 199; i++) {
-            for (int j = 1; j < 199; j++) {
-                if (mapCell[i][j].getGroundType().getName().equals("rock") || mapCell[i][j].getGroundType().getName().equals("water"))
+        for (int i = 1; i < 201; i++) {
+            for (int j = 1; j < 201; j++) {
+                if (mapCell[i - 1][j - 1].getGroundType().getName().equals("rock") || mapCell[i - 1][j - 1].getGroundType().getName().equals("water"))
                     map[i][j] = -1;
-                else if (mapCell[i][j].getRock() != null) map[i][j] = -1;
-                else if (mapCell[i][j].getBuilding() != null) {
-                    if (!mapCell[i][j].getBuilding().isPassable())
+                else if (mapCell[i - 1][j - 1].getRock() != null) map[i][j] = -1;
+                else if (mapCell[i - 1][j - 1].getBuilding() != null) {
+                    if (!mapCell[i - 1][j - 1].getBuilding().isPassable())
                         map[i][j] = -1;
                     else map[i][j] = 0;
                 } else map[i][j] = 0;
@@ -82,15 +85,18 @@ public class UnitMenuController {
             map[x + 1][y] = 1;
             if (!move(x + 1, y, xI, yI, xF, yF, map, speed - 1)) map[x + 1][y] = 0;
             else return true;
-        } else if (map[x][y + 1] == 0) {
+        }
+        if (map[x][y + 1] == 0) {
             map[x][y + 1] = 1;
             if (!move(x, y + 1, xI, yI, xF, yF, map, speed - 1)) map[x][y + 1] = 0;
             else return true;
-        } else if (map[x - 1][y] == 0) {
+        }
+        if (map[x - 1][y] == 0) {
             map[x - 1][y] = 1;
             if (!move(x - 1, y, xI, yI, xF, yF, map, speed - 1)) map[x - 1][y] = 0;
             else return true;
-        } else if (map[x][y - 1] == 0) {
+        }
+        if (map[x][y - 1] == 0) {
             map[x][y - 1] = 1;
             if (!move(x, y - 1, xI, yI, xF, yF, map, speed - 1)) map[x][y - 1] = 0;
             else return true;
@@ -141,31 +147,34 @@ public class UnitMenuController {
 
         int totalUnitAirDamage = 0;
         int totalUnitMeleeDamage = 0;
-        if(cell.getTroops().size() > 0) {
-            for (Troop troop : cell.getTroops()) {
-                if (troop.getGovernment().equals(government) && range <= troop.getFireRange())
-                    totalUnitAirDamage += troop.getHumanDamage();
-                else if(troop.getGovernment().equals(government) && troop.getFireRange() == 0 &&
-                        troop.getType().getSpeed() >= distance &&
-                        move(cell.getX(), cell.getY(), cell.getX(), cell.getY(), x, y, mapForMove, troop.getType().getSpeed())) {
-                    totalUnitMeleeDamage += troop.getHumanDamage();
-                    troop.setX(x);
-                    troop.setY(y);
-                    cell.removeFromTroops(troop);
-                    enemyCell.addToTroops(troop);
-                }
+
+        Troop troop;
+        for (int j = cell.getTroops().size() - 1 ; j >= 0 ; j--) {
+            troop = cell.getTroops().get(j);
+            if (troop.getGovernment().equals(government) && range <= troop.getFireRange())
+                totalUnitAirDamage += troop.getType().getHumanDamage();
+            else if(troop.getGovernment().equals(government) && troop.getFireRange() == 0 &&
+                    troop.getType().getSpeed() >= distance &&
+                    move(cell.getX(), cell.getY(), cell.getX(), cell.getY(), x, y, mapForMove, troop.getType().getSpeed())) {
+                totalUnitMeleeDamage += troop.getType().getHumanDamage();
+                troop.setX(x);
+                troop.setY(y);
+                cell.removeFromTroops(troop);
+                enemyCell.addToTroops(troop);
             }
         }
+
 
         if(enemyCell.getBuilding() != null && !enemyCell.getBuilding().getGovernment().equals(government))
             enemyCell.getBuilding().setHitPoint(enemyCell.getBuilding().getHitPoint() - totalUnitAirDamage);
 
-        if(enemyCell.getTroops().size() > 0) {
-            for (Troop troop : enemyCell.getTroops()) {
-                if(!troop.getGovernment().equals(government))
-                    troop.setHitPoint(troop.getHitPoint() - (totalUnitAirDamage + totalUnitMeleeDamage));
-            }
+
+        for (int j = enemyCell.getTroops().size() - 1 ; j >= 0 ; j--) {
+            troop = enemyCell.getTroops().get(j);
+            if(!troop.getGovernment().equals(government))
+                troop.setHitPoint(troop.getHitPoint() - (totalUnitAirDamage + totalUnitMeleeDamage));
         }
+
 
         return "done";
     }
@@ -184,58 +193,61 @@ public class UnitMenuController {
 
         MapCell enemyCell = Game.getCurrentGame().getMap().getCellByCoordinate(x, y);
         int totalUnitAirDamage = 0;
-        if(cell.getTroops().size() > 0) {
-            for (Troop troop : cell.getTroops()) {
-                if (troop.getGovernment().equals(government) && range <= troop.getFireRange())
-                    totalUnitAirDamage += troop.getHumanDamage();
-            }
+
+        Troop troop;
+        for (int j = cell.getTroops().size() - 1 ; j >= 0 ; j--) {
+            troop = cell.getTroops().get(j);
+            if (troop.getGovernment().equals(government) && range <= troop.getFireRange())
+                totalUnitAirDamage += troop.getType().getHumanDamage();
         }
+
 
         if(enemyCell.getBuilding() != null && !enemyCell.getBuilding().getGovernment().equals(government))
             enemyCell.getBuilding().setHitPoint(enemyCell.getBuilding().getHitPoint() - totalUnitAirDamage);
 
-        if(enemyCell.getTroops().size() > 0) {
-            for (Troop troop : enemyCell.getTroops()) {
-                if(!troop.getGovernment().equals(government))
-                    troop.setHitPoint(troop.getHitPoint() - totalUnitAirDamage);
-            }
+
+        for (int j = enemyCell.getTroops().size() - 1 ; j >= 0 ; j--) {
+            troop = enemyCell.getTroops().get(j);
+            if(!troop.getGovernment().equals(government))
+                troop.setHitPoint(troop.getHitPoint() - totalUnitAirDamage);
         }
+
 
         return "done";
     }
 
     public static String disbandUnit(Government government, MapCell cell) {
-        if(cell.getTroops().size() > 0) {
-            for (Troop troop : cell.getTroops()) {
-                if (troop.getGovernment().equals(government)) {
-                    if(troop.getType().getTroopProducerType().equals(TroopProducerType.BARRACK))
-                        for(Building building : government.getBuildings()) {
-                            if (building.getType().equals(BuildingType.BARRACK)) {
-                                troop.setX(building.getxCoordinate());
-                                troop.setY(building.getyCoordinate());
-                                cell.removeFromTroops(troop);
-                                Game.getCurrentGame().getMap().getCellByCoordinate(building.getxCoordinate(), building.getyCoordinate()).addToTroops(troop);
-                            }
+        Troop troop;
+        for (int j = cell.getTroops().size() - 1 ; j >= 0 ; j--) {
+            troop = cell.getTroops().get(j);
+            if (troop.getGovernment().equals(government)) {
+                if(troop.getType().getTroopProducerType().equals(TroopProducerType.BARRACK))
+                    for(Building building : government.getBuildings()) {
+                        if (building.getType().equals(BuildingType.BARRACK)) {
+                            troop.setX(building.getxCoordinate());
+                            troop.setY(building.getyCoordinate());
+                            cell.removeFromTroops(troop);
+                            Game.getCurrentGame().getMap().getCellByCoordinate(building.getxCoordinate(), building.getyCoordinate()).addToTroops(troop);
                         }
-                    else if(troop.getType().getTroopProducerType().equals(TroopProducerType.MERCENARY_POST))
-                        for(Building building : government.getBuildings()) {
-                            if (building.getType().equals(BuildingType.MERCENARY_POST)) {
-                                troop.setX(building.getxCoordinate());
-                                troop.setY(building.getyCoordinate());
-                                cell.removeFromTroops(troop);
-                                Game.getCurrentGame().getMap().getCellByCoordinate(building.getxCoordinate(), building.getyCoordinate()).addToTroops(troop);
-                            }
+                    }
+                else if(troop.getType().getTroopProducerType().equals(TroopProducerType.MERCENARY_POST))
+                    for(Building building : government.getBuildings()) {
+                        if (building.getType().equals(BuildingType.MERCENARY_POST)) {
+                            troop.setX(building.getxCoordinate());
+                            troop.setY(building.getyCoordinate());
+                            cell.removeFromTroops(troop);
+                            Game.getCurrentGame().getMap().getCellByCoordinate(building.getxCoordinate(), building.getyCoordinate()).addToTroops(troop);
                         }
-                    else if(troop.getType().getTroopProducerType().equals(TroopProducerType.ENGINEER_GUILD))
-                        for(Building building : government.getBuildings()) {
-                            if (building.getType().equals(BuildingType.ENGINEER_GUILD)) {
-                                troop.setX(building.getxCoordinate());
-                                troop.setY(building.getyCoordinate());
-                                cell.removeFromTroops(troop);
-                                Game.getCurrentGame().getMap().getCellByCoordinate(building.getxCoordinate(), building.getyCoordinate()).addToTroops(troop);
-                            }
+                    }
+                else if(troop.getType().getTroopProducerType().equals(TroopProducerType.ENGINEER_GUILD))
+                    for(Building building : government.getBuildings()) {
+                        if (building.getType().equals(BuildingType.ENGINEER_GUILD)) {
+                            troop.setX(building.getxCoordinate());
+                            troop.setY(building.getyCoordinate());
+                            cell.removeFromTroops(troop);
+                            Game.getCurrentGame().getMap().getCellByCoordinate(building.getxCoordinate(), building.getyCoordinate()).addToTroops(troop);
                         }
-                }
+                    }
             }
         }
 

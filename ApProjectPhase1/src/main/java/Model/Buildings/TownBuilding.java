@@ -1,6 +1,10 @@
 package Model.Buildings;
 
+import Model.Game;
 import Model.Government;
+import Model.MapCell;
+import Model.People.Troop;
+import Model.People.TroopType;
 import Model.ResourceType;
 
 public class TownBuilding extends Building{
@@ -11,8 +15,10 @@ public class TownBuilding extends Building{
         this.townBuildingType = townBuildingType;
         government.setMaxPopulation(government.getMaxPopulation() + townBuildingType.getMaxPopulationIncrease());
         if(townBuildingType.isReligious()) government.setReligiousRate(government.getReligiousRate() + 2);
+        if(townBuildingType.equals(TownBuildingType.SHOP)) government.setCanShop(true);
         if(townBuildingType.equals(TownBuildingType.CATHEDRAL)) {
-            // todo train bishop
+            MapCell cell = Game.getCurrentGame().getMap().getCellByCoordinate(x, y);
+            cell.addToTroops(new Troop(government, TroopType.BISHOP, x, y));
         }
     }
 

@@ -36,7 +36,9 @@ public class BuildingMenuController {
         int count = Integer.parseInt(matcher.group("count"));
 
         TroopType troopType;
-        if((troopType = TroopType.getTroopTypeByName(typeInput)) == null)
+        if((troopType = TroopType.getTroopTypeByName(typeInput)) == null ||
+            troopType.equals(TroopType.BISHOP) ||
+            troopType.equals(TroopType.LORD))
             return "invalid troop type";
 
         if(count < 1)

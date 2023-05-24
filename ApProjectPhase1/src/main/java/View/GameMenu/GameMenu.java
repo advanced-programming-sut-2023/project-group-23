@@ -41,9 +41,12 @@ public class GameMenu {
                     command = scanner.nextLine();
 
                     if (GameMenuCommands.getMatcher(command, GameMenuCommands.ENTER_SHOP_MENU).matches()) {
-                        System.out.println("you entered shop menu");
-                        ShopMenuController.setCurrentGovernment(GameMenuController.getCurrentGovernment());
-                        ShopMenu.run(scanner);
+                        if(government.isCanShop()) {
+                            System.out.println("you entered shop menu");
+                            ShopMenuController.setCurrentGovernment(GameMenuController.getCurrentGovernment());
+                            ShopMenu.run(scanner);
+                        }
+                        else System.out.println("build a shop first");
                     }
 
                     else if (GameMenuCommands.getMatcher(command, GameMenuCommands.SHOW_POPULARITY_FACTORS).matches())

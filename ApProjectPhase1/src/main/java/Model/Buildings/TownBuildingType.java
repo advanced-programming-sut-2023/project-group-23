@@ -6,7 +6,8 @@ public enum TownBuildingType {
     HOVEL ("hovel", 8, 0, false),
     INN ("inn", 0, 2, false),
     CHURCH ("church", 0, 2, true),
-    CATHEDRAL ("cathedral", 0, 2, true);
+    CATHEDRAL ("cathedral", 0, 2, true),
+    SHOP ("shop", 0, 0, false);
 
     private String name;
     private int maxPopulationIncrease;

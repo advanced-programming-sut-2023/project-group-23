@@ -7,7 +7,7 @@
     "email": "scott@gmail.com",
     "userSecurityQuestionNumber": 1,
     "userAnswerToSecurityQuestion": "jim",
-    "userHighScore": 0
+    "userHighScore": 200
   },
   {
     "username": "scott1",
@@ -27,6 +27,6 @@
     "email": "shrute@gmail.com",
     "userSecurityQuestionNumber": 1,
     "userAnswerToSecurityQuestion": "kurt",
-    "userHighScore": 0
+    "userHighScore": 2050
   }
 ]

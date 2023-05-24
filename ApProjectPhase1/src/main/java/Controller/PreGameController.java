@@ -423,7 +423,8 @@ public class PreGameController {
         if(count < 1)
             return "invalid number of troops";
 
-        if(TroopType.getTroopTypeByName(typeInput) == null)
+        if(TroopType.getTroopTypeByName(typeInput) == null ||
+            TroopType.getTroopTypeByName(typeInput).equals(TroopType.LORD))
             return "invalid troop type";
 
         MapCell cell = currentGame.getMap().getCellByCoordinate(x, y);

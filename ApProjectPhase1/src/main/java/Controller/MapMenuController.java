@@ -122,8 +122,8 @@ public class MapMenuController {
             System.out.println("troops:");
             for(int i = 0 ; i < troops.size() ; i++) {
                 troop = troops.get(i);
-                System.out.println(i + 1 + ". " + troop.getName() +
-                        ", government: " + troop.getGovernment() +
+                System.out.println(i + 1 + ". " + troop.getType().getName() +
+                        ", government: " + troop.getGovernment().getUser().getNickname() +
                         ", hitpoint: " + troop.getHitPoint());
             }
         }

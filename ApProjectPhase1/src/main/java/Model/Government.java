@@ -29,6 +29,8 @@ public class Government {
     private int maxResourceStorage;
     private int maxFoodStorage;
     private int maxWeaponStorage;
+    private boolean canShop;
+    private int score;
     private ArrayList<Trade> tradeHistory;
     private ArrayList<Trade> tradeList;
     private HashMap<FoodType, Integer> foods;
@@ -65,6 +67,8 @@ public class Government {
         tradeHistory = new ArrayList<>();
         tradeList = new ArrayList<>();
         roundLost = 0;
+        canShop = false;
+        score = 0;
     }
 
     public User getUser() {
@@ -305,5 +309,21 @@ public class Government {
 
     public void setRoundLost(int roundLost) {
         this.roundLost = roundLost;
+    }
+
+    public boolean isCanShop() {
+        return canShop;
+    }
+
+    public void setCanShop(boolean canShop) {
+        this.canShop = canShop;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
     }
 }

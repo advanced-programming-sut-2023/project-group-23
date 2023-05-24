@@ -20,7 +20,8 @@ public enum TroopType {
     HORSE_ARCHER ("hors earcher", 200, 20, 20, 5, 5, 80, null, null, null, TroopProducerType.MERCENARY_POST),
     ARABIAN_SWORDMAN ("arabian swordman", 300, 80, 80, 5, 0, 80, null, null, null, TroopProducerType.MERCENARY_POST),
     FIRE_THROWER ("fire thrower", 150, 80, 80, 5, 2, 100, null, null, null, TroopProducerType.MERCENARY_POST),
-    TUNNELER ("tunneler", 100, 40, 5000, 4, 0, 30, null, null, null, TroopProducerType.ENGINEER_GUILD);
+    TUNNELER ("tunneler", 100, 40, 5000, 4, 0, 30, null, null, null, TroopProducerType.ENGINEER_GUILD),
+    BISHOP ("bishop", 500, 80, 80, 2, 0, 0, null, null, null, null);
 
     private String name;
     private int hitPoint;

@@ -136,11 +136,18 @@ public class GameMenuController {
     }
 
     public static void endGame() throws IOException {
+        for(Government government : currentGame.getGovernments()) {
+            if(government.getRoundLost() == 0) {
+                government.setRoundLost(Game.getCurrentGame().getRounds());
+                government.setScore(government.getScore() + 2000);
+            }
+            government.setScore(government.getScore() + 50 * government.getRoundLost());
+        }
         ArrayList<Government> governments = new ArrayList<>();
         governments.addAll(currentGame.getGovernments());
         for (int i = 1; i < governments.size(); i++) {
             for (int j = 0; j < i; j ++) {
-                if (governments.get(j).getRoundLost() < governments.get(i).getRoundLost()) {
+                if (governments.get(j).getScore() < governments.get(i).getScore()) {
                     Collections.swap(governments, i, j);
                 }
             }
@@ -148,9 +155,9 @@ public class GameMenuController {
         String result = "";
         int i = 1;
         for (Government government : governments) {
-            result += (i + ". user Nickname : " + government.getUser().getNickname() + " , round lost : " + government.getRoundLost() + "\n");
+            result += (i + ". user Nickname : " + government.getUser().getNickname() + " , round lost : " + government.getRoundLost() + " , score: " + government.getScore() + "\n");
             i++;
-            if (government.getUser().getUserHighScore() < 50 * government.getRoundLost()) government.getUser().setUserHighScore(government.getRoundLost() * 50);
+            if (government.getUser().getUserHighScore() < government.getScore()) government.getUser().setUserHighScore(government.getScore());
         }
         System.out.print(result);
     }
@@ -196,7 +203,7 @@ public class GameMenuController {
                             }
                 }
             }
-            if(government.getLord().getHitPoint() < 1 && government.getRoundLost() == 1)
+            if(government.getLord().getHitPoint() < 1 && government.getRoundLost() == 0)
                 government.setRoundLost(Game.getCurrentGame().getRounds());
         }
 
