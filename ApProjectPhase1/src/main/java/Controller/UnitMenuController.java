@@ -2,6 +2,7 @@ package Controller;
 
 import Model.Buildings.Building;
 import Model.Buildings.BuildingType;
+import Model.Buildings.TowerType;
 import Model.Buildings.TroopProducerType;
 import Model.Game;
 import Model.Government;
@@ -9,6 +10,8 @@ import Model.GroundType;
 import Model.MapCell;
 import Model.People.Troop;
 import Model.People.TroopState;
+import Model.People.TroopType;
+import Model.People.Tunneler;
 
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -36,10 +39,12 @@ public class UnitMenuController {
         for(int j = initialCell.getTroops().size() - 1 ; j >= 0 ; j--) {
             troop = initialCell.getTroops().get(j);
             if (troop.getGovernment().equals(government) &&
+                    !troop.isMovedThisRound() &&
                     troop.getType().getSpeed() >= Math.abs(x - initialCell.getX()) + Math.abs(y - initialCell.getY()) &&
                     move(initialCell.getX(), initialCell.getY(), initialCell.getX(), initialCell.getY(), x, y, mapForMove, troop.getType().getSpeed())) {
                 troop.setX(x);
                 troop.setY(y);
+                troop.setMovedThisRound(true);
                 initialCell.removeFromTroops(troop);
                 destinationCell.addToTroops(troop);
                 System.out.println("moved troop: " + troop.getType().getName() +
@@ -154,11 +159,13 @@ public class UnitMenuController {
             if (troop.getGovernment().equals(government) && range <= troop.getFireRange())
                 totalUnitAirDamage += troop.getType().getHumanDamage();
             else if(troop.getGovernment().equals(government) && troop.getFireRange() == 0 &&
+                    !troop.isMovedThisRound() &&
                     troop.getType().getSpeed() >= distance &&
                     move(cell.getX(), cell.getY(), cell.getX(), cell.getY(), x, y, mapForMove, troop.getType().getSpeed())) {
                 totalUnitMeleeDamage += troop.getType().getHumanDamage();
                 troop.setX(x);
                 troop.setY(y);
+                troop.setMovedThisRound(true);
                 cell.removeFromTroops(troop);
                 enemyCell.addToTroops(troop);
             }
@@ -252,5 +259,51 @@ public class UnitMenuController {
         }
 
         return "done";
+    }
+
+    public static String digTunnel(Matcher matcher, Government currentGovernment, MapCell cell) {
+        matcher.matches();
+        int x = Integer.parseInt(matcher.group("xCoordinate"));
+        int y = Integer.parseInt(matcher.group("yCoordinate"));
+
+        if(x < 0 || x > 199)
+            return "x coordinate out of bounds";
+        if(y < 0 || y > 199)
+            return "y coordinate out of bounds";
+
+        MapCell enemyCell = Game.getCurrentGame().getMap().getCellByCoordinate(x, y);
+        int distance = Math.abs(x - cell.getX()) + Math.abs(y - cell.getY());
+
+        Building building = enemyCell.getBuilding();
+        if(!Tunneler.isAllowed(building, currentGovernment))
+            return "tile x: " + x + " y: " + y + " is not allowed";
+
+        if(distance > Tunneler.getTunnelRange())
+            return "tile x: " + x + " y: " + y + " is out of range";
+
+        boolean isTunnelerAvailable = false;
+        Troop troop;
+        for(int j = cell.getTroops().size() - 1 ; j >= 0 ; j--) {
+            troop = cell.getTroops().get(j);
+            if(troop.getType().equals(TroopType.TUNNELER)) {
+                isTunnelerAvailable = true;
+                troop.setX(x);
+                troop.setY(y);
+                cell.removeFromTroops(troop);
+                enemyCell.addToTroops(troop);
+                System.out.println("moved troop: " + troop.getType().getName() +
+                        ", hitpoint: " + troop.getHitPoint() +
+                        ", government: " + troop.getGovernment().getUser().getNickname());
+            }
+        }
+        if(!isTunnelerAvailable)
+            return "no tunneler available";
+        else {
+            for (int i = building.getxCoordinate(); i < building.getxCoordinate() + building.getSize(); i++)
+                for (int j = building.getyCoordinate(); j < building.getyCoordinate() + building.getSize(); j++) {
+                    Game.getCurrentGame().getMap().getCellByCoordinate(i, j).setBuilding(null);
+                }
+            return "done";
+        }
     }
 }

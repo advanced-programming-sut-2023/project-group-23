@@ -4,8 +4,10 @@ import Model.Buildings.Building;
 import Model.Buildings.TroopProducers;
 import Model.Game;
 import Model.MapCell;
+import Model.People.Lord;
 import Model.People.Troop;
 import Model.People.TroopType;
+import Model.People.Tunneler;
 import Model.ResourceType;
 
 import java.util.regex.Matcher;
@@ -73,6 +75,7 @@ public class BuildingMenuController {
             building.getGovernment().changeAmountOfResource(horse, building.getGovernment().getAmountByResource(horse) - count);
 
         MapCell cell = Game.getCurrentGame().getMap().getCellByCoordinate(building.getxCoordinate(), building.getyCoordinate());
+
         for(int i = 0 ; i < count ; i++)
             cell.addToTroops(new Troop(building.getGovernment(), troopType, building.getxCoordinate(), building.getyCoordinate()));
 

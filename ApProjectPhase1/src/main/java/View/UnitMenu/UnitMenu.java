@@ -38,6 +38,9 @@ public class UnitMenu {
             else if(UnitMenuCommands.getMatcher(command, UnitMenuCommands.DISBAND_UNIT).matches())
                 System.out.println(UnitMenuController.disbandUnit(GameMenuController.getCurrentGovernment(), cell));
 
+            else if((matcher = UnitMenuCommands.getMatcher(command, UnitMenuCommands.DIG_TUNNEL)).matches())
+                System.out.println(UnitMenuController.digTunnel(matcher, GameMenuController.getCurrentGovernment(), cell));
+
             else
                 System.out.println("invalid command");
         }

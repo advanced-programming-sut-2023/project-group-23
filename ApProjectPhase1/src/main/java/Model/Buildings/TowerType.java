@@ -8,6 +8,8 @@ public enum TowerType {
     DEFENSE_TURRET ("defense turret"),
     SQUARE_TOWER ("square tower"),
     ROUND_TOWER ("round tower"),
+    HIGH_WALL ("high wall"),
+    LOW_WALL ("low wall")
     ;
 
     private String name;

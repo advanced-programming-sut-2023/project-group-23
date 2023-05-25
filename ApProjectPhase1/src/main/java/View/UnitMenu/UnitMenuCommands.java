@@ -14,7 +14,9 @@ public enum UnitMenuCommands {
     ATTACK ("\\s*attack\\s+-e\\s+(?<xCoordinate>-?\\d+)\\s+(?<yCoordinate>-?\\d+)\\s*"),
     AIR_ATTACK ("\\s*attack" +
             "\\s+-x\\s+(?<xCoordinate>-?\\d+)\\s+-y\\s+(?<yCoordinate>-?\\d+)"),
-    DISBAND_UNIT ("\\s*disband\\s+unit\\s*");
+    DISBAND_UNIT ("\\s*disband\\s+unit\\s*"),
+    DIG_TUNNEL("\\s*dig\\s+tunnel" +
+            "\\s+-x\\s+(?<xCoordinate>-?\\d+)\\s+-y\\s+(?<yCoordinate>-?\\d+)");
 
     private String regex;
 

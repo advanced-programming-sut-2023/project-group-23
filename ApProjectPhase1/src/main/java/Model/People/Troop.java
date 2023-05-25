@@ -8,6 +8,7 @@ import java.util.ArrayList;
 public class Troop extends Person {
     private String name;
     private int hitPoint;
+    private boolean movedThisRound;
     private int humanDamage;
     private int buildingDamage;
     private int speed;
@@ -26,6 +27,7 @@ public class Troop extends Person {
         this.type = type;
         this.state = TroopState.STAY;
         this.hitPoint = type.getHitPoint();
+        this.movedThisRound = false;
     }
 
     public String getName() {
@@ -122,5 +124,13 @@ public class Troop extends Person {
 
     public void setState(TroopState state) {
         this.state = state;
+    }
+
+    public boolean isMovedThisRound() {
+        return movedThisRound;
+    }
+
+    public void setMovedThisRound(boolean movedThisRound) {
+        this.movedThisRound = movedThisRound;
     }
 }

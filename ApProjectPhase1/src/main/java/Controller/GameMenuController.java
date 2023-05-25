@@ -164,47 +164,70 @@ public class GameMenuController {
 
     public static void nextTurn() {
         for(Government government : Game.getCurrentGame().getGovernments()) {
-            for(Building building : government.getBuildings()) {
-                if(building instanceof Producer)
-                    ((Producer) building).produce(government);
+            if(government.getLord().getHitPoint() < 1 && government.getRoundLost() == 0) {
+                government.setRoundLost(Game.getCurrentGame().getRounds());
+                Troop troop;
+                Building building;
+                for (int j = government.getTroops().size() - 1 ; j >= 0 ; j--) {
+                    troop = government.getTroops().get(j);
+                    Game.getCurrentGame().getMap().getCellByCoordinate(troop.getX(), troop.getY()).removeFromTroops(troop);
+                }
+
+                for(int k = government.getBuildings().size() - 1 ; k >= 0 ; k--) {
+                    building = government.getBuildings().get(k);
+
+                    for(int i = building.getxCoordinate() ; i < building.getxCoordinate() + building.getSize() ; i++)
+                        for(int j = building.getyCoordinate(); j < building.getyCoordinate() + building.getSize(); j++) {
+                            Game.getCurrentGame().getMap().getCellByCoordinate(i, j).setBuilding(null);
+                        }
+                }
             }
-            int foodAmount = (int) ((government.getFoodRate() + 2) * government.getPeasantPopulation() * 0.5);
-            int newAmount;
-            for(Map.Entry<FoodType, Integer> entry : government.getFoods().entrySet()) {
-                newAmount = entry.getValue() - Math.min(foodAmount, entry.getValue());
-                foodAmount -= Math.min(foodAmount, entry.getValue());
-                government.changeFoodAmount(entry.getKey(), newAmount);
-            }
-            double tax;
-            if(government.getTaxRate() < 0)
-                tax = -0.6 + (government.getTaxRate() + 1) * 0.2;
-            else if(government.getTaxRate() == 0)
-                tax = 0;
-            else
-                tax = 0.6 + (government.getTaxRate() - 1) * 0.2;
-            if(tax <= 0)
-                government.setGold(government.getGold() - Math.min(government.getGold(), -tax * government.getPeasantPopulation()));
-            else
-                government.setGold(government.getGold() + tax * government.getPeasantPopulation());
-            if(government.getTroops().size() > 0) {
-                for (Troop troop : government.getTroops()) {
-                    if (!troop.getType().equals(TroopType.LORD) &&
-                            troop.getHitPoint() < 1) {
+
+            else if(government.getLord().getHitPoint() > 0) {
+
+                for (Building building : government.getBuildings()) {
+                    if (building instanceof Producer)
+                        ((Producer) building).produce(government);
+                }
+                int foodAmount = (int) ((government.getFoodRate() + 2) * government.getPeasantPopulation() * 0.5);
+                int newAmount;
+                for (Map.Entry<FoodType, Integer> entry : government.getFoods().entrySet()) {
+                    newAmount = entry.getValue() - Math.min(foodAmount, entry.getValue());
+                    foodAmount -= Math.min(foodAmount, entry.getValue());
+                    government.changeFoodAmount(entry.getKey(), newAmount);
+                }
+                double tax;
+                if (government.getTaxRate() < 0)
+                    tax = -0.6 + (government.getTaxRate() + 1) * 0.2;
+                else if (government.getTaxRate() == 0)
+                    tax = 0;
+                else
+                    tax = 0.6 + (government.getTaxRate() - 1) * 0.2;
+                if (tax <= 0)
+                    government.setGold(government.getGold() - Math.min(government.getGold(), -tax * government.getPeasantPopulation()));
+                else
+                    government.setGold(government.getGold() + tax * government.getPeasantPopulation());
+
+                Troop troop;
+                Building building;
+                for (int j = government.getTroops().size() - 1; j >= 0; j--) {
+                    troop = government.getTroops().get(j);
+                    troop.setMovedThisRound(false);
+                    if (troop.getHitPoint() < 1) {
                         Game.getCurrentGame().getMap().getCellByCoordinate(troop.getX(), troop.getY()).removeFromTroops(troop);
                     }
                 }
-            }
-            if(government.getBuildings().size() > 0) {
-                for(Building building : government.getBuildings()) {
-                    if(building.getHitPoint() < 1)
-                        for(int i = building.getxCoordinate() ; i < building.getxCoordinate() + building.getSize() ; i++)
-                            for(int j = building.getyCoordinate(); j < building.getyCoordinate() + building.getSize(); j++) {
+
+
+                for (int k = government.getBuildings().size() - 1; k >= 0; k--) {
+                    building = government.getBuildings().get(k);
+                    if (building.getHitPoint() < 1)
+                        for (int i = building.getxCoordinate(); i < building.getxCoordinate() + building.getSize(); i++)
+                            for (int j = building.getyCoordinate(); j < building.getyCoordinate() + building.getSize(); j++) {
                                 Game.getCurrentGame().getMap().getCellByCoordinate(i, j).setBuilding(null);
                             }
                 }
             }
-            if(government.getLord().getHitPoint() < 1 && government.getRoundLost() == 0)
-                government.setRoundLost(Game.getCurrentGame().getRounds());
         }
 
     }
