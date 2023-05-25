@@ -67,7 +67,7 @@ public class LoginMenuController {
 
     public static String setSloganRandomly() {
         Random random = new Random();
-        int randomKey = random.nextInt() % 3;
+        int randomKey = Math.abs(random.nextInt() % 3) + 1;
         String slogan = User.getRandomSloganByKey(randomKey);
         System.out.println("Your slogan is \"" + slogan + "\"");
         return slogan;

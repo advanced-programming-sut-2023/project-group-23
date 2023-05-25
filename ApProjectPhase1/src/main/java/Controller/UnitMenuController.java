@@ -91,17 +91,17 @@ public class UnitMenuController {
             if (!move(x + 1, y, xI, yI, xF, yF, map, speed - 1)) map[x + 1][y] = 0;
             else return true;
         }
-        if (map[x][y + 1] == 0) {
+        else if (map[x][y + 1] == 0) {
             map[x][y + 1] = 1;
             if (!move(x, y + 1, xI, yI, xF, yF, map, speed - 1)) map[x][y + 1] = 0;
             else return true;
         }
-        if (map[x - 1][y] == 0) {
+        else if (map[x - 1][y] == 0) {
             map[x - 1][y] = 1;
             if (!move(x - 1, y, xI, yI, xF, yF, map, speed - 1)) map[x - 1][y] = 0;
             else return true;
         }
-        if (map[x][y - 1] == 0) {
+        else if (map[x][y - 1] == 0) {
             map[x][y - 1] = 1;
             if (!move(x, y - 1, xI, yI, xF, yF, map, speed - 1)) map[x][y - 1] = 0;
             else return true;
@@ -173,7 +173,7 @@ public class UnitMenuController {
 
 
         if(enemyCell.getBuilding() != null && !enemyCell.getBuilding().getGovernment().equals(government))
-            enemyCell.getBuilding().setHitPoint(enemyCell.getBuilding().getHitPoint() - totalUnitAirDamage);
+            enemyCell.getBuilding().setHitPoint(enemyCell.getBuilding().getHitPoint() - (totalUnitAirDamage + totalUnitMeleeDamage));
 
 
         for (int j = enemyCell.getTroops().size() - 1 ; j >= 0 ; j--) {

@@ -81,7 +81,7 @@ public class ProfileMenuController {
         email = Controller.deleteWhiteSpacesOfEnd(email);
         if (email.matches("\\s+")) return "Email must doesn't have any space";
         else if (!LoginMenuController.isEmailFormatCorrect(email)) return "Email format isn't correct";
-        else if (!LoginMenuController.isEmailExist(email)) return "This email already exists";
+        else if (LoginMenuController.isEmailExist(email)) return "This email already exists";
         User.getCurrentUser().setEmail(email);
         return "Done!";
     }

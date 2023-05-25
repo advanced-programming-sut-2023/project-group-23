@@ -7,7 +7,7 @@
     "email": "scott@gmail.com",
     "userSecurityQuestionNumber": 1,
     "userAnswerToSecurityQuestion": "jim",
-    "userHighScore": 200
+    "userHighScore": 2100
   },
   {
     "username": "scott1",
@@ -27,6 +27,26 @@
     "email": "shrute@gmail.com",
     "userSecurityQuestionNumber": 1,
     "userAnswerToSecurityQuestion": "kurt",
-    "userHighScore": 2050
+    "userHighScore": 2100
+  },
+  {
+    "username": "sadra",
+    "password": "3d673f28b35199c69e9a5d9cfb863771378332da1aaa24f21991c86ebef00c09",
+    "nickname": "sadra",
+    "slogan": "I may have my revenge, in this life or the next",
+    "email": "sadra@gmail.com",
+    "userSecurityQuestionNumber": 1,
+    "userAnswerToSecurityQuestion": "parsa",
+    "userHighScore": 2100
+  },
+  {
+    "username": "kian",
+    "password": "d6dea628fb17d1b4c86ed806ad6007abbe7c1a5ed03aea58399a0483f617404b",
+    "nickname": "tarakemeh",
+    "slogan": "",
+    "email": "kian@gmail.com",
+    "userSecurityQuestionNumber": 1,
+    "userAnswerToSecurityQuestion": "babak",
+    "userHighScore": 2100
   }
 ]

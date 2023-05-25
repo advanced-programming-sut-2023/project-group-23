@@ -20,7 +20,7 @@ public enum ProducerType {
     WHEAT_FARM ("wheat farm", null, 0, ResourceType.WHEAT, null, 50, GroundType.MEADOW),
     BAKERY ("bakery", ResourceType.FLOUR, 1, null, FoodType.BREAD, 20, null),
     BREWERY ("brewery", ResourceType.HOPS, 30, ResourceType.ALE, null, 2, null),
-    HUNT_POST ("hunt posts", null, 0, null, FoodType.MEAT, 20, null),
+    HUNT_POST ("hunt post", null, 0, null, FoodType.MEAT, 20, null),
     PITCH_RIG ("pitch rig", null, 0, ResourceType.PITCH, null, 50, GroundType.WATER);
 
     private ResourceType inputResource;
