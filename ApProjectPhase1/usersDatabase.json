@@ -21,7 +21,7 @@
   },
   {
     "username": "shrute1",
-    "password": "9cc3e5abdfaee198a6b74b97ea91e306e1744ddf49876d3dcf6cb936dfd5c9d7",
+    "password": "3d673f28b35199c69e9a5d9cfb863771378332da1aaa24f21991c86ebef00c09",
     "nickname": "dwight",
     "slogan": "I may have my revenge, in this life or the next",
     "email": "shrute@gmail.com",
@@ -48,5 +48,15 @@
     "userSecurityQuestionNumber": 1,
     "userAnswerToSecurityQuestion": "babak",
     "userHighScore": 2100
+  },
+  {
+    "username": "bhrdj",
+    "password": "9cc3e5abdfaee198a6b74b97ea91e306e1744ddf49876d3dcf6cb936dfd5c9d7",
+    "nickname": "behrad",
+    "slogan": "",
+    "email": "baherad@gmail.com",
+    "userSecurityQuestionNumber": 1,
+    "userAnswerToSecurityQuestion": "reza",
+    "userHighScore": 0
   }
 ]
