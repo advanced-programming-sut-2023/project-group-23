@@ -1,3 +1,5 @@
+package View.LoginMenu;
+
 import Model.User;
 import View.LoginMenu.LoginMenu;
 import com.google.gson.Gson;

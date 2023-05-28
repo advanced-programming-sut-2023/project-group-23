@@ -3,12 +3,26 @@ package View.LoginMenu;
 import Controller.LoginMenuController;
 import Model.User;
 import View.MainMenu.MainMenu;
+import javafx.application.Application;
+import javafx.event.EventHandler;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Popup;
+import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.Collection;
 import java.util.Scanner;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-public class LoginMenu {
+public class LoginMenu extends Application {
 
     public static void run(Scanner scanner) throws IOException {
         String command;
@@ -105,5 +119,58 @@ public class LoginMenu {
 
     private static void forgotMyPassword(Scanner scanner) {
 
+    }
+    @FXML
+    private TextField username;
+    @FXML
+    private Label wrongUsername;
+    @FXML
+    private PasswordField password;
+    @FXML
+    private Label wrongPassword;
+    @FXML
+    private CheckBox showPassword;
+    @FXML
+    private Button logIn;
+
+    @Override
+    public void start(Stage stage) throws Exception {
+        AnchorPane anchorPane = FXMLLoader.load(new URL(LoginMenu.class.getResource("/View/Login.fxml").toExternalForm()));
+
+
+
+        logIn.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if (Pattern.compile("^\\s*$").matcher(username.getText()).matches())
+                    wrongUsername.setText("Username field is empty");
+                else if (Pattern.compile("^\\s*$").matcher(password.getText()).matches())
+                    wrongPassword.setText("Password field is empty");
+                else if (!LoginMenuController.isUserExist(username.getText()))
+                    wrongUsername.setText("This username does not exists");
+                else if (!User.getUserByUsername(username.getText()).isPasswordCorrect(password.getText()))
+                    wrongPassword.setText("username and password didn't match!");
+                else {
+                    //TODO : login
+                }
+            }
+        });
+
+        RegisterMenu.showPasswordFields(showPassword);
+
+
+        Label securityQuestion = new Label("");
+        TextField question = new TextField();
+        question.setPromptText("Answer");
+        question.setVisible(false);
+        Popup popup = new Popup();
+        popup.getContent().addAll(securityQuestion, question);
+
+
+
+        anchorPane.getChildren().addAll((Collection<? extends Node>) popup);
+        Scene scene = new Scene(anchorPane);
+        stage.setScene(scene);
+        stage.show();
     }
 }
