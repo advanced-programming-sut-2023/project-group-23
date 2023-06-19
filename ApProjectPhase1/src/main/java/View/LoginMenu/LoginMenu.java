@@ -7,6 +7,7 @@ import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.AccessibleRole;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -121,17 +122,9 @@ public class LoginMenu extends Application {
 
     }
     @FXML
-    private TextField username;
-    @FXML
     private Label wrongUsername;
     @FXML
-    private PasswordField password;
-    @FXML
     private Label wrongPassword;
-    @FXML
-    private CheckBox showPassword;
-    @FXML
-    private Button logIn;
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -139,25 +132,44 @@ public class LoginMenu extends Application {
 
 
 
-        logIn.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                if (Pattern.compile("^\\s*$").matcher(username.getText()).matches())
-                    wrongUsername.setText("Username field is empty");
-                else if (Pattern.compile("^\\s*$").matcher(password.getText()).matches())
-                    wrongPassword.setText("Password field is empty");
-                else if (!LoginMenuController.isUserExist(username.getText()))
-                    wrongUsername.setText("This username does not exists");
-                else if (!User.getUserByUsername(username.getText()).isPasswordCorrect(password.getText()))
-                    wrongPassword.setText("username and password didn't match!");
-                else {
-                    //TODO : login
-                }
-            }
-        });
+        TextField username = new TextField();
+        username.setLayoutX(225);
+        username.setLayoutY(122);
+        username.setPromptText("Username");
 
-        RegisterMenu.showPasswordFields(showPassword);
+        PasswordField hiddenPassword = new PasswordField();
+        hiddenPassword.setLayoutX(225);
+        hiddenPassword.setLayoutY(165);
+        hiddenPassword.setPromptText("Password");
 
+        TextField visiblePassword = new TextField();
+        visiblePassword.setLayoutX(225);
+        visiblePassword.setLayoutY(165);
+        visiblePassword.setVisible(false);
+        visiblePassword.setPromptText("Password");
+
+        CheckBox showPassword = new CheckBox();
+        showPassword.setLayoutX(247);
+        showPassword.setLayoutY(200);
+        showPassword.setText("show password");
+
+        Button logIn = new Button();
+        logIn.setLayoutX(275);
+        logIn.setLayoutY(234);
+        logIn.setText("Log In");
+
+        Button forgotPassword = new Button();
+        forgotPassword.setLayoutX(235);
+        forgotPassword.setLayoutY(275);
+        forgotPassword.setText("forgot my password");
+
+        Button signUp = new Button();
+        signUp.setLayoutX(270);
+        signUp.setLayoutY(334);
+        signUp.setText("Sign Up");
+
+
+        showPassword(showPassword, hiddenPassword, visiblePassword);
 
         Label securityQuestion = new Label("");
         TextField question = new TextField();
@@ -167,10 +179,33 @@ public class LoginMenu extends Application {
         popup.getContent().addAll(securityQuestion, question);
 
 
+        anchorPane.getChildren().addAll(username, hiddenPassword, visiblePassword, showPassword, logIn, forgotPassword, signUp);
 
-        anchorPane.getChildren().addAll((Collection<? extends Node>) popup);
+//        anchorPane.getChildren().addAll((Collection<? extends Node>) popup);
         Scene scene = new Scene(anchorPane);
         stage.setScene(scene);
         stage.show();
+    }
+
+
+    private void showPassword(CheckBox checkBox, PasswordField passwordField, TextField textField) {
+        checkBox.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if (checkBox.isSelected()) {
+                    textField.setText(passwordField.getText());
+                    passwordField.setVisible(false);
+                    textField.setVisible(true);
+                    return;
+                }
+                passwordField.setText(textField.getText());
+                passwordField.setVisible(true);
+                textField.setVisible(false);
+            }
+        });
+    }
+
+    public static void main(String[] args) {
+        launch();
     }
 }

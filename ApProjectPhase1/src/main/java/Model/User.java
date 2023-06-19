@@ -217,6 +217,10 @@ public class User {
         this.email = email;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
     public void setUserHighScore(int userHighScore) throws IOException {
         this.userHighScore = userHighScore;
         User.updateDatabase();

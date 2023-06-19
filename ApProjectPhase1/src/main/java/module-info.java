@@ -10,4 +10,5 @@ module ApProjectPhase1 {
     exports Model;
     opens Model to com.google.gson;
     exports Controller;
+    exports View.ProfileMenu;
 }

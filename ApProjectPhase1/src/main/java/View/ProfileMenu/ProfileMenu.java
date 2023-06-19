@@ -1,12 +1,21 @@
 package View.ProfileMenu;
 
 import Controller.ProfileMenuController;
+import Model.User;
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 
-public class ProfileMenu {
+public class ProfileMenu extends Application {
     public static void run(Scanner scanner) throws IOException {
         String command;
         Matcher matcher;
@@ -40,5 +49,37 @@ public class ProfileMenu {
             }
             else System.out.println("invalid command");
         }
+    }
+
+
+    @Override
+    public void start(Stage stage) throws Exception {
+        AnchorPane anchorPane = FXMLLoader.load(new URL(ProfileMenu.class.getResource("/View/Profile.fxml").toExternalForm()));
+
+        Label username = (Label) anchorPane.getChildren().get(3);
+        username.setText(User.getCurrentUser().getUsername());
+
+        Label password = (Label) anchorPane.getChildren().get(5);
+        password.setText(User.getCurrentUser().getPassword());
+
+        Label nickname = (Label) anchorPane.getChildren().get(7);
+        nickname.setText(User.getCurrentUser().getNickname());
+
+        Label email = (Label) anchorPane.getChildren().get(9);
+        email.setText(User.getCurrentUser().getEmail());
+
+        Label slogan = (Label) anchorPane.getChildren().get(11);
+        if (slogan.equals("")) slogan.setText("slogan is empty!");
+        else slogan.setText(User.getCurrentUser().getSlogan());
+
+        Scene scene = new Scene(anchorPane);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    public static void main(String[] args) throws FileNotFoundException {
+        User.initializeUsersFromDatabase();
+        User.setCurrentUser(User.getUsers().get(1));
+        launch();
     }
 }
