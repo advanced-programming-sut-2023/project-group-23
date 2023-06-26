@@ -18,6 +18,13 @@ public class ProfileMenuController {
         return null;
     }
 
+    public static String checkNewUsername(String username) {
+        if(!isUsernameFormatCorrect(username))
+            return "username format is not correct";
+        if (isUserExist(username)) return "this username already exists!";
+        return "it's ok!";
+    }
+
     public static String changeUsername(Matcher matcher) {
         String username = matcher.group("username");
         username = Controller.deleteWhiteSpacesOfEnd(username);

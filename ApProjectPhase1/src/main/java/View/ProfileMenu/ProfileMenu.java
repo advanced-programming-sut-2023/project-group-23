@@ -6,9 +6,13 @@ import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Text;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -56,33 +60,100 @@ public class ProfileMenu extends Application {
     }
 
 
+    private Label username;
+    private Label password;
+    private Label nickname;
+    private Label email;
+    private Label slogan;
+
     @Override
     public void start(Stage stage) throws Exception {
         AnchorPane anchorPane = FXMLLoader.load(new URL(ProfileMenu.class.getResource("/View/Profile.fxml").toExternalForm()));
 
-        Label username = (Label) anchorPane.getChildren().get(3);
+        username = (Label) anchorPane.getChildren().get(2);
         username.setText(User.getCurrentUser().getUsername());
 
-        Label password = (Label) anchorPane.getChildren().get(5);
+        password = (Label) anchorPane.getChildren().get(4);
         password.setText(User.getCurrentUser().getPassword());
 
-        Label nickname = (Label) anchorPane.getChildren().get(7);
+        nickname = (Label) anchorPane.getChildren().get(6);
         nickname.setText(User.getCurrentUser().getNickname());
 
-        Label email = (Label) anchorPane.getChildren().get(9);
+        email = (Label) anchorPane.getChildren().get(8);
         email.setText(User.getCurrentUser().getEmail());
 
-        Label slogan = (Label) anchorPane.getChildren().get(11);
-        if (slogan.equals("")) slogan.setText("slogan is empty!");
+        slogan = (Label) anchorPane.getChildren().get(10);
+        if (User.getCurrentUser().getSlogan().equals("")) slogan.setText("slogan is empty!");
         else slogan.setText(User.getCurrentUser().getSlogan());
+
+        Button changeAvatar = new Button("Change Avatar");
+        changeAvatar.setLayoutX(44);
+        changeAvatar.setLayoutY(134);
+
+        Button changeUsername = new Button("Change Username");
+        changeUsername.setLayoutX(34);
+        changeUsername.setLayoutY(163);
+
+        Button changePassword = new Button("Change Password");
+        changePassword.setLayoutX(36);
+        changePassword.setLayoutY(192);
+
+        Button changeSlogan = new Button("Change Slogan");
+        changeSlogan.setLayoutX(43);
+        changeSlogan.setLayoutY(278);
+
+        Button changeNickname = new Button("Change Nickname");
+        changeNickname.setLayoutX(35);
+        changeNickname.setLayoutY(221);
+
+        Button changeEmail = new Button("Change Email");
+        changeEmail.setLayoutX(47);
+        changeEmail.setLayoutY(250);
+
+        anchorPane.getChildren().addAll(changeAvatar, changeEmail, changeNickname, changePassword, changeUsername, changeSlogan);
+
         Scene scene = new Scene(anchorPane);
         stage.setScene(scene);
 
-        Popup popup = new Popup();
-        anchorPane.getChildren().get(1).setOnMouseClicked(new EventHandler<MouseEvent>() {
+        anchorPane.getChildren().get(11).setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                popup.show(stage);
+                changeAvatar();
+            }
+        });
+
+        anchorPane.getChildren().get(15).setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                changeUsername();
+            }
+        });
+
+        anchorPane.getChildren().get(14).setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                changePassword();
+            }
+        });
+
+        anchorPane.getChildren().get(13).setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                changeNickname();
+            }
+        });
+
+        anchorPane.getChildren().get(12).setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                changeEmail();
+            }
+        });
+
+        anchorPane.getChildren().get(16).setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                changeSlogan();
             }
         });
 
@@ -94,5 +165,136 @@ public class ProfileMenu extends Application {
         User.initializeUsersFromDatabase();
         User.setCurrentUser(User.getUsers().get(1));
         launch();
+    }
+
+
+    private void changeUsername() {
+        Stage stage = new Stage();
+        AnchorPane anchorPane = new AnchorPane();
+        Scene scene = new Scene(anchorPane, 250, 250);
+        stage.setScene(scene);
+        stage.setResizable(false);
+        stage.setTitle("Change Username");
+
+        TextField username = new TextField();
+        username.setPromptText("New Username");
+        username.setLayoutX(50);
+        username.setLayoutY(20);
+        username.setFocusTraversable(false);
+
+        Text wrongUsername = new Text("username field is empty!");
+        wrongUsername.setX(50);
+        wrongUsername.setY(70);
+
+        Button apply = new Button("Apply");
+        apply.setLayoutX(60);
+        apply.setLayoutY(100);
+
+        Button cancel = new Button("Cancel");
+        cancel.setLayoutX(110);
+        cancel.setLayoutY(100);
+
+        username.textProperty().addListener((observableValue, oldText, newText) -> {
+            if (newText == null || newText.equals(""))
+                wrongUsername.setText("username field is empty!");
+            wrongUsername.setText(ProfileMenuController.checkNewUsername(newText));
+        });
+
+        apply.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if (wrongUsername.getText().equals("it's ok!")) {
+                    User.getCurrentUser().setUsername(username.getText());
+                    try {
+                        User.updateDatabase();
+                        getUsername().setText(username.getText());
+                        stage.close();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+        });
+
+        cancel.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                stage.close();
+            }
+        });
+
+
+        anchorPane.getChildren().addAll(username, wrongUsername, apply, cancel);
+        stage.show();
+    }
+
+    private void changePassword() {
+        Stage stage = new Stage();
+        AnchorPane anchorPane = new AnchorPane();
+        Scene scene = new Scene(anchorPane, 400, 400);
+        stage.setScene(scene);
+        stage.setResizable(false);
+        stage.setTitle("Change Password");
+        stage.show();
+    }
+
+    private void changeNickname() {
+        Stage stage = new Stage();
+        AnchorPane anchorPane = new AnchorPane();
+        Scene scene = new Scene(anchorPane, 400, 400);
+        stage.setScene(scene);
+        stage.setResizable(false);
+        stage.setTitle("Change Nickname");
+        stage.show();
+    }
+
+    private void changeEmail() {
+        Stage stage = new Stage();
+        AnchorPane anchorPane = new AnchorPane();
+        Scene scene = new Scene(anchorPane, 400, 400);
+        stage.setScene(scene);
+        stage.setResizable(false);
+        stage.setTitle("Change Email");
+        stage.show();
+    }
+
+    private void changeSlogan() {
+        Stage stage = new Stage();
+        AnchorPane anchorPane = new AnchorPane();
+        Scene scene = new Scene(anchorPane, 400, 400);
+        stage.setScene(scene);
+        stage.setResizable(false);
+        stage.setTitle("Change Slogan");
+        stage.show();
+    }
+
+    private void changeAvatar() {
+        Stage stage = new Stage();
+        AnchorPane anchorPane = new AnchorPane();
+        Scene scene = new Scene(anchorPane, 400, 400);
+        stage.setScene(scene);
+        stage.setResizable(false);
+        stage.setTitle("Change Avatar");
+        stage.show();
+    }
+
+    public Label getUsername() {
+        return username;
+    }
+
+    public Label getPassword() {
+        return password;
+    }
+
+    public Label getNickname() {
+        return nickname;
+    }
+
+    public Label getEmail() {
+        return email;
+    }
+
+    public Label getSlogan() {
+        return slogan;
     }
 }
