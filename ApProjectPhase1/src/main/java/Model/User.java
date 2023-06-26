@@ -29,8 +29,18 @@ public class User {
         put(3, "I won't have my revenge, in this life or the next");
     }};
 
+    public static ArrayList<String> captchaList = new ArrayList<>() {{
+        add("1181");add("1381");add("1491");add("1722");add("1959");add("2163");add("2177");add("2723");add("2785");
+        add("3541");add("3847");add("3855");add("3876");add("3967");add("4185");add("4310");add("4487");add("4578");
+        add("4602");add("4681");add("4924");add("5326");add("5463");add("5771");add("5849");add("6426");add("6553");
+        add("6601");add("6733");add("6960");add("7415");add("7609");add("7755");add("7825");add("7905");add("8003");
+        add("8070");add("8368");add("8455");add("8506");add("8555");add("8583");add("8692");add("8776");add("8972");
+        add("8996");add("9061");add("9386");add("9582");add("9633");
+    }};
+
     private String username;
     private String password;
+    private String noEncryptedPassword;
     private String nickname;
     private String slogan;
     private String email;
@@ -68,6 +78,7 @@ public class User {
     }
 
     public void setPassword(String password) throws IOException {
+        this.noEncryptedPassword = password;
         this.password = DigestUtils.sha256Hex(password);
         User.updateDatabase();
     }
@@ -224,5 +235,9 @@ public class User {
     public void setUserHighScore(int userHighScore) throws IOException {
         this.userHighScore = userHighScore;
         User.updateDatabase();
+    }
+
+    public String getNoEncryptedPassword() {
+        return noEncryptedPassword;
     }
 }

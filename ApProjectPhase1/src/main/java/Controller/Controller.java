@@ -1,5 +1,8 @@
 package Controller;
 
+import Model.User;
+
+import java.util.Random;
 import java.util.regex.Matcher;
 
 public class Controller {
@@ -22,5 +25,11 @@ public class Controller {
             count++;
         }
         return count;
+    }
+
+    public static String captchaAddress() {
+        Random random = new Random();
+        Integer captcha = random.nextInt(50);
+        return User.captchaList.get(captcha) + ".png";
     }
 }
