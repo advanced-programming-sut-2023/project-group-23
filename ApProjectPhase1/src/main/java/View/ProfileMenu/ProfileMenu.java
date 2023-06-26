@@ -373,6 +373,76 @@ public class ProfileMenu extends Application {
         stage.setScene(scene);
         stage.setResizable(false);
         stage.setTitle("Change Slogan");
+
+
+        TextField slogan = new TextField();
+        slogan.setPromptText("New Slogan");
+        slogan.setLayoutX(50);
+        slogan.setLayoutY(20);
+        slogan.setFocusTraversable(false);
+
+        Text wrongSlogan = new Text("slogan field is empty!");
+        wrongSlogan.setX(50);
+        wrongSlogan.setY(70);
+
+        Button apply = new Button("Apply");
+        apply.setLayoutX(60);
+        apply.setLayoutY(100);
+
+        Button cancel = new Button("Cancel");
+        cancel.setLayoutX(110);
+        cancel.setLayoutY(100);
+
+        Button clear = new Button("Clear");
+        clear.setLayoutX(14);
+        clear.setLayoutY(100);
+
+        slogan.textProperty().addListener((observableValue, oldText, newText) -> {
+            if (newText == null || newText.equals(""))
+                wrongSlogan.setText("slogan field is empty!");
+            else wrongSlogan.setText("");
+        });
+
+        apply.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if (wrongSlogan.getText().equals("")) {
+                    User.getCurrentUser().setSlogan(slogan.getText());
+                    try {
+                        User.updateDatabase();
+                        getSlogan().setText(slogan.getText());
+                        stage.close();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+        });
+
+        cancel.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                stage.close();
+            }
+        });
+
+        clear.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                User.getCurrentUser().setSlogan("");
+                try {
+                    User.updateDatabase();
+                    getSlogan().setText("slogan is empty!");
+                    stage.close();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+
+
+        anchorPane.getChildren().addAll(slogan, wrongSlogan, apply, cancel, clear);
+
         stage.show();
     }
 
