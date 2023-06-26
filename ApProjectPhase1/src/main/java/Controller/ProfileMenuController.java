@@ -25,6 +25,32 @@ public class ProfileMenuController {
         return "it's ok!";
     }
 
+    public static String checkNewNickname(String nickname) {
+        if (LoginMenuController.isNicknameExist(nickname))
+            return "this nickname has been used";
+        return "it's ok!";
+    }
+
+    public static String checkNewEmail(String email) {
+        if (!LoginMenuController.isEmailFormatCorrect(email)) return "Email format isn't correct";
+        else if (LoginMenuController.isEmailExist(email)) return "This email already exists";
+        return "it's ok!";
+    }
+
+    public static String suggestUsername(String username) {
+        String usernameSuggestion = "";
+        if (isUserExist(username)) {
+            Integer number = 0;
+            String copyOfUsername = username;
+            while (isUserExist(copyOfUsername)) {
+                number++;
+                copyOfUsername = username + number;
+            }
+            usernameSuggestion += username + number;
+        }
+        return "you can choose " + usernameSuggestion;
+    }
+
     public static String changeUsername(Matcher matcher) {
         String username = matcher.group("username");
         username = Controller.deleteWhiteSpacesOfEnd(username);

@@ -186,6 +186,10 @@ public class ProfileMenu extends Application {
         wrongUsername.setX(50);
         wrongUsername.setY(70);
 
+        Text suggest = new Text("");
+        suggest.setX(50);
+        suggest.setY(85);
+
         Button apply = new Button("Apply");
         apply.setLayoutX(60);
         apply.setLayoutY(100);
@@ -197,7 +201,9 @@ public class ProfileMenu extends Application {
         username.textProperty().addListener((observableValue, oldText, newText) -> {
             if (newText == null || newText.equals(""))
                 wrongUsername.setText("username field is empty!");
-            wrongUsername.setText(ProfileMenuController.checkNewUsername(newText));
+            else wrongUsername.setText(ProfileMenuController.checkNewUsername(newText));
+            if (ProfileMenuController.suggestUsername(newText).equals("you can choose ")) suggest.setText("");
+            else suggest.setText(ProfileMenuController.suggestUsername(newText));
         });
 
         apply.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -224,7 +230,7 @@ public class ProfileMenu extends Application {
         });
 
 
-        anchorPane.getChildren().addAll(username, wrongUsername, apply, cancel);
+        anchorPane.getChildren().addAll(username, wrongUsername, apply, cancel, suggest);
         stage.show();
     }
 
@@ -245,6 +251,57 @@ public class ProfileMenu extends Application {
         stage.setScene(scene);
         stage.setResizable(false);
         stage.setTitle("Change Nickname");
+
+        TextField nickname = new TextField();
+        nickname.setPromptText("New Nickname");
+        nickname.setLayoutX(50);
+        nickname.setLayoutY(20);
+        nickname.setFocusTraversable(false);
+
+        Text wrongNickname = new Text("nickname field is empty!");
+        wrongNickname.setX(50);
+        wrongNickname.setY(70);
+
+        Button apply = new Button("Apply");
+        apply.setLayoutX(60);
+        apply.setLayoutY(100);
+
+        Button cancel = new Button("Cancel");
+        cancel.setLayoutX(110);
+        cancel.setLayoutY(100);
+
+        nickname.textProperty().addListener((observableValue, oldText, newText) -> {
+            if (newText == null || newText.equals(""))
+                wrongNickname.setText("nickname field is empty!");
+            wrongNickname.setText(ProfileMenuController.checkNewNickname(newText));
+        });
+
+        apply.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if (wrongNickname.getText().equals("it's ok!")) {
+                    User.getCurrentUser().setNickname(nickname.getText());
+                    try {
+                        User.updateDatabase();
+                        getNickname().setText(nickname.getText());
+                        stage.close();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+        });
+
+        cancel.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                stage.close();
+            }
+        });
+
+
+        anchorPane.getChildren().addAll(nickname, wrongNickname, apply, cancel);
+
         stage.show();
     }
 
@@ -255,6 +312,57 @@ public class ProfileMenu extends Application {
         stage.setScene(scene);
         stage.setResizable(false);
         stage.setTitle("Change Email");
+
+        TextField email = new TextField();
+        email.setPromptText("New email");
+        email.setLayoutX(50);
+        email.setLayoutY(20);
+        email.setFocusTraversable(false);
+
+        Text wrongEmail = new Text("email field is empty!");
+        wrongEmail.setX(50);
+        wrongEmail.setY(70);
+
+        Button apply = new Button("Apply");
+        apply.setLayoutX(60);
+        apply.setLayoutY(100);
+
+        Button cancel = new Button("Cancel");
+        cancel.setLayoutX(110);
+        cancel.setLayoutY(100);
+
+        email.textProperty().addListener((observableValue, oldText, newText) -> {
+            if (newText == null || newText.equals(""))
+                wrongEmail.setText("email field is empty!");
+            wrongEmail.setText(ProfileMenuController.checkNewEmail(newText));
+        });
+
+        apply.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if (wrongEmail.getText().equals("it's ok!")) {
+                    User.getCurrentUser().setEmail(email.getText());
+                    try {
+                        User.updateDatabase();
+                        getEmail().setText(email.getText());
+                        stage.close();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+        });
+
+        cancel.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                stage.close();
+            }
+        });
+
+
+        anchorPane.getChildren().addAll(email, wrongEmail, apply, cancel);
+
         stage.show();
     }
 
