@@ -12,7 +12,5 @@
                 <Font size="23.0" />
             </font>
         </Label>
-        <Label fx:id="wrongUsername" layoutX="388.0" layoutY="126.0" prefHeight="18.0" prefWidth="198.0" />
-        <Label fx:id="wrongPassword" layoutX="388.0" layoutY="169.0" prefHeight="18.0" prefWidth="198.0" />
     </children>
 </AnchorPane>

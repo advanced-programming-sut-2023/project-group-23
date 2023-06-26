@@ -251,6 +251,20 @@ public class LoginMenuController {
         return "register successfully";
     }
 
+    public static String loginCheckUsername(String username) {
+        if (username == null || username.equals("")) return "username field is empty!";
+        if (!isUserExist(username)) return "this username does not exists!";
+        return "";
+    }
+
+    public static String loginCheckPassword(String password, String username) {
+        if (password == null || password.equals("")) return "password field is empty!";
+        if (isUserExist(username))
+            if (!User.getUserByUsername(username).isPasswordCorrect(password))
+                return "username and password didn't match!";
+        return "";
+    }
+
     public static String login(String content) throws IOException {
         Matcher matcher;
         if (!(matcher = LoginMenuCommands.getMatcher(content, LoginMenuCommands.USERNAME_FIELD)).find())

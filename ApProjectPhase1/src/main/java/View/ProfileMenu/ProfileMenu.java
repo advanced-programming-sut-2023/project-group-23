@@ -3,11 +3,15 @@ package View.ProfileMenu;
 import Controller.ProfileMenuController;
 import Model.User;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Popup;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -71,9 +75,18 @@ public class ProfileMenu extends Application {
         Label slogan = (Label) anchorPane.getChildren().get(11);
         if (slogan.equals("")) slogan.setText("slogan is empty!");
         else slogan.setText(User.getCurrentUser().getSlogan());
-
         Scene scene = new Scene(anchorPane);
         stage.setScene(scene);
+
+        Popup popup = new Popup();
+        anchorPane.getChildren().get(1).setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                popup.show(stage);
+            }
+        });
+
+
         stage.show();
     }
 

@@ -13,9 +13,12 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Border;
+import javafx.scene.text.Text;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Collection;
@@ -24,6 +27,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class LoginMenu extends Application {
+
+    private Label wrongUsername;
+    private Label wrongPassword;
 
     public static void run(Scanner scanner) throws IOException {
         String command;
@@ -121,10 +127,6 @@ public class LoginMenu extends Application {
     private static void forgotMyPassword(Scanner scanner) {
 
     }
-    @FXML
-    private Label wrongUsername;
-    @FXML
-    private Label wrongPassword;
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -137,10 +139,18 @@ public class LoginMenu extends Application {
         username.setLayoutY(122);
         username.setPromptText("Username");
 
+        wrongUsername = new Label();
+        wrongUsername.setLayoutX(388);
+        wrongUsername.setLayoutY(126);
+
         PasswordField hiddenPassword = new PasswordField();
         hiddenPassword.setLayoutX(225);
         hiddenPassword.setLayoutY(165);
         hiddenPassword.setPromptText("Password");
+
+        wrongPassword = new Label();
+        wrongPassword.setLayoutX(388);
+        wrongPassword.setLayoutY(169);
 
         TextField visiblePassword = new TextField();
         visiblePassword.setLayoutX(225);
@@ -171,19 +181,53 @@ public class LoginMenu extends Application {
 
         showPassword(showPassword, hiddenPassword, visiblePassword);
 
-        Label securityQuestion = new Label("");
-        TextField question = new TextField();
-        question.setPromptText("Answer");
-        question.setVisible(false);
-        Popup popup = new Popup();
-        popup.getContent().addAll(securityQuestion, question);
+        logIn.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if (hiddenPassword.isVisible()) login(username.getText(), hiddenPassword.getText());
+                else login(username.getText(), visiblePassword.getText());
+            }
+        });
 
 
-        anchorPane.getChildren().addAll(username, hiddenPassword, visiblePassword, showPassword, logIn, forgotPassword, signUp);
 
-//        anchorPane.getChildren().addAll((Collection<? extends Node>) popup);
+        AnchorPane forgotPasswordPane = new AnchorPane();
+        Stage dialog = new Stage();
+        Scene sceneDialog = new Scene(forgotPasswordPane, 400, 200);
+        dialog.setScene(sceneDialog);
+        dialog.setTitle("forgot password");
+        dialog.setResizable(false);
+        forgotPassword.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                wrongUsername.setText("");
+                wrongPassword.setText("");
+                if (LoginMenuController.isUserExist(username.getText())) {
+                    if (!dialog.isShowing()) {
+                        User user = User.getUserByUsername(username.getText());
+                        initializeDialog(dialog, forgotPasswordPane, user);
+                        dialog.show();
+                    }
+                } else {
+                    wrongUsername.setText(LoginMenuController.loginCheckUsername(username.getText()));
+                }
+            }
+        });
+
+        signUp.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                //TODO: enter register menu
+            }
+        });
+
+
+        anchorPane.getChildren().addAll(username, hiddenPassword, visiblePassword, showPassword, logIn, forgotPassword,
+                signUp, wrongPassword, wrongUsername);
         Scene scene = new Scene(anchorPane);
+        stage.setTitle("Login Menu");
         stage.setScene(scene);
+        stage.setResizable(false);
         stage.show();
     }
 
@@ -205,7 +249,55 @@ public class LoginMenu extends Application {
         });
     }
 
-    public static void main(String[] args) {
+    private boolean checkUserPass(String username, String password) {
+        wrongPassword.setText(LoginMenuController.loginCheckPassword(password, username));
+        wrongUsername.setText(LoginMenuController.loginCheckUsername(username));
+        return wrongUsername.getText().equals("") && wrongPassword.getText().equals("");
+    }
+
+    private void login(String username, String password) {
+        if (checkUserPass(username, password)) User.setCurrentUser(User.getUserByUsername(username));
+        //TODO:enter main menu
+    }
+
+    private void initializeDialog(Stage stage, AnchorPane anchorPane, User user) {
+        Text text = new Text();
+        text.setX(20);
+        text.setY(50);
+        text.setText(user.getUserSecurityQuestion());
+
+        TextField answer = new TextField();
+        answer.setPromptText("Answer");
+        answer.setLayoutY(70);
+        answer.setLayoutX(20);
+
+        Button enter = new Button("Enter");
+        enter.setLayoutY(120);
+        enter.setLayoutX(180);
+
+        Text wrongAnswer = new Text("");
+        wrongAnswer.setX(180);
+        wrongAnswer.setY(87);
+
+        enter.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if (!answer.getText().equals(user.getUserAnswerToSecurityQuestion())) wrongAnswer.setText("Your answer" +
+                        " didn't correct, try again!");
+                else {
+                    //TODO: enter main menu
+                    stage.close();
+                }
+            }
+        });
+
+
+        anchorPane.getChildren().addAll(text, enter, answer, wrongAnswer);
+    }
+
+
+    public static void main(String[] args) throws FileNotFoundException {
+        User.initializeUsersFromDatabase();
         launch();
     }
 }
