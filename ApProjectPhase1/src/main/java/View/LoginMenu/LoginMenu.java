@@ -82,7 +82,7 @@ public class LoginMenu extends Application {
         }
     }
 
-    public static String setPasswordRandomly(Scanner scanner) {
+    public static String setPasswordRandomly() {
         String uppercaseLetters = "ABCDEFGHIJKLMNOPQURESTUVWXYZ";
         String lowercaseLetters = "abcdefghijklmnopqurestuvwxyz";
         String digits = "0123456789";
@@ -103,16 +103,7 @@ public class LoginMenu extends Application {
             index = (int) (specialCharacters.length() * Math.random());
             passwordBuilder.append(specialCharacters.charAt(index));
         }
-        String generatedPassword = passwordBuilder.toString();
-
-        System.out.println("Your random password is: " + generatedPassword);
-        System.out.println("Please re-enter your password here:");
-
-        String passwordConfirmation = scanner.nextLine();
-        if(LoginMenuController.passwordsMatch(generatedPassword, passwordConfirmation))
-            return generatedPassword;
-        else
-            return null;
+        return passwordBuilder.toString();
     }
 
     public static String pickSecurityQuestion(Scanner scanner) {
@@ -279,7 +270,7 @@ public class LoginMenu extends Application {
     }
 
 
-    private void showPassword(CheckBox checkBox, PasswordField passwordField, TextField textField) {
+    public static void showPassword(CheckBox checkBox, PasswordField passwordField, TextField textField) {
         checkBox.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -351,7 +342,7 @@ public class LoginMenu extends Application {
         anchorPane.getChildren().addAll(text, enter, answer, wrongAnswer);
     }
 
-    private void refresh(ImageView imageView, TextArea textArea) {
+    public void refresh(ImageView imageView, TextArea textArea) {
         String newAddress = Controller.captchaAddress();
         Matcher matcher = Pattern.compile("(\\S+).png").matcher(newAddress);
         if (matcher.find()) captchaValue = matcher.group(1);
