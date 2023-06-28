@@ -206,7 +206,12 @@ public class LoginMenu extends Application {
         signUp.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                //TODO: enter register menu
+                try {
+                    stage.setTitle("Register Menu");
+                    new RegisterMenu().start(stage);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
 
@@ -245,8 +250,8 @@ public class LoginMenu extends Application {
             @Override
             public void handle(MouseEvent event) {
                 captchaEntered = captchaField.getText();
-                if (hiddenPassword.isVisible()) login(username.getText(), hiddenPassword.getText());
-                else login(username.getText(), visiblePassword.getText());
+                if (hiddenPassword.isVisible()) login(username.getText(), hiddenPassword.getText(), stage);
+                else login(username.getText(), visiblePassword.getText(), stage);
                 refresh(captcha, captchaField);
             }
         });
@@ -262,7 +267,7 @@ public class LoginMenu extends Application {
                     if (!dialog.isShowing()) {
                         captchaField.clear();
                         User user = User.getUserByUsername(username.getText());
-                        initializeDialog(dialog, forgotPasswordPane, user);
+                        initializeDialog(dialog, forgotPasswordPane, user, stage);
                         dialog.show();
                     }
                 } else {
@@ -309,21 +314,24 @@ public class LoginMenu extends Application {
         return wrongUsername.getText().equals("") && wrongPassword.getText().equals("");
     }
 
-    private void login(String username, String password) {
+    private void login(String username, String password, Stage stage) {
         checkUserPass(username, password);
         if (captchaValue.equals(captchaEntered) && checkUserPass(username, password)) {
             User.setCurrentUser(User.getUserByUsername(username));
-            return;
+            try {
+                stage.setTitle("Main Menu");
+                new MainMenu().start(stage);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         } else {
             if (!captchaEntered.equals(captchaValue))
                 wrongCaptcha.setText("please write captcha carefully!");
             else wrongCaptcha.setText("");
         }
-
-        //TODO:enter main menu
     }
 
-    private void initializeDialog(Stage stage, AnchorPane anchorPane, User user) {
+    private void initializeDialog(Stage stage, AnchorPane anchorPane, User user, Stage primaryStage) {
         Text text = new Text();
         text.setX(20);
         text.setY(50);
@@ -351,7 +359,13 @@ public class LoginMenu extends Application {
                 if (!answer.getText().equals(user.getUserAnswerToSecurityQuestion())) wrongAnswer.setText("Your answer" +
                         " didn't correct, try again!");
                 else {
-                    //TODO: enter main menu
+                    User.setCurrentUser(user);
+                    try {
+                        primaryStage.setTitle("Main Menu");
+                        new MainMenu().start(primaryStage);
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
                     stage.close();
                 }
             }

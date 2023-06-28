@@ -293,7 +293,7 @@ public class LoginMenuController {
         matcher.find();
         String answer = matcher.group("answer");
 
-        User.addUser(new User(username, password, nickname, slogan, email, questionNumber, answer));
+        User.addUser(new User(username, password, nickname, slogan, email, questionNumber, answer, "salam"));
 
         User.updateDatabase();
 

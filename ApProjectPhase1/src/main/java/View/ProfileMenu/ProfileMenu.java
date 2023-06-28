@@ -5,6 +5,7 @@ import Controller.LoginMenuController;
 import Controller.ProfileMenuController;
 import Model.User;
 import View.LoginMenu.LoginMenu;
+import View.MainMenu.MainMenu;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -94,6 +95,8 @@ public class ProfileMenu extends Application {
 
         Font font = new Font(20);
 
+        if (User.getCurrentUser().getAvatarAddress() == null)
+            User.getCurrentUser().setAvatarAddress(getClass().getResource("/profile/1.png").toExternalForm());
         avatar = new ImageView(new Image(User.getCurrentUser().getAvatarAddress()));
         avatar.setFitWidth(100);
         avatar.setFitHeight(100);
@@ -119,7 +122,7 @@ public class ProfileMenu extends Application {
         slogan = (Label) anchorPane.getChildren().get(9);
         if (User.getCurrentUser().getSlogan().equals("")) slogan.setText("slogan is empty!");
         else slogan.setText(User.getCurrentUser().getSlogan());
-        slogan.setFont(font);
+        slogan.setFont(new Font(12));
 
         Button changeAvatar = new Button("Change Avatar");
         changeAvatar.setLayoutX(44);
@@ -199,7 +202,12 @@ public class ProfileMenu extends Application {
         back.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                //TODO:back to main menu
+                try {
+                    stage.setTitle("Main Menu");
+                    new MainMenu().start(stage);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
 
@@ -280,12 +288,17 @@ public class ProfileMenu extends Application {
             else suggest.setText(ProfileMenuController.suggestUsername(newText));
         });
 
+        Alert changeUsername = new Alert(Alert.AlertType.INFORMATION);
+        changeUsername.setTitle("Change Username");
+        changeUsername.setHeaderText("username changed successfully!");
+
         apply.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 if (wrongUsername.getText().equals("it's ok!")) {
                     User.getCurrentUser().setUsername(username.getText());
                     try {
+                        changeUsername.show();
                         User.updateDatabase();
                         getUsername().setText(username.getText());
                         stage.close();
@@ -390,6 +403,10 @@ public class ProfileMenu extends Application {
             }
         });
 
+        Alert changePassword = new Alert(Alert.AlertType.INFORMATION);
+        changePassword.setTitle("Change Password");
+        changePassword.setHeaderText("password changed successfully!");
+
         apply.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -406,6 +423,7 @@ public class ProfileMenu extends Application {
                 if (wrongCaptcha.getText().equals("") && wrongOldPassword.getText().equals("") &&
                         wrongNewPassword.getText().equals("")) {
                     try {
+                        changePassword.show();
                         User.getCurrentUser().setPassword(newPassword.getText());
                         User.updateDatabase();
                         stage.close();
@@ -467,10 +485,15 @@ public class ProfileMenu extends Application {
             wrongNickname.setText(ProfileMenuController.checkNewNickname(newText));
         });
 
+        Alert changeNickname = new Alert(Alert.AlertType.INFORMATION);
+        changeNickname.setTitle("Change Nickname");
+        changeNickname.setHeaderText("nickname changed successfully!");
+
         apply.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 if (wrongNickname.getText().equals("it's ok!")) {
+                    changeNickname.show();
                     User.getCurrentUser().setNickname(nickname.getText());
                     try {
                         User.updateDatabase();
@@ -535,10 +558,15 @@ public class ProfileMenu extends Application {
             wrongEmail.setText(ProfileMenuController.checkNewEmail(newText));
         });
 
+        Alert changeEmail = new Alert(Alert.AlertType.INFORMATION);
+        changeEmail.setTitle("Change Email");
+        changeEmail.setHeaderText("email changed successfully!");
+
         apply.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 if (wrongEmail.getText().equals("it's ok!")) {
+                    changeEmail.show();
                     User.getCurrentUser().setEmail(email.getText());
                     try {
                         User.updateDatabase();
@@ -608,10 +636,15 @@ public class ProfileMenu extends Application {
             else wrongSlogan.setText("");
         });
 
+        Alert changeSlogan = new Alert(Alert.AlertType.INFORMATION);
+        changeSlogan.setTitle("Change Slogan");
+        changeSlogan.setHeaderText("slogan changed successfully!");
+
         apply.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 if (wrongSlogan.getText().equals("")) {
+                    changeSlogan.show();
                     User.getCurrentUser().setSlogan(slogan.getText());
                     try {
                         User.updateDatabase();
@@ -631,9 +664,14 @@ public class ProfileMenu extends Application {
             }
         });
 
+        Alert deleteSlogan = new Alert(Alert.AlertType.INFORMATION);
+        deleteSlogan.setTitle("Delete Slogan");
+        deleteSlogan.setHeaderText("slogan deleted successfully!");
+
         clear.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
+                deleteSlogan.show();
                 User.getCurrentUser().setSlogan("");
                 try {
                     User.updateDatabase();
@@ -715,6 +753,10 @@ public class ProfileMenu extends Application {
             }
         });
 
+        Alert changeAvatar = new Alert(Alert.AlertType.INFORMATION);
+        changeAvatar.setTitle("Change Avatar");
+        changeAvatar.setHeaderText("avatar changed successfully!");
+
         apply.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -722,6 +764,7 @@ public class ProfileMenu extends Application {
                         "/ApProjectPhase1/target/classes/profile/initialize.png")) {
                     wrongAvatar.setText("you must select or upload a photo!");
                 } else {
+                    changeAvatar.show();
                     User.getCurrentUser().setAvatarAddress(rectangle.getImage().getUrl());
                     try {
                         User.updateDatabase();

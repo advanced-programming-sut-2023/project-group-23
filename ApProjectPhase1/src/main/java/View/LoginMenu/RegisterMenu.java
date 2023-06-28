@@ -23,6 +23,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
 import java.util.Random;
@@ -32,6 +33,7 @@ import java.util.regex.Pattern;
 public class RegisterMenu extends Application {
 
     private String captchaValue;
+    private Integer questionNumber;
     public static void main(String[] args) throws FileNotFoundException {
         User.initializeUsersFromDatabase();
         launch();
@@ -251,6 +253,7 @@ public class RegisterMenu extends Application {
         thirdQuestion.setText(User.getQuestionByKey(3));
         securityQuestion.getItems().addAll(firstQuestion, secondQuestion, thirdQuestion);
 
+
         TextField securityQuestionAnswer = new TextField();
         securityQuestionAnswer.setPromptText("Answer");
         securityQuestionAnswer.setLayoutX(10);
@@ -309,10 +312,19 @@ public class RegisterMenu extends Application {
         });
         String finalCaptchaValue = captchaValue;
 
+        Alert successfullyRegister = new Alert(Alert.AlertType.INFORMATION);
+        successfullyRegister.setTitle("Congratulations!");
+        successfullyRegister.setHeaderText("your account created successfully!");
+
         ok.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 String answer = securityQuestionAnswer.getText();
+                String finalSlogan = "";
+                String finalPassword;
+                if (!sloganField.getText().equals("") && sloganField.getText() != null) finalSlogan = sloganField.getText();
+                if (showPassword.isSelected()) finalPassword = password.getText();
+                else finalPassword = hiddenPassword.getText();
                 if (!captchaValue.equals(captchaField.getText())) {
                     wrongCaptcha.setText("please write captcha carefully!");
                     refresh(captcha, captchaField);
@@ -323,14 +335,32 @@ public class RegisterMenu extends Application {
                 if (securityQuestion.getText().equals("Pick security question"))
                     wrongChooseQuestion.setText("choose a question!");
                 else wrongChooseQuestion.setText("");
-                if (wrongAnswer.getText().equals("") && wrongCaptcha.getText().equals("") && wrongChooseQuestion.equals("")) {
-                    //TODO: sign up
+                if (wrongAnswer.getText().equals("") && wrongCaptcha.getText().equals("") && wrongChooseQuestion.getText().equals("")) {
+                    User.addUser(new User(username.getText(), finalPassword, nickname.getText(), finalSlogan,
+                            email.getText(), questionNumber, answer, avatarAddressRandom()));
+                    try {
+                        User.updateDatabase();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                    try {
+                        securityStage.close();
+                        successfullyRegister.show();
+                        stage.setTitle("Login Menu");
+                        new LoginMenu().start(stage);
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
                 }
             }
         });
 
         pane.getChildren().addAll(securityQuestion, securityQuestionAnswer, captchaField,
                 captcha, wrongCaptcha, refresh, ok, wrongAnswer, wrongChooseQuestion);
+
+        Alert enterSecuritySection = new Alert(Alert.AlertType.INFORMATION);
+        enterSecuritySection.setTitle("Congratulations!");
+        enterSecuritySection.setHeaderText("you filled fields properly! now you must enter to security section...");
 
         signUp.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -344,6 +374,7 @@ public class RegisterMenu extends Application {
                 if (LoginMenuController.signUp(username.getText(), finalPassword, finalPasswordConfirmation,
                         email.getText(), nickname.getText(), sloganField.getText()) && !securityStage.isShowing()
                         && (!slogan.isSelected() || (!sloganField.getText().equals("") && sloganField.getText() != null))) {
+                    enterSecuritySection.show();
                     securityStage.show();
                     wrongUsername.setText("");
                     wrongPassword.setText("");
@@ -379,6 +410,18 @@ public class RegisterMenu extends Application {
             }
         });
 
+        logIn.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                try {
+                    stage.setTitle("Login Menu");
+                    new LoginMenu().start(stage);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+
         anchorPane.getChildren().addAll(username, password, passwordConfirmation, nickname, email,
                 showPassword, showPasswordConfirmation, signUp, logIn, wrongUsername, wrongPassword, wrongEmail,
                 wrongPasswordConfirmation, wrongNickname, hiddenPasswordConfirmation, hiddenPassword,
@@ -397,10 +440,20 @@ public class RegisterMenu extends Application {
         });
     }
 
+    private String avatarAddressRandom() {
+        Random random = new Random();
+        int randomInt = random.nextInt(10) + 1;
+        Image image = new Image(getClass().getResource("/profile/" + randomInt + ".png").toExternalForm());
+        return image.getUrl();
+    }
+
     private void selectSecurityQuestion(MenuItem menuItem, MenuButton menuButton, Text text) {
         menuItem.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+                if (menuItem.getText().equals("What is my father's name?")) questionNumber = 1;
+                else if (menuItem.getText().equals("What was my first pet's name?")) questionNumber = 2;
+                else questionNumber = 3;
                 text.setText("");
                 menuButton.setText(menuItem.getText());
             }
