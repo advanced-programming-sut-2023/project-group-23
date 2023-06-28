@@ -2,20 +2,49 @@
 
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
     <children>
-        <Circle fill="DODGERBLUE" layoutX="91.0" layoutY="78.0" radius="46.0" stroke="BLACK" strokeType="INSIDE" />
-        <Label layoutX="206.0" layoutY="76.0" text="Username:" />
-        <Label layoutX="270.0" layoutY="91.0" prefHeight="17.0" prefWidth="265.0" />
-        <Label layoutX="207.0" layoutY="124.0" text="Password:" />
-        <Label layoutX="270.0" layoutY="139.0" prefHeight="17.0" prefWidth="265.0" />
-        <Label layoutX="207.0" layoutY="174.0" text="Nickname:" />
-        <Label layoutX="270.0" layoutY="189.0" prefHeight="17.0" prefWidth="192.0" />
-        <Label layoutX="207.0" layoutY="224.0" text="Email:" />
-        <Label layoutX="246.0" layoutY="239.0" prefHeight="17.0" prefWidth="343.0" />
-        <Label layoutX="207.0" layoutY="277.0" text="Slogan:" />
-        <Label layoutX="254.0" layoutY="292.0" prefHeight="17.0" prefWidth="343.0" />
+        <Label layoutX="206.0" layoutY="76.0" text="Username:" textFill="RED">
+         <font>
+            <Font size="20.0" />
+         </font></Label>
+        <Label layoutX="320.0" layoutY="97.0" prefHeight="17.0" prefWidth="265.0" textFill="RED">
+         <font>
+            <Font size="20.0" />
+         </font></Label>
+        <Label layoutX="207.0" layoutY="124.0" text="Password:" textFill="#d70000">
+         <font>
+            <Font size="20.0" />
+         </font></Label>
+        <Label layoutX="320.0" layoutY="145.0" prefHeight="17.0" prefWidth="265.0" textFill="#d70000">
+         <font>
+            <Font size="20.0" />
+         </font></Label>
+        <Label layoutX="207.0" layoutY="174.0" text="Nickname:" textFill="#990000">
+         <font>
+            <Font size="20.0" />
+         </font></Label>
+        <Label layoutX="322.0" layoutY="195.0" prefHeight="30.0" prefWidth="266.0" textFill="#990000">
+         <font>
+            <Font size="20.0" />
+         </font></Label>
+        <Label layoutX="207.0" layoutY="224.0" text="Email:" textFill="#8e0303">
+         <font>
+            <Font size="20.0" />
+         </font></Label>
+        <Label layoutX="328.0" layoutY="245.0" prefHeight="18.0" prefWidth="266.0" textFill="#8e0303">
+         <font>
+            <Font size="20.0" />
+         </font></Label>
+        <Label layoutX="207.0" layoutY="277.0" text="Slogan:" textFill="#430000">
+         <font>
+            <Font size="20.0" />
+         </font></Label>
+        <Label layoutX="326.0" layoutY="298.0" prefHeight="18.0" prefWidth="258.0" textFill="#430000">
+         <font>
+            <Font size="20.0" />
+         </font></Label>
     </children>
 </AnchorPane>

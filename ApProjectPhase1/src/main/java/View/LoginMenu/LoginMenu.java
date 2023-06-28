@@ -15,8 +15,9 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Border;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
@@ -129,6 +130,12 @@ public class LoginMenu extends Application {
     public void start(Stage stage) throws Exception {
         AnchorPane anchorPane = FXMLLoader.load(new URL(LoginMenu.class.getResource("/View/Login.fxml").toExternalForm()));
 
+        BackgroundSize backgroundSize = new BackgroundSize(600, 600, false, false, false, false);
+        BackgroundImage backgroundImage = new BackgroundImage(new Image(getClass()
+                .getResource("/menuBackground/8.jpg").toExternalForm()), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.CENTER, backgroundSize);
+        Background background = new Background(backgroundImage);
+        anchorPane.setBackground(background);
 
 
         TextField username = new TextField();
@@ -139,6 +146,7 @@ public class LoginMenu extends Application {
         wrongUsername = new Label();
         wrongUsername.setLayoutX(388);
         wrongUsername.setLayoutY(126);
+        wrongUsername.setTextFill(Color.RED);
 
         PasswordField hiddenPassword = new PasswordField();
         hiddenPassword.setLayoutX(225);
@@ -148,6 +156,7 @@ public class LoginMenu extends Application {
         wrongPassword = new Label();
         wrongPassword.setLayoutX(388);
         wrongPassword.setLayoutY(169);
+        wrongPassword.setTextFill(Color.RED);
 
         TextField visiblePassword = new TextField();
         visiblePassword.setLayoutX(225);
@@ -182,6 +191,12 @@ public class LoginMenu extends Application {
 
 
         AnchorPane forgotPasswordPane = new AnchorPane();
+        BackgroundSize backgroundSize1 = new BackgroundSize(400, 200, false, false, false, false);
+        BackgroundImage backgroundImage1 = new BackgroundImage(new Image(getClass()
+                .getResource("/menuBackground/9.jpg").toExternalForm()), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.CENTER, backgroundSize1);
+        Background background1 = new Background(backgroundImage1);
+        forgotPasswordPane.setBackground(background1);
         Stage dialog = new Stage();
         Scene sceneDialog = new Scene(forgotPasswordPane, 400, 200);
         dialog.setScene(sceneDialog);
@@ -217,6 +232,7 @@ public class LoginMenu extends Application {
         wrongCaptcha = new Label("");
         wrongCaptcha.setLayoutX(250);
         wrongCaptcha.setLayoutY(470);
+        wrongCaptcha.setTextFill(Color.RED);
 
         refresh.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -312,6 +328,8 @@ public class LoginMenu extends Application {
         text.setX(20);
         text.setY(50);
         text.setText(user.getUserSecurityQuestion());
+        text.setFont(new Font(18));
+        text.setFill(Color.ROYALBLUE);
 
         TextField answer = new TextField();
         answer.setPromptText("Answer");
@@ -325,6 +343,7 @@ public class LoginMenu extends Application {
         Text wrongAnswer = new Text("");
         wrongAnswer.setX(180);
         wrongAnswer.setY(87);
+        wrongAnswer.setFill(Color.RED);
 
         enter.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override

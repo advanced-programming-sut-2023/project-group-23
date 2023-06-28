@@ -17,7 +17,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -39,6 +39,13 @@ public class RegisterMenu extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         AnchorPane anchorPane = FXMLLoader.load(new URL(RegisterMenu.class.getResource("/View/Register.fxml").toString()));
+
+        BackgroundSize backgroundSize = new BackgroundSize(600, 800, false, false, false, false);
+        BackgroundImage backgroundImage = new BackgroundImage(new Image(getClass()
+                .getResource("/menuBackground/10.jpg").toExternalForm()), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.CENTER, backgroundSize);
+        Background background = new Background(backgroundImage);
+        anchorPane.setBackground(background);
 
         TextField username = new TextField();
         username.setPromptText("Username");
