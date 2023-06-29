@@ -47,24 +47,11 @@ public class ShopMenuController {
     }
 
 
-    public static String buyItem(Matcher matcher) {
-        String command = matcher.group(1);
-        String itemName = null;
-        String itemAmountField = null;
+    public static String buyItem(String itemName, String buy) {
         Integer totalPrice = 0;
         Integer buyAmount = 0;
         Integer newAmount = 0;
-        Matcher matcher1 = ShopMenuCommands.getMatcher(command, ShopMenuCommands.ITEM_NAME_FIELD);
-        if (!matcher1.find()) return "item field is empty";
-        else if (Controller.findCounter(matcher1) > 1) return "invalid command";
-        if (matcher1.find(0)) itemName = matcher1.group("itemName");
-        if (!(matcher1 = ShopMenuCommands.getMatcher(command, ShopMenuCommands.ITEM_AMOUNT)).find()) return "amount field is empty";
-        else if (Controller.findCounter(matcher1) > 1) return "invalid command";
-        if (matcher1.find(0)) itemAmountField = matcher1.group("itemAmount");
-        if (!(matcher1 = ShopMenuCommands.getMatcher(itemAmountField, ShopMenuCommands.ITEM_AMOUNT_VALIDITY)).matches())
-            return "amount must be an integer";
-        buyAmount = Integer.parseInt(matcher1.group(1));
-        if (buyAmount <= 0) return "amount must be a positive integer";
+        buyAmount = Integer.parseInt(buy);
         ResourceType resourceType = isResource(itemName);
         FoodType foodType = isFood(itemName);
         if (resourceType == null && foodType == null) return "there isn't any item with this name";
@@ -75,52 +62,41 @@ public class ShopMenuController {
             if (totalPrice > currentGovernment.getGold()) return "you don't have enough gold for buying this food";
             currentGovernment.changeFoodAmount(foodType, newAmount);
             currentGovernment.setGold(currentGovernment.getGold() - totalPrice);
-            return "you bought " + buyAmount + " of " + foodType.getName() + " with total price " + totalPrice;
+            return "bought!";
         }
         newAmount += (currentGovernment.getAmountByResource(resourceType) + buyAmount);
+        System.out.println(newAmount);
+        System.out.println(currentGovernment.getMaxResourceStorage());
         if (newAmount > currentGovernment.getMaxResourceStorage()) return "you don't have enough space for this resource";
         totalPrice = buyAmount * resourceType.getBuyPrice();
         if (totalPrice > currentGovernment.getGold()) return "you don't have enough gold for buying this resource";
         currentGovernment.changeAmountOfResource(resourceType, newAmount);
         currentGovernment.setGold(currentGovernment.getGold() - totalPrice);
-        return "you bought " + buyAmount + " of " + resourceType.getName() + " with total price " + totalPrice;
+        return "bought!";
     }
 
-    public static String sellItem(Matcher matcher) {
-        String command = matcher.group(1);
-        String itemName = null;
-        String itemAmountField = null;
+    public static String sellItem(String itemName, String sell) {
         Integer newAmount = 0;
         Integer sellAmount = 0;
         Integer totalPrice = 0;
-        Matcher matcher1 = ShopMenuCommands.getMatcher(command, ShopMenuCommands.ITEM_NAME_FIELD);
-        if (!matcher1.find()) return "item field is empty";
-        else if (Controller.findCounter(matcher1) > 1) return "invalid command";
-        if (matcher1.find(0)) itemName = matcher1.group("itemName").replace("\"", "");
-        if (!(matcher1 = ShopMenuCommands.getMatcher(command, ShopMenuCommands.ITEM_AMOUNT)).find()) return "amount field is empty";
-        else if (Controller.findCounter(matcher1) > 1) return "invalid command";
-        if (matcher1.find(0)) itemAmountField = matcher1.group("itemAmount");
-        if (!(matcher1 = ShopMenuCommands.getMatcher(itemAmountField, ShopMenuCommands.ITEM_AMOUNT_VALIDITY)).matches())
-            return "amount must be an integer";
-        sellAmount = Integer.parseInt(matcher1.group(1));
+        sellAmount = Integer.parseInt(sell);
         if (sellAmount <= 0) return "amount must be a positive integer";
         ResourceType resourceType = isResource(itemName);
         FoodType foodType = isFood(itemName);
-        if (resourceType == null && foodType == null) return "there isn't any item with this name";
         if (foodType != null) {
             newAmount = (currentGovernment.getFoodAmountByFood(foodType) - sellAmount);
             if (newAmount < 0) return "you can't sell foods more than your storages balance";
             totalPrice = sellAmount * resourceType.getSellPrice();
-            currentGovernment.changeAmountOfResource(resourceType, newAmount);
+            currentGovernment.changeFoodAmount(foodType, newAmount);
             currentGovernment.setGold(currentGovernment.getGold() + totalPrice);
-            return "you sold " + sellAmount + " of " + resourceType.getName() + " with total price " + totalPrice;
+            return "sold!";
         }
         newAmount = (currentGovernment.getAmountByResource(resourceType) - sellAmount);
         if (newAmount < 0) return "you can't sell resources more than your storages balance";
         totalPrice = sellAmount * resourceType.getSellPrice();
         currentGovernment.changeAmountOfResource(resourceType, newAmount);
         currentGovernment.setGold(currentGovernment.getGold() + totalPrice);
-        return "you sold " + sellAmount + " of " + resourceType.getName() + " with total price " + totalPrice;
+        return "sold!";
     }
 
     public static void setCurrentGovernment(Government currentGovernment) {
