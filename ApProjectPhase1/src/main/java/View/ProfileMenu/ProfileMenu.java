@@ -218,7 +218,12 @@ public class ProfileMenu extends Application {
         scoreBoard.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                //TODO: show scoreboard
+                try {
+                    stage.setTitle("ScoreBoard");
+                    new ScoreBoard().start(stage);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
 

@@ -47,8 +47,10 @@ public class User {
     private int userSecurityQuestionNumber;
     private String userAnswerToSecurityQuestion;
     private int userHighScore;
+    private String avatarAddress;
 
-    public User(String username, String password, String nickname, String slogan, String email, int userSecurityQuestion, String userAnswerToSecurityQuestion) {
+    public User(String username, String password, String nickname, String slogan, String email, int userSecurityQuestion
+            , String userAnswerToSecurityQuestion, String avatarAddress) {
         this.username = username;
         this.password = DigestUtils.sha256Hex(password);
         this.nickname = nickname;
@@ -57,6 +59,7 @@ public class User {
         this.userSecurityQuestionNumber = userSecurityQuestion;
         this.userAnswerToSecurityQuestion = userAnswerToSecurityQuestion;
         this.userHighScore = 0;
+        this.avatarAddress = avatarAddress;
     }
 
     public static ArrayList<User> getUsers() {
@@ -115,7 +118,7 @@ public class User {
         users.add(user);
     }
 
-    private static ArrayList<User> copyOfUserList(ArrayList<User> userList) {
+    public static ArrayList<User> copyOfUserList(ArrayList<User> userList) {
         ArrayList<User> copiedList = new ArrayList<>();
         for (User user : userList) {
             copiedList.add(user);
@@ -130,7 +133,7 @@ public class User {
         return true;
     }
 
-    private static void sortUsers(ArrayList<User> userList) {
+    public static void sortUsers(ArrayList<User> userList) {
         int listSize = userList.size();
         for (int i = 1; i < listSize; i ++) {
             for (int j = 0; j < i; j ++) {
@@ -169,6 +172,46 @@ public class User {
             if(user.getNickname().equals(nickname))
                 return user;
         return null;
+    }
+
+    public static String famousSlogans(Integer rank) {
+        HashMap<String, Integer> slogans = new HashMap<>();
+        for (User user : users) {
+            if (!user.getSlogan().equals("")) {
+                if (slogans.containsKey(user.getSlogan()))
+                    slogans.put(user.getSlogan(), slogans.get(user.getSlogan()) + 1);
+                else slogans.put(user.getSlogan(), 1);
+            }
+        }
+        if (rank > slogans.size()) return "";
+        String first = "";
+        String second = "";
+        String third = "";
+        int rank1 = 0;
+        int rank2 = 0;
+        int rank3 = 0;
+        for (String s : slogans.keySet()) {
+            if (slogans.get(s) > rank1) {
+                rank3 = rank2;
+                third = second;
+                rank2 = rank1;
+                second = first;
+                rank1 = slogans.get(s);
+                first = s;
+            } else if (slogans.get(s) > rank2) {
+                rank3 = rank2;
+                third = second;
+                rank2 = slogans.get(s);
+                second = s;
+            } else if (slogans.get(s) > rank3) {
+                rank3 = slogans.get(s);
+                third = s;
+            }
+        }
+        if (rank.equals(1)) return first;
+        if (rank.equals(2)) return second;
+        if (rank.equals(3)) return third;
+        return "";
     }
 
     public static boolean checkPasswordByUsername(String username, String password){
@@ -239,5 +282,13 @@ public class User {
 
     public String getNoEncryptedPassword() {
         return noEncryptedPassword;
+    }
+
+    public String getAvatarAddress() {
+        return avatarAddress;
+    }
+
+    public void setAvatarAddress(String avatarAddress) {
+        this.avatarAddress = avatarAddress;
     }
 }
