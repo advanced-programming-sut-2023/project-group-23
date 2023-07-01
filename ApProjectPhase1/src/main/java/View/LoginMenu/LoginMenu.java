@@ -1,5 +1,6 @@
 package View.LoginMenu;
 
+import Controller.Controller;
 import Controller.LoginMenuController;
 import Model.User;
 import View.MainMenu.MainMenu;
@@ -7,14 +8,21 @@ import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.AccessibleRole;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Collection;
@@ -23,6 +31,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class LoginMenu extends Application {
+
+    private Label wrongUsername;
+    private Label wrongPassword;
+    private Label wrongCaptcha;
+    private String captchaValue;
+    private String captchaEntered;
 
     public static void run(Scanner scanner) throws IOException {
         String command;
@@ -69,7 +83,7 @@ public class LoginMenu extends Application {
         }
     }
 
-    public static String setPasswordRandomly(Scanner scanner) {
+    public static String setPasswordRandomly() {
         String uppercaseLetters = "ABCDEFGHIJKLMNOPQURESTUVWXYZ";
         String lowercaseLetters = "abcdefghijklmnopqurestuvwxyz";
         String digits = "0123456789";
@@ -90,16 +104,7 @@ public class LoginMenu extends Application {
             index = (int) (specialCharacters.length() * Math.random());
             passwordBuilder.append(specialCharacters.charAt(index));
         }
-        String generatedPassword = passwordBuilder.toString();
-
-        System.out.println("Your random password is: " + generatedPassword);
-        System.out.println("Please re-enter your password here:");
-
-        String passwordConfirmation = scanner.nextLine();
-        if(LoginMenuController.passwordsMatch(generatedPassword, passwordConfirmation))
-            return generatedPassword;
-        else
-            return null;
+        return passwordBuilder.toString();
     }
 
     public static String pickSecurityQuestion(Scanner scanner) {
@@ -120,57 +125,266 @@ public class LoginMenu extends Application {
     private static void forgotMyPassword(Scanner scanner) {
 
     }
-    @FXML
-    private TextField username;
-    @FXML
-    private Label wrongUsername;
-    @FXML
-    private PasswordField password;
-    @FXML
-    private Label wrongPassword;
-    @FXML
-    private CheckBox showPassword;
-    @FXML
-    private Button logIn;
 
     @Override
     public void start(Stage stage) throws Exception {
         AnchorPane anchorPane = FXMLLoader.load(new URL(LoginMenu.class.getResource("/View/Login.fxml").toExternalForm()));
 
+        BackgroundSize backgroundSize = new BackgroundSize(600, 600, false, false, false, false);
+        BackgroundImage backgroundImage = new BackgroundImage(new Image(getClass()
+                .getResource("/menuBackground/8.jpg").toExternalForm()), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.CENTER, backgroundSize);
+        Background background = new Background(backgroundImage);
+        anchorPane.setBackground(background);
 
 
-        logIn.setOnMouseClicked(new EventHandler<MouseEvent>() {
+        TextField username = new TextField();
+        username.setLayoutX(225);
+        username.setLayoutY(122);
+        username.setPromptText("Username");
+
+        wrongUsername = new Label();
+        wrongUsername.setLayoutX(388);
+        wrongUsername.setLayoutY(126);
+        wrongUsername.setTextFill(Color.RED);
+
+        PasswordField hiddenPassword = new PasswordField();
+        hiddenPassword.setLayoutX(225);
+        hiddenPassword.setLayoutY(165);
+        hiddenPassword.setPromptText("Password");
+
+        wrongPassword = new Label();
+        wrongPassword.setLayoutX(388);
+        wrongPassword.setLayoutY(169);
+        wrongPassword.setTextFill(Color.RED);
+
+        TextField visiblePassword = new TextField();
+        visiblePassword.setLayoutX(225);
+        visiblePassword.setLayoutY(165);
+        visiblePassword.setVisible(false);
+        visiblePassword.setPromptText("Password");
+
+        CheckBox showPassword = new CheckBox();
+        showPassword.setLayoutX(247);
+        showPassword.setLayoutY(200);
+        showPassword.setText("show password");
+
+        Button logIn = new Button();
+        logIn.setLayoutX(275);
+        logIn.setLayoutY(234);
+        logIn.setText("Log In");
+
+        Button forgotPassword = new Button();
+        forgotPassword.setLayoutX(235);
+        forgotPassword.setLayoutY(275);
+        forgotPassword.setText("forgot my password");
+
+        Button signUp = new Button();
+        signUp.setLayoutX(270);
+        signUp.setLayoutY(334);
+        signUp.setText("Sign Up");
+
+
+        showPassword(showPassword, hiddenPassword, visiblePassword);
+
+
+
+
+        AnchorPane forgotPasswordPane = new AnchorPane();
+        BackgroundSize backgroundSize1 = new BackgroundSize(400, 200, false, false, false, false);
+        BackgroundImage backgroundImage1 = new BackgroundImage(new Image(getClass()
+                .getResource("/menuBackground/9.jpg").toExternalForm()), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.CENTER, backgroundSize1);
+        Background background1 = new Background(backgroundImage1);
+        forgotPasswordPane.setBackground(background1);
+        Stage dialog = new Stage();
+        Scene sceneDialog = new Scene(forgotPasswordPane, 400, 200);
+        dialog.setScene(sceneDialog);
+        dialog.setTitle("forgot password");
+        dialog.setResizable(false);
+
+        signUp.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                if (Pattern.compile("^\\s*$").matcher(username.getText()).matches())
-                    wrongUsername.setText("Username field is empty");
-                else if (Pattern.compile("^\\s*$").matcher(password.getText()).matches())
-                    wrongPassword.setText("Password field is empty");
-                else if (!LoginMenuController.isUserExist(username.getText()))
-                    wrongUsername.setText("This username does not exists");
-                else if (!User.getUserByUsername(username.getText()).isPasswordCorrect(password.getText()))
-                    wrongPassword.setText("username and password didn't match!");
-                else {
-                    //TODO : login
+                try {
+                    stage.setTitle("Register Menu");
+                    new RegisterMenu().start(stage);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
                 }
             }
         });
 
-        RegisterMenu.showPasswordFields(showPassword);
+        String address = Controller.captchaAddress();
+        Matcher matcher = Pattern.compile("(\\S+).png").matcher(address);
+        if (matcher.find()) captchaValue = matcher.group(1);
+        ImageView captcha = new ImageView(new Image(getClass().getResource("/captcha/" + address).toExternalForm()));
+        captcha.setX(330);
+        captcha.setY(400);
+
+        ImageView refresh = new ImageView(new Image(getClass().getResource("/button/refresh.png").toExternalForm()));
+        refresh.setY(410);
+        refresh.setX(490);
+        refresh.setFitWidth(40);
+        refresh.setFitHeight(40);
+
+        TextArea captchaField = new TextArea();
+        captchaField.setLayoutY(410);
+        captchaField.setLayoutX(200);
+        captchaField.setPrefWidth(100);
+        captchaField.setPrefHeight(20);
+
+        wrongCaptcha = new Label("");
+        wrongCaptcha.setLayoutX(250);
+        wrongCaptcha.setLayoutY(470);
+        wrongCaptcha.setTextFill(Color.RED);
+
+        refresh.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                refresh(captcha, captchaField);
+            }
+        });
+
+        logIn.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                captchaEntered = captchaField.getText();
+                if (hiddenPassword.isVisible()) login(username.getText(), hiddenPassword.getText(), stage);
+                else login(username.getText(), visiblePassword.getText(), stage);
+                refresh(captcha, captchaField);
+            }
+        });
+
+        forgotPassword.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                wrongUsername.setText("");
+                wrongPassword.setText("");
+                wrongCaptcha.setText("");
+                captchaEntered = captchaField.getText();
+                if (captchaEntered.equals(captchaValue) && LoginMenuController.isUserExist(username.getText())) {
+                    if (!dialog.isShowing()) {
+                        captchaField.clear();
+                        User user = User.getUserByUsername(username.getText());
+                        initializeDialog(dialog, forgotPasswordPane, user, stage);
+                        dialog.show();
+                    }
+                } else {
+                    wrongUsername.setText(LoginMenuController.loginCheckUsername(username.getText()));
+                    if (!captchaEntered.equals(captchaValue)) {
+                        wrongCaptcha.setText("please write captcha carefully!");
+                    }
+                }
+                refresh(captcha, captchaField);
+            }
+        });
 
 
-        Label securityQuestion = new Label("");
-        TextField question = new TextField();
-        question.setPromptText("Answer");
-        question.setVisible(false);
-        Popup popup = new Popup();
-        popup.getContent().addAll(securityQuestion, question);
-
-
-
-        anchorPane.getChildren().addAll((Collection<? extends Node>) popup);
+        anchorPane.getChildren().addAll(username, hiddenPassword, visiblePassword, showPassword, logIn, forgotPassword,
+                signUp, wrongPassword, wrongUsername, captcha, refresh, captchaField, wrongCaptcha);
         Scene scene = new Scene(anchorPane);
+        stage.setTitle("Login Menu");
         stage.setScene(scene);
+        stage.setResizable(false);
         stage.show();
+    }
+
+
+    public static void showPassword(CheckBox checkBox, PasswordField passwordField, TextField textField) {
+        checkBox.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if (checkBox.isSelected()) {
+                    textField.setText(passwordField.getText());
+                    passwordField.setVisible(false);
+                    textField.setVisible(true);
+                    return;
+                }
+                passwordField.setText(textField.getText());
+                passwordField.setVisible(true);
+                textField.setVisible(false);
+            }
+        });
+    }
+
+    private boolean checkUserPass(String username, String password) {
+        wrongPassword.setText(LoginMenuController.loginCheckPassword(password, username));
+        wrongUsername.setText(LoginMenuController.loginCheckUsername(username));
+        return wrongUsername.getText().equals("") && wrongPassword.getText().equals("");
+    }
+
+    private void login(String username, String password, Stage stage) {
+        checkUserPass(username, password);
+        if (captchaValue.equals(captchaEntered) && checkUserPass(username, password)) {
+            User.setCurrentUser(User.getUserByUsername(username));
+            try {
+                stage.setTitle("Main Menu");
+                new MainMenu().start(stage);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        } else {
+            if (!captchaEntered.equals(captchaValue))
+                wrongCaptcha.setText("please write captcha carefully!");
+            else wrongCaptcha.setText("");
+        }
+    }
+
+    private void initializeDialog(Stage stage, AnchorPane anchorPane, User user, Stage primaryStage) {
+        Text text = new Text();
+        text.setX(20);
+        text.setY(50);
+        text.setText(user.getUserSecurityQuestion());
+        text.setFont(new Font(18));
+        text.setFill(Color.ROYALBLUE);
+
+        TextField answer = new TextField();
+        answer.setPromptText("Answer");
+        answer.setLayoutY(70);
+        answer.setLayoutX(20);
+
+        Button enter = new Button("Enter");
+        enter.setLayoutY(120);
+        enter.setLayoutX(180);
+
+        Text wrongAnswer = new Text("");
+        wrongAnswer.setX(180);
+        wrongAnswer.setY(87);
+        wrongAnswer.setFill(Color.RED);
+
+        enter.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if (!answer.getText().equals(user.getUserAnswerToSecurityQuestion())) wrongAnswer.setText("Your answer" +
+                        " didn't correct, try again!");
+                else {
+                    User.setCurrentUser(user);
+                    try {
+                        primaryStage.setTitle("Main Menu");
+                        new MainMenu().start(primaryStage);
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                    stage.close();
+                }
+            }
+        });
+
+
+        anchorPane.getChildren().addAll(text, enter, answer, wrongAnswer);
+    }
+
+    public void refresh(ImageView imageView, TextArea textArea) {
+        String newAddress = Controller.captchaAddress();
+        Matcher matcher = Pattern.compile("(\\S+).png").matcher(newAddress);
+        if (matcher.find()) captchaValue = matcher.group(1);
+        imageView.setImage(new Image(getClass().getResource("/captcha/" + newAddress).toExternalForm()));
+        textArea.clear();
+    }
+
+    public static void main(String[] args) throws FileNotFoundException {
+        User.initializeUsersFromDatabase();
+        launch();
     }
 }

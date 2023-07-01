@@ -1,30 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-
-<?import javafx.scene.text.Font?>
-
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
 
 <AnchorPane prefHeight="708.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.LoginMenu.RegisterMenu">
 <children>
-    <TextField fx:id="username" layoutX="228.0" layoutY="48.0" promptText="Username" />
-    <PasswordField fx:id="password" layoutX="228.0" layoutY="93.0" promptText="Password" />
-    <PasswordField fx:id="passwordConfirmation" layoutX="228.0" layoutY="159.0" promptText="Password Confirmation" />
-    <CheckBox fx:id="showPassword" layoutX="275.0" layoutY="125.0" mnemonicParsing="false" text="Show" />
-    <CheckBox fx:id="showPasswordConfirmation" layoutX="274.0" layoutY="191.0" mnemonicParsing="false" text="Show" />
-    <TextField fx:id="email" layoutX="229.0" layoutY="277.0" promptText="Email" />
-    <Button fx:id="logIn" layoutX="279.0" layoutY="668.0" mnemonicParsing="false" onMouseClicked="#enterLogin" text="Log In" />
-    <Label layoutX="234.0" layoutY="641.0" text="Do you have an account?" />
-    <Button fx:id="signUp" layoutX="271.0" layoutY="608.0" mnemonicParsing="false" text="Sign Up" />
-    <TextField fx:id="nickname" layoutX="228.0" layoutY="228.0" promptText="Nickname" />
-    <Label fx:id="wrongUsername" layoutX="396.0" layoutY="52.0" prefHeight="18.0" prefWidth="198.0" />
-    <Label fx:id="wrongPassword" layoutX="396.0" layoutY="97.0" prefHeight="18.0" prefWidth="198.0" />
-    <Label fx:id="wrongPasswordConfirmation" layoutX="396.0" layoutY="163.0" prefHeight="18.0" prefWidth="198.0" />
-    <Label fx:id="wrongNickname" layoutX="396.0" layoutY="232.0" prefHeight="18.0" prefWidth="198.0" />
-    <Label fx:id="wrongEmail" layoutX="396.0" layoutY="281.0" prefHeight="18.0" prefWidth="198.0" />
+    <Label layoutX="233.0" layoutY="354.0" text="Do you have an account?" />
 </children>
 </AnchorPane>

@@ -29,16 +29,28 @@ public class User {
         put(3, "I won't have my revenge, in this life or the next");
     }};
 
+    public static ArrayList<String> captchaList = new ArrayList<>() {{
+        add("1181");add("1381");add("1491");add("1722");add("1959");add("2163");add("2177");add("2723");add("2785");
+        add("3541");add("3847");add("3855");add("3876");add("3967");add("4185");add("4310");add("4487");add("4578");
+        add("4602");add("4681");add("4924");add("5326");add("5463");add("5771");add("5849");add("6426");add("6553");
+        add("6601");add("6733");add("6960");add("7415");add("7609");add("7755");add("7825");add("7905");add("8003");
+        add("8070");add("8368");add("8455");add("8506");add("8555");add("8583");add("8692");add("8776");add("8972");
+        add("8996");add("9061");add("9386");add("9582");add("9633");
+    }};
+
     private String username;
     private String password;
+    private String noEncryptedPassword;
     private String nickname;
     private String slogan;
     private String email;
     private int userSecurityQuestionNumber;
     private String userAnswerToSecurityQuestion;
     private int userHighScore;
+    private String avatarAddress;
 
-    public User(String username, String password, String nickname, String slogan, String email, int userSecurityQuestion, String userAnswerToSecurityQuestion) {
+    public User(String username, String password, String nickname, String slogan, String email, int userSecurityQuestion
+            , String userAnswerToSecurityQuestion, String avatarAddress) {
         this.username = username;
         this.password = DigestUtils.sha256Hex(password);
         this.nickname = nickname;
@@ -47,6 +59,7 @@ public class User {
         this.userSecurityQuestionNumber = userSecurityQuestion;
         this.userAnswerToSecurityQuestion = userAnswerToSecurityQuestion;
         this.userHighScore = 0;
+        this.avatarAddress = avatarAddress;
     }
 
     public static ArrayList<User> getUsers() {
@@ -68,6 +81,7 @@ public class User {
     }
 
     public void setPassword(String password) throws IOException {
+        this.noEncryptedPassword = password;
         this.password = DigestUtils.sha256Hex(password);
         User.updateDatabase();
     }
@@ -104,7 +118,7 @@ public class User {
         users.add(user);
     }
 
-    private static ArrayList<User> copyOfUserList(ArrayList<User> userList) {
+    public static ArrayList<User> copyOfUserList(ArrayList<User> userList) {
         ArrayList<User> copiedList = new ArrayList<>();
         for (User user : userList) {
             copiedList.add(user);
@@ -119,7 +133,7 @@ public class User {
         return true;
     }
 
-    private static void sortUsers(ArrayList<User> userList) {
+    public static void sortUsers(ArrayList<User> userList) {
         int listSize = userList.size();
         for (int i = 1; i < listSize; i ++) {
             for (int j = 0; j < i; j ++) {
@@ -158,6 +172,46 @@ public class User {
             if(user.getNickname().equals(nickname))
                 return user;
         return null;
+    }
+
+    public static String famousSlogans(Integer rank) {
+        HashMap<String, Integer> slogans = new HashMap<>();
+        for (User user : users) {
+            if (!user.getSlogan().equals("")) {
+                if (slogans.containsKey(user.getSlogan()))
+                    slogans.put(user.getSlogan(), slogans.get(user.getSlogan()) + 1);
+                else slogans.put(user.getSlogan(), 1);
+            }
+        }
+        if (rank > slogans.size()) return "";
+        String first = "";
+        String second = "";
+        String third = "";
+        int rank1 = 0;
+        int rank2 = 0;
+        int rank3 = 0;
+        for (String s : slogans.keySet()) {
+            if (slogans.get(s) > rank1) {
+                rank3 = rank2;
+                third = second;
+                rank2 = rank1;
+                second = first;
+                rank1 = slogans.get(s);
+                first = s;
+            } else if (slogans.get(s) > rank2) {
+                rank3 = rank2;
+                third = second;
+                rank2 = slogans.get(s);
+                second = s;
+            } else if (slogans.get(s) > rank3) {
+                rank3 = slogans.get(s);
+                third = s;
+            }
+        }
+        if (rank.equals(1)) return first;
+        if (rank.equals(2)) return second;
+        if (rank.equals(3)) return third;
+        return "";
     }
 
     public static boolean checkPasswordByUsername(String username, String password){
@@ -217,8 +271,24 @@ public class User {
         this.email = email;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
     public void setUserHighScore(int userHighScore) throws IOException {
         this.userHighScore = userHighScore;
         User.updateDatabase();
+    }
+
+    public String getNoEncryptedPassword() {
+        return noEncryptedPassword;
+    }
+
+    public String getAvatarAddress() {
+        return avatarAddress;
+    }
+
+    public void setAvatarAddress(String avatarAddress) {
+        this.avatarAddress = avatarAddress;
     }
 }

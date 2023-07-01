@@ -132,6 +132,55 @@ public class LoginMenuController {
         return null;
     }*/
 
+    public static boolean signUp(String username, String password, String passwordConfirmation,
+                           String email, String nickname, String slogan) {
+        if (!checkUsernameForRegister(username).equals("it's ok!")) return false;
+        if (!checkPasswordForRegister(password).equals("it's ok!")) return false;
+        if (!checkPasswordConfirmationForRegister(password, passwordConfirmation).equals("it's ok!")) return false;
+        if (!checkEmailForRegister(email).equals("it's ok!")) return false;
+        if (!checkNicknameForRegister(nickname).equals("it's ok!")) return false;
+        if (username == null || username.equals("")) return false;
+        if (password == null || password.equals("")) return false;
+        if (passwordConfirmation == null || passwordConfirmation.equals("")) return false;
+        if (email == null || email.equals("")) return false;
+        return true;
+    }
+
+    public static String checkPasswordConfirmationForRegister(String password, String passwordConfirmation) {
+        if (passwordConfirmation.equals(password)) return "it's ok!";
+        return "it isn't same to password!";
+    }
+
+    public static String checkEmailForRegister(String email) {
+        if (!isEmailFormatCorrect(email))
+            return "email format is not correct";
+        if (isEmailExist(email))
+            return "this email has been used";
+        return "it's ok!";
+    }
+
+    public static String checkNicknameForRegister(String nickname) {
+        if (!isNicknameCorrect(nickname))
+            return "nickname format is not correct";
+        if (isNicknameExist(nickname))
+            return "this nickname has been used";
+        return "it's ok!";
+    }
+
+    public static String checkUsernameForRegister(String username) {
+        if (isUserExist(username)) return "this username already exists!";
+        if (!isUsernameFormatCorrect(username)) return "username format is not correct!";
+        return "it's ok!";
+    }
+
+    public static String checkPasswordForRegister(String password) {
+        if (!isPasswordFormatCorrect(password))
+            return "password format is not correct!";
+        if (!strengthOfPassword(password).equals("ok"))
+            return strengthOfPassword(password);
+        else return "it's ok!";
+    }
+
     public static String register(String content, Scanner scanner) throws IOException {
         Matcher matcher;
 
@@ -223,7 +272,7 @@ public class LoginMenuController {
             slogan = setSloganRandomly();
 
         if (isPasswordRandom)
-            if ((password = LoginMenu.setPasswordRandomly(scanner)) == null)
+            if ((password = LoginMenu.setPasswordRandomly()) == null)
                 return "password and password confirmation are not the same";
 
         String securityQuestionContent = LoginMenu.pickSecurityQuestion(scanner);
@@ -244,11 +293,25 @@ public class LoginMenuController {
         matcher.find();
         String answer = matcher.group("answer");
 
-        User.addUser(new User(username, password, nickname, slogan, email, questionNumber, answer));
+        User.addUser(new User(username, password, nickname, slogan, email, questionNumber, answer, "salam"));
 
         User.updateDatabase();
 
         return "register successfully";
+    }
+
+    public static String loginCheckUsername(String username) {
+        if (username == null || username.equals("")) return "username field is empty!";
+        if (!isUserExist(username)) return "this username does not exists!";
+        return "";
+    }
+
+    public static String loginCheckPassword(String password, String username) {
+        if (password == null || password.equals("")) return "password field is empty!";
+        if (isUserExist(username))
+            if (!User.getUserByUsername(username).isPasswordCorrect(password))
+                return "username and password didn't match!";
+        return "";
     }
 
     public static String login(String content) throws IOException {
@@ -330,7 +393,7 @@ public class LoginMenuController {
             return strengthOfPassword(password);
 
         if (isPasswordRandom) {
-            if ((password = LoginMenu.setPasswordRandomly(scanner)) == null)
+            if ((password = LoginMenu.setPasswordRandomly()) == null)
                 return "password and password confirmation are not the same";
         }
         else {
