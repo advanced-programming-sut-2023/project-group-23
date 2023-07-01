@@ -65,8 +65,6 @@ public class ShopMenuController {
             return "bought!";
         }
         newAmount += (currentGovernment.getAmountByResource(resourceType) + buyAmount);
-        System.out.println(newAmount);
-        System.out.println(currentGovernment.getMaxResourceStorage());
         if (newAmount > currentGovernment.getMaxResourceStorage()) return "you don't have enough space for this resource";
         totalPrice = buyAmount * resourceType.getBuyPrice();
         if (totalPrice > currentGovernment.getGold()) return "you don't have enough gold for buying this resource";

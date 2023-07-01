@@ -156,25 +156,35 @@ public class PreGameController {
         return null;
     }
 
-    public static String pickGovernmentColor(String inputColor) {
-        if(inputColor.equals("reset"))
-            return "invalid color";
+    public static boolean isColorUsed(String inputColor) {
         for(Colors color : Colors.values()) {
             if(color.getName().equals(inputColor)) {
                 if(currentGame.getUsedGovernmentColors().contains(color))
-                    return "invalid color";
-                else {
-                    currentGovernment.setGovernmentColor(color);
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    public static String pickGovernmentColor(String inputColor, Government government, int i) {
+        for(Colors color : Colors.values()) {
+            if(color.getName().equals(inputColor)) {
+                if(currentGame.getUsedGovernmentColors().contains(color))
+                    return "this color has chosen!";
+                else if (i == 1) {
+                    government.setGovernmentColor(color);
                     currentGame.addToUsedGovernmentColors(color);
-                    return "you picked " + color.getName() + " color";
+                    return "ok";
                 }
             }
         }
-        return "invalid color";
+        return "";
     }
 
-    public static String placeKeep(int x, int y) {
-
+    public static String placeKeep(String xCoordinate, String yCoordinate, int num) {
+        if (!xCoordinate.matches("\\d+") || !yCoordinate.matches("\\d+")) return "coordinate must be integer!";
+        int y = Integer.parseInt(yCoordinate);
+        int x = Integer.parseInt(xCoordinate);
         if(x + 3 > 200 || x < 0)
             return "x coordinate out of bound";
         if(y + 5 > 200 || y < 0)
@@ -193,21 +203,24 @@ public class PreGameController {
                     return "tile x: " + i + ", y: " + j + " is not clear";
             }
         }
-        Building building = new Building(BuildingType.KEEP, currentGovernment, x, y);
-        for(int i = x; i < x + 3; i++) {
-            for (int j = y; j < y + 3; j++) {
-                cell = currentGame.getMap().getCellByCoordinate(i, j);
-                cell.setBuilding(building);
+        if (num == 1) {
+            Building building = new Building(BuildingType.KEEP, currentGovernment, x, y);
+            for (int i = x; i < x + 3; i++) {
+                for (int j = y; j < y + 3; j++) {
+                    cell = currentGame.getMap().getCellByCoordinate(i, j);
+                    cell.setBuilding(building);
+                }
             }
-        }
-        building = new Storage(BuildingType.STOCKPILE, StorageType.STOCKPILE, currentGovernment, x + 1, y + 3);
-        for(int i = x + 1; i < x + 3 ; i++) {
-            for(int j = y + 3 ; j < y + 5 ; j++) {
-                cell = currentGame.getMap().getCellByCoordinate(i, j);
-                cell.setBuilding(building);
+            building = new Storage(BuildingType.STOCKPILE, StorageType.STOCKPILE, currentGovernment, x + 1, y + 3);
+            for (int i = x + 1; i < x + 3; i++) {
+                for (int j = y + 3; j < y + 5; j++) {
+                    cell = currentGame.getMap().getCellByCoordinate(i, j);
+                    cell.setBuilding(building);
+                }
             }
+            return "ok";
         }
-        return "placed building successfully";
+        return "";
     }
 
     public static String clear(Matcher matcher) {

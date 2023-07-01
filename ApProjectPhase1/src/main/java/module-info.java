@@ -15,4 +15,5 @@ module ApProjectPhase1 {
     exports View.ProfileMenu;
     exports View.MainMenu;
     exports View.ShopMenu;
+    exports View.TradeMenu;
 }

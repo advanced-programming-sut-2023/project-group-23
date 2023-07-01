@@ -405,8 +405,6 @@ public class RegisterMenu extends Application {
                     else if (!LoginMenuController.checkNicknameForRegister(nickname.getText()).equals("it's ok!"))
                         wrongNickname.setText(LoginMenuController.checkNicknameForRegister(nickname.getText()));
                 }
-
-
             }
         });
 

@@ -15,7 +15,7 @@ public class PreTradeMenu {
         PreTradeMenu.currentGovernment = currentGovernment;
     }
 
-    private static Government[] createArrayOfGovernments() {
+    protected static Government[] createArrayOfGovernments() {
         int size = 0;
         for (Government government : Game.getCurrentGame().getGovernments()) {
             if (government.equals(currentGovernment)) continue;
