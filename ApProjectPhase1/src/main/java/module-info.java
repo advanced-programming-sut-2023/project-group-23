@@ -7,6 +7,8 @@ module ApProjectPhase1 {
 
     exports View.LoginMenu;
     opens View.LoginMenu to javafx.fxml;
+    exports View.GameJFX;
+    opens View.GameJFX to javafx.fxml;
     exports Model;
     opens Model to com.google.gson;
     exports Controller;

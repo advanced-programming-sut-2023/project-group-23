@@ -2,6 +2,7 @@ package Model;
 
 import Model.Buildings.Building;
 import Model.People.Person;
+import Model.People.TempJFX.Tile;
 import Model.People.Troop;
 
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ public class MapCell {
     private boolean passablity;
     private int x;
     private int y;
+    private Tile tile;
 
     MapCell(GroundType groundType, int x, int y) {
         people = new ArrayList<>();
@@ -112,5 +114,13 @@ public class MapCell {
 
     public int getY() {
         return y;
+    }
+
+    public Tile getTile() {
+        return tile;
+    }
+
+    public void setTile(Tile tile) {
+        this.tile = tile;
     }
 }
