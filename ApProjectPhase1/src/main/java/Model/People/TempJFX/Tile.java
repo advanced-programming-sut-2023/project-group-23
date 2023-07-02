@@ -23,9 +23,10 @@ public class Tile extends Polygon {
     private final double y;
     private MapCell cell;
     private static Pane mapPane;
-    private static HashMap<GroundType, String> tileImages = new HashMap<>() {{
-        put(GroundType.EARTH, "/Assets/Tiles/desert_tile.jpg");
-    }};
+//    private static HashMap<GroundType, ImagePattern> tileImages = new HashMap<>() {{
+//        put(GroundType.EARTH, new ImagePattern(
+//                new Image(getClass().getResource("/Assets/Tiles/desert_tile.jpg").toExternalForm())));
+//    }};
     public static VBox statusPane;
 
     static {
@@ -72,8 +73,7 @@ public class Tile extends Polygon {
     }
 
     public void setTileImage(GroundType groundType) {
-        this.setFill(new ImagePattern(
-                new Image(getClass().getResource(tileImages.get(groundType)).toExternalForm())));
+        this.setFill(groundType.getImage());
     }
 
     public MapCell getCell() {

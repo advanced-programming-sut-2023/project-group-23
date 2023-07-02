@@ -22,8 +22,8 @@ import java.util.Objects;
 
 public class GameJFX extends Application {
 
-    public static final double HEIGHT = 400;
-    public static final double WIDTH = 600;
+    public static final double HEIGHT = 600;
+    public static final double WIDTH = 800;
     private double startX;
     private double startY;
     private double distance;
@@ -34,7 +34,7 @@ public class GameJFX extends Application {
     public void start(Stage stage) throws Exception {
         Pane gamePane = FXMLLoader.load(new URL(LoginMenu.class.getResource("/View/Game.fxml").toExternalForm()));
         Pane mapPane = new Pane();
-        map = GameMenuController.getCurrentGame().getMap();
+        map = new Map();
         //map.buildMap(mapPane, gamePane);
         Tile.setMapPane(mapPane);
         showMap(mapPane, WIDTH / 2, HEIGHT / 2);
