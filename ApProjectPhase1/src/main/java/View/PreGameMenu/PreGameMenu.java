@@ -87,7 +87,7 @@ public class PreGameMenu extends Application {
                     System.out.println(PreGameController.setTextureZone("1", "2", "3", "4", "salam"));
 
                 else if((matcher = PreGameMenuCommands.getMatcher(command, PreGameMenuCommands.CLEAR)).matches())
-                    System.out.println(PreGameController.clear(matcher));
+                    System.out.println(PreGameController.clear("1", "2"));
 
                 else if((matcher = PreGameMenuCommands.getMatcher(command, PreGameMenuCommands.DROPROCK)).matches())
                     System.out.println(PreGameController.droprock("1", "2", "salam"));
