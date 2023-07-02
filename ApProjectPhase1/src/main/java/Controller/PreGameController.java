@@ -14,11 +14,10 @@ public class PreGameController {
     private static Game currentGame;
     private static Government currentGovernment;
 
-    public static String setTextureSingle(Matcher matcher) {
-        matcher.matches();
-        int x = Integer.parseInt(matcher.group("xCoordinate"));
-        int y = Integer.parseInt(matcher.group("yCoordinate"));
-        String typeName = matcher.group("type").replace("\"", "");
+    public static String setTextureSingle(String xCoordinate, String yCoordinate, String typeName) {
+        int x = Integer.parseInt(xCoordinate);
+        int y = Integer.parseInt(yCoordinate);
+
         GroundType groundType;
         WaterType waterType = null;
 
@@ -46,16 +45,15 @@ public class PreGameController {
         cell.setGroundType(groundType);
         cell.setWaterType(waterType);
 
-        return "changed texture successfully";
+        return "";
     }
 
-    public static String setTextureZone(Matcher matcher) {
-        matcher.matches();
-        int x1 = Integer.parseInt(matcher.group("x1Coordinate"));
-        int y1 = Integer.parseInt(matcher.group("y1Coordinate"));
-        int x2 = Integer.parseInt(matcher.group("x2Coordinate"));
-        int y2 = Integer.parseInt(matcher.group("y2Coordinate"));
-        String typeName = matcher.group("type").replace("\"", "");
+    public static String setTextureZone(String x1Coordinate, String y1Coordinate, String x2Coordinate, String y2Coordinate
+                                        , String typeName) {
+        int x1 = Integer.parseInt(x1Coordinate);
+        int y1 = Integer.parseInt(y1Coordinate);
+        int x2 = Integer.parseInt(x2Coordinate);
+        int y2 = Integer.parseInt(y2Coordinate);
         GroundType groundType;
         WaterType waterType = null;
 
@@ -102,7 +100,7 @@ public class PreGameController {
             }
         }
 
-        return "changed texture successfully";
+        return "";
     }
 
     public static String setTextureToPond(int x, int y, WaterType waterType) {
@@ -223,10 +221,9 @@ public class PreGameController {
         return "";
     }
 
-    public static String clear(Matcher matcher) {
-        matcher.matches();
-        int x = Integer.parseInt(matcher.group("xCoordinate"));
-        int y = Integer.parseInt(matcher.group("yCoordinate"));
+    public static String clear(String xCoordinate, String yCoordinate) {
+        int x = Integer.parseInt(xCoordinate);
+        int y = Integer.parseInt(yCoordinate);
 
         if(x < 0 || x > 199)
             return "x coordinate out of bounds";
@@ -246,7 +243,7 @@ public class PreGameController {
         clearTroops(cell);
         clearBuilding(cell);
 
-        return "tile cleared";
+        return "";
     }
 
     public static void clearTroops(MapCell cell) {
@@ -280,11 +277,9 @@ public class PreGameController {
         }
     }
 
-    public static String droprock(Matcher matcher) {
-        matcher.matches();
-        int x = Integer.parseInt(matcher.group("xCoordinate"));
-        int y = Integer.parseInt(matcher.group("yCoordinate"));
-        String directionInput = matcher.group("direction").replace("\"", "");
+    public static String droprock(String xCoordinate, String yCoordinate, String directionInput) {
+        int x = Integer.parseInt(xCoordinate);
+        int y = Integer.parseInt(yCoordinate);
 
         if(x < 0 || x > 199)
             return "x coordinate out of bounds";
@@ -301,23 +296,21 @@ public class PreGameController {
         for(Directions direction : Directions.values()) {
             if(direction.getName().equals(directionInput)) {
                 cell.setRock(new Rock(direction));
-                return "placed rock successfully";
+                return "";
             }
         }
         if(directionInput.equals("random")) {
             Random random = new Random();
             int randomNumber = random.nextInt() % 4;
             cell.setRock(new Rock(Directions.getDirectionByNumber(randomNumber)));
-            return "placed rock successfully";
+            return "";
         }
         return "invalid direction";
     }
 
-    public static String droptree(Matcher matcher) {
-        matcher.matches();
-        int x = Integer.parseInt(matcher.group("xCoordinate"));
-        int y = Integer.parseInt(matcher.group("yCoordinate"));
-        String typeInput = matcher.group("type").replace("\"", "");
+    public static String droptree(String xCoordinate, String yCoordinate, String typeInput) {
+        int x = Integer.parseInt(xCoordinate);
+        int y = Integer.parseInt(yCoordinate);
 
         if(x < 0 || x > 199)
             return "x coordinate out of bounds";
@@ -340,18 +333,16 @@ public class PreGameController {
         for(Tree tree: Tree.values()) {
             if(tree.getName().equals(typeInput)) {
                 cell.setTree(tree);
-                return "placed tree successfully";
+                return "";
             }
         }
 
         return "invalid tree type";
     }
 
-    public static String dropbuilding(Matcher matcher) {
-        matcher.matches();
-        int x = Integer.parseInt(matcher.group("xCoordinate"));
-        int y = Integer.parseInt(matcher.group("yCoordinate"));
-        String typeInput = matcher.group("type").replace("\"", "");
+    public static String dropbuilding(String xCoordinate, String yCoordinate, String typeInput) {
+        int x = Integer.parseInt(xCoordinate);
+        int y = Integer.parseInt(yCoordinate);
         BuildingType buildingType;
         ProducerType producerType;
         StorageType storageType;
@@ -418,15 +409,14 @@ public class PreGameController {
             }
 
 
-        return "placed building successfully";
+        return "";
     }
 
-    public static String dropunit(Matcher matcher) {
-        matcher.matches();
-        int x = Integer.parseInt(matcher.group("xCoordinate"));
-        int y = Integer.parseInt(matcher.group("yCoordinate"));
-        String typeInput = matcher.group("type").replace("\"", "");
-        int count = Integer.parseInt(matcher.group("count"));
+    public static String dropunit(String xCoordinate, String yCoordinate, String typeInput, String number) {
+        int x = Integer.parseInt(xCoordinate);
+        int y = Integer.parseInt(yCoordinate);
+        int count = Integer.parseInt(number);
+
 
         if(x < 0 || x > 199)
             return "x coordinate out of bounds";
@@ -449,7 +439,7 @@ public class PreGameController {
         for(int i = 0 ; i < count ; i++)
             cell.addToTroops(new Troop(currentGovernment, TroopType.getTroopTypeByName(typeInput), x, y));
 
-        return "dropped unit successfully";
+        return "";
     }
 
     public static Game getCurrentGame() {
