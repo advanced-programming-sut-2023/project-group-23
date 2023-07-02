@@ -167,6 +167,14 @@ public class LoginMenuController {
         return "it's ok!";
     }
 
+    public static String checkNicknameForGame(String nickname) {
+        if (!isNicknameCorrect(nickname))
+            return "nickname format is not correct";
+        if (!isNicknameExist(nickname))
+            return "there isn't any user with this nickname!";
+        return "it's ok!";
+    }
+
     public static String checkUsernameForRegister(String username) {
         if (isUserExist(username)) return "this username already exists!";
         if (!isUsernameFormatCorrect(username)) return "username format is not correct!";

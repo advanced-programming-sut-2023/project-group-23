@@ -27,9 +27,11 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -733,6 +735,23 @@ public class ProfileMenu extends Application {
         rectangle.setFitWidth(180);
         rectangle.setFitHeight(140);
         rectangle.setImage(new Image(getClass().getResource("/profile/initialize.png").toExternalForm()));
+
+        rectangle.setOnDragOver(new EventHandler<DragEvent>() {
+            @Override
+            public void handle(DragEvent dragEvent) {
+                if (dragEvent.getDragboard().hasFiles())
+                    dragEvent.acceptTransferModes(TransferMode.ANY);
+            }
+        });
+
+        rectangle.setOnDragDropped(new EventHandler<DragEvent>() {
+            @Override
+            public void handle(DragEvent dragEvent) {
+                List<File> files = dragEvent.getDragboard().getFiles();
+                Image image = new Image(files.get(0).getAbsolutePath());
+                rectangle.setImage(image);
+            }
+        });
 
 
         for (int i = 1; i <= 10; i++) {

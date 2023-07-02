@@ -9,16 +9,42 @@ import Model.Government;
 import Model.People.Lord;
 import Model.People.Troop;
 import Model.People.TroopType;
+import Model.User;
 import View.GameMenu.GameMenu;
+import View.MainMenu.MainMenu;
+import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 
-public class PreGameMenu {
+public class PreGameMenu extends Application {
+    private PreGameMenu preGameMenu;
     private static Game currentGame;
+    public static ArrayList<Stage> stages;
 
-    public static void run(Scanner scanner) throws IOException {
+    private Government currentGovernment;
+
+    public PreGameMenu(Government government) {
+        this.preGameMenu = this;
+        this.currentGovernment = government;
+    }
+
+    public Government getCurrentGovernment() {
+        return currentGovernment;
+    }
+
+    public void run(Scanner scanner) throws IOException {
         PreGameMenu.setCurrentGame(Game.getCurrentGame());
         PreGameController.setCurrentGame(Game.getCurrentGame());
 
@@ -55,25 +81,25 @@ public class PreGameMenu {
                 command = scanner.nextLine();
 
                 if((matcher = PreGameMenuCommands.getMatcher(command, PreGameMenuCommands.SET_TEXTURE_SINGLE)).matches())
-                    System.out.println(PreGameController.setTextureSingle(matcher));
+                    System.out.println(PreGameController.setTextureSingle("salam", "Ake", "ali"));
 
                 else if((matcher = PreGameMenuCommands.getMatcher(command, PreGameMenuCommands.SET_TEXTURE_ZONE)).matches())
-                    System.out.println(PreGameController.setTextureZone(matcher));
+                    System.out.println(PreGameController.setTextureZone("1", "2", "3", "4", "salam"));
 
                 else if((matcher = PreGameMenuCommands.getMatcher(command, PreGameMenuCommands.CLEAR)).matches())
-                    System.out.println(PreGameController.clear(matcher));
+                    System.out.println(PreGameController.clear("1", "2"));
 
                 else if((matcher = PreGameMenuCommands.getMatcher(command, PreGameMenuCommands.DROPROCK)).matches())
-                    System.out.println(PreGameController.droprock(matcher));
+                    System.out.println(PreGameController.droprock("1", "2", "salam"));
 
                 else if((matcher = PreGameMenuCommands.getMatcher(command, PreGameMenuCommands.DROPTREE)).matches())
-                    System.out.println(PreGameController.droptree(matcher));
+                    System.out.println(PreGameController.droptree("1", "2", "salam"));
 
                 else if((matcher = PreGameMenuCommands.getMatcher(command, PreGameMenuCommands.DROPBUILDING)).matches())
-                    System.out.println(PreGameController.dropbuilding(matcher));
+                    System.out.println(PreGameController.dropbuilding("1", "2", "salam"));
 
                 else if((matcher = PreGameMenuCommands.getMatcher(command, PreGameMenuCommands.DROPUNIT)).matches())
-                    System.out.println(PreGameController.dropunit(matcher));
+                    System.out.println(PreGameController.dropunit("1", "2", "salam", "4"));
 
                 else if(PreGameMenuCommands.getMatcher(command, PreGameMenuCommands.DONE).matches())
                     break;
@@ -99,7 +125,7 @@ public class PreGameMenu {
         PreGameMenu.currentGame = currentGame;
     }
 
-    public static String pickGovernmentColor(Scanner scanner) {
+    public String pickGovernmentColor(Scanner scanner) {
         Matcher matcher;
         String command;
         while (true) {
@@ -111,7 +137,7 @@ public class PreGameMenu {
             command = scanner.nextLine();
             if ((matcher = PreGameMenuCommands.getMatcher(command, PreGameMenuCommands.TEXT_INPUT)).matches()) {
                 String inputColor = matcher.group("content").replace("\"", "");
-                String result = PreGameController.pickGovernmentColor(inputColor);
+                String result = PreGameController.pickGovernmentColor(inputColor, preGameMenu.getCurrentGovernment(), 1);
                 System.out.println(result);
                 if(!result.equals("invalid color"))
                     return "ok";
@@ -130,9 +156,7 @@ public class PreGameMenu {
             System.out.println("enter coordinates of your keep:");
             command = scanner.nextLine();
             if ((matcher = PreGameMenuCommands.getMatcher(command, PreGameMenuCommands.COORDINATE_INPUT)).matches()) {
-                int x = Integer.parseInt(matcher.group("xCoordinate"));
-                int y = Integer.parseInt(matcher.group("yCoordinate"));
-                String result = PreGameController.placeKeep(x, y);
+                String result = PreGameController.placeKeep("salam", "aleyk", 1);
                 if (result.equals("placed building successfully"))
                     return "ok";
             } else if (PreGameMenuCommands.getMatcher(command, PreGameMenuCommands.BACK).matches())
@@ -140,5 +164,141 @@ public class PreGameMenu {
             else
                 System.out.println("invalid command");
         }
+    }
+
+    @Override
+    public void start(Stage stage) throws Exception {
+        AnchorPane anchorPane = new AnchorPane();
+        Scene scene = new Scene(anchorPane, 400, 400);
+        stage.setResizable(false);
+        stage.setTitle("initialize " + currentGovernment.getUser().getNickname() + " map");
+        stage.setScene(scene);
+
+        MenuButton selectColor = new MenuButton("Color");
+        selectColor.setLayoutX(150);
+        selectColor.setLayoutY(170);
+        for (Colors value : Colors.values()) {
+            if (value.getName().equals("reset")) continue;
+            MenuItem menuItem = new MenuItem(value.getName());
+            selectColor.getItems().add(menuItem);
+            menuItem.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    selectColor.setText(menuItem.getText());
+                }
+            });
+        }
+
+        TextField keepXCoordinate = new TextField();
+        keepXCoordinate.setPromptText("Keep X coordinate");
+        keepXCoordinate.setLayoutX(50);
+        keepXCoordinate.setLayoutY(80);
+
+        TextField keepYCoordinate = new TextField();
+        keepYCoordinate.setPromptText("Keep Y coordinate");
+        keepYCoordinate.setLayoutX(50);
+        keepYCoordinate.setLayoutY(120);
+
+        Text wrongPlace = new Text();
+        wrongPlace.setLayoutX(200);
+        wrongPlace.setLayoutY(115);
+        wrongPlace.setFill(Color.RED);
+
+
+        Button cancelGame = new Button("Cancel this game");
+        cancelGame.setLayoutX(10);
+        cancelGame.setLayoutY(10);
+
+        Button show = new Button("Go to game");
+        show.setLayoutX(10);
+        show.setLayoutY(350);
+
+        Text wrongColor = new Text("");
+        wrongColor.setLayoutX(150);
+        wrongColor.setLayoutY(210);
+        wrongColor.setFill(Color.RED);
+
+        Button continueInitialize = new Button("Continue");
+        continueInitialize.setLayoutX(300);
+        continueInitialize.setLayoutY(350);
+
+        continueInitialize.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                wrongPlace.setText("");
+                wrongColor.setText("");
+                PreGameController.setCurrentGovernment(preGameMenu.getCurrentGovernment());
+                int flag = 0;
+                if (!PreGameController.isColorUsed(selectColor.getText()) && !selectColor.getText().equals("Color"))
+                    flag = 1;
+                String putKeep = PreGameController.placeKeep(keepXCoordinate.getText(), keepYCoordinate.getText(), flag);
+                String color;
+                if (putKeep.equals("ok")) color = isColorOk(selectColor.getText(), 1);
+                else color = isColorOk(selectColor.getText(), 0);
+                if (!putKeep.equals("ok")) wrongPlace.setText(putKeep);
+                if (!color.equals("ok")) wrongColor.setText(color);
+                if (color.equals("ok") && putKeep.equals("ok")) {
+                    stage.close();
+                    Stage newStage = new Stage();
+                    newStage.setTitle(stage.getTitle());
+                    try {
+                        new Initialize(preGameMenu.getCurrentGovernment(), preGameMenu).start(newStage);
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+        });
+
+        show.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                wrongPlace.setText("");
+                wrongColor.setText("");
+                PreGameController.setCurrentGovernment(preGameMenu.getCurrentGovernment());
+                int flag = 0;
+                if (!PreGameController.isColorUsed(selectColor.getText()) && !selectColor.getText().equals("Color"))
+                    flag = 1;
+                String putKeep = PreGameController.placeKeep(keepXCoordinate.getText(), keepYCoordinate.getText(), flag);
+                String color;
+                if (putKeep.equals("ok")) color = isColorOk(selectColor.getText(), 1);
+                else color = isColorOk(selectColor.getText(), 0);
+                if (!putKeep.equals("ok")) wrongPlace.setText(putKeep);
+                if (!color.equals("ok")) wrongColor.setText(color);
+                if (color.equals("ok") && putKeep.equals("ok")) {
+                    stage.close();
+                    if (MainMenu.okPlayers == stages.size() - 1) {
+                        //TODO:start the game
+                    } else {
+                        MainMenu.okPlayers++;
+                    }
+                }
+            }
+        });
+
+        cancelGame.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                for (Stage stage1 : stages) {
+                    stage1.close();
+                }
+                try {
+                    Stage stage1 = new Stage();
+                    stage1.setTitle("Main Menu");
+                    new MainMenu().start(stage1);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+
+        anchorPane.getChildren().addAll(cancelGame, selectColor, show, keepXCoordinate, keepYCoordinate, wrongPlace
+        , wrongColor, continueInitialize);
+        stage.show();
+    }
+
+    private String isColorOk(String inputColor, int i) {
+        if (inputColor.equals("Color")) return "you must choose a color!";
+        return PreGameController.pickGovernmentColor(inputColor, preGameMenu.getCurrentGovernment(), i);
     }
 }

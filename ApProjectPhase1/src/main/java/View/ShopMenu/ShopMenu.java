@@ -9,6 +9,7 @@ import Model.FoodType;
 import Model.Government;
 import Model.ResourceType;
 import Model.User;
+import View.TradeMenu.TradeMenu;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -35,6 +36,10 @@ public class ShopMenu extends Application {
 
     public static void setCurrentGovernment(Government currentGovernment) {
         ShopMenu.currentGovernment = currentGovernment;
+    }
+
+    public static Government getCurrentGovernment() {
+        return currentGovernment;
     }
 
     public static void run(Scanner scanner) {
@@ -105,6 +110,18 @@ public class ShopMenu extends Application {
             createFoods(value, anchorPane, counter);
             counter++;
         }
+
+        trade.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                try {
+                    stage.setTitle("Trade Menu");
+                    new TradeMenu().start(stage);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
 
 
         anchorPane.getChildren().addAll(back, trade, header, resourceName, buyPrice, sellPrice);
