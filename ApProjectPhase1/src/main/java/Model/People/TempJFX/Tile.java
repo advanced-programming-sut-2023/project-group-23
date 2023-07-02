@@ -8,6 +8,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
@@ -17,11 +18,15 @@ import javafx.scene.text.Text;
 import java.util.HashMap;
 
 public class Tile extends Polygon {
-    public static final double WIDTH = 44.0 * 1.5;
-    public static final double HEIGHT = 24.0 * 1.5;
+    private static final double BASE_WIDTH = 66.0;
+    private static final double BASE_HEIGHT = 36.0;
+    public static double WIDTH = 66.0;
+    public static double HEIGHT = 36.0;
+    private static double zoomRate = 1.0;
     private final double x;
     private final double y;
     private MapCell cell;
+    private static Tile selectedTile = null;
     private static Pane mapPane;
 //    private static HashMap<GroundType, ImagePattern> tileImages = new HashMap<>() {{
 //        put(GroundType.EARTH, new ImagePattern(
@@ -60,6 +65,22 @@ public class Tile extends Polygon {
             else {
                 statusPane.getChildren().clear();
                 statusPane.setVisible(false);
+            }
+        });
+
+        this.setOnMouseClicked(mouseEvent -> {
+            if(mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
+                if(selectedTile != null) {
+                    selectedTile.setOpacity(1);
+                }
+                selectedTile = this;
+                this.setOpacity(0.5);
+            }
+            else if(mouseEvent.getButton().equals(MouseButton.SECONDARY)) {
+                if(selectedTile != null) {
+                    selectedTile.setOpacity(1);
+                    selectedTile = null;
+                }
             }
         });
     }
@@ -122,5 +143,25 @@ public class Tile extends Polygon {
                 statusPane.getChildren().add(troopField);
             }
         }
+    }
+
+    public static void zoom(boolean zoomIn) {
+        if(zoomIn) {
+            if (zoomRate < 1.5) zoomRate += 0.25;
+        }
+        else {
+                if (zoomRate > 0.5) zoomRate -= 0.25;
+        }
+
+        WIDTH = zoomRate * BASE_WIDTH;
+        HEIGHT = zoomRate * BASE_HEIGHT;
+    }
+
+    public static Tile getSelectedTile() {
+        return selectedTile;
+    }
+
+    public static void setSelectedTile(Tile selectedTile) {
+        Tile.selectedTile = selectedTile;
     }
 }

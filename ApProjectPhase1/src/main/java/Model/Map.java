@@ -22,10 +22,6 @@ public class Map {
         for(int i = 0 ; i < height ; i++)
             for(int j = 0 ; j < width; j++)
                 map[i][j] = new MapCell(GroundType.EARTH, i, j);
-
-        for(int i = 0 ; i < 40 ; i++)
-            for (int j = 0 ; j < 40 ; j++)
-                map[i][j].setGroundType(GroundType.IRON);
     }
 
     private VBox buildStatusPane(Pane mapPane, Pane gamePane, Tile tile) {
