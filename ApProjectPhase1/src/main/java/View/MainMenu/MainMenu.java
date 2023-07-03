@@ -7,6 +7,8 @@ import Controller.TradeMenuController;
 import Model.Game;
 import Model.Government;
 import Model.Map;
+import Model.People.Lord;
+import Model.People.TroopType;
 import Model.User;
 import View.GameMenu.GameMenu;
 import View.LoginMenu.LoginMenu;
@@ -180,7 +182,8 @@ public class MainMenu extends Application {
                         usersInGame.add(User.getUserByNickname(textField.getText()));
                     }
                     for (User user : usersInGame) {
-                        governments.add(new Government(user));
+                        Government government = new Government(user);
+                        governments.add(government);
                     }
                     Game game = new Game(governments, new Map());
                     Game.setCurrentGame(game);

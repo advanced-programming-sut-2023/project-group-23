@@ -60,6 +60,7 @@ public class User {
         this.userAnswerToSecurityQuestion = userAnswerToSecurityQuestion;
         this.userHighScore = 0;
         this.avatarAddress = avatarAddress;
+        this.noEncryptedPassword = password;
     }
 
     public static ArrayList<User> getUsers() {
