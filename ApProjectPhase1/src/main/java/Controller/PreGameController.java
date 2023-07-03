@@ -220,6 +220,7 @@ public class PreGameController {
                 }
             }
             Lord lord = new Lord(currentGovernment, TroopType.LORD, x, y);
+            currentGovernment.setLord(lord);
             return "ok";
         }
         return "";

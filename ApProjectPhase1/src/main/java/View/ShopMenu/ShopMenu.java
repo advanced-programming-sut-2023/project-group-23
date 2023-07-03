@@ -73,6 +73,13 @@ public class ShopMenu extends Application {
         back.setLayoutX(10);
         back.setLayoutY(10);
 
+        back.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                stage.close();
+            }
+        });
+
         Button trade = new Button("Trade");
         trade.setLayoutX(645);
         trade.setLayoutY(10);

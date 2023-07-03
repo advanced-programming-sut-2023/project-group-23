@@ -25,7 +25,7 @@ import static View.TradeMenu.Send.showMessage;
 public class Received extends Application {
 
     private ArrayList<Node> nodes = new ArrayList<>();
-    private Integer number;
+    private Integer number = 0;
     @Override
     public void start(Stage stage) throws Exception {
         AnchorPane anchorPane = new AnchorPane();
