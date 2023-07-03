@@ -144,6 +144,7 @@ public class Received extends Application {
         textArea.setPromptText("Message");
         textArea.setLayoutX(200);
         textArea.setLayoutY(200);
+        textArea.setPrefWidth(200);
 
         anchorPane.getChildren().addAll(createTrade(trade, 1));
 
@@ -187,7 +188,7 @@ public class Received extends Application {
                     alert.setHeaderText("Message field is empty!");
                     alert.show();
                 } else {
-                    TradeMenuController.accept(trade, textArea.getText());
+                    TradeMenuController.reject(trade, textArea.getText());
                     alert1.show();
                 }
                 stage.close();
@@ -208,7 +209,7 @@ public class Received extends Application {
             }
         });
 
-        anchorPane.getChildren().addAll(close, playerNickname, resourceName, amount, price, message, accept, reject);
+        anchorPane.getChildren().addAll(close, playerNickname, resourceName, amount, price, message, accept, reject, status, textArea);
         stage.show();
     }
 }
