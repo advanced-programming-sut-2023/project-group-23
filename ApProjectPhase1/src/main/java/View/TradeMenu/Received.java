@@ -15,11 +15,11 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
 
-import static View.TradeMenu.Send.createTrade;
 import static View.TradeMenu.Send.showMessage;
 
 public class Received extends Application {
@@ -79,7 +79,7 @@ public class Received extends Application {
         for (int i = number * 10 + 1; i <= size; i++) {
             int integer = i % 10;
             if (integer == 0) integer = 10;
-            nodes.addAll(createTrade(ShopMenu.getCurrentGovernment().getTradeList().get(i - 1), integer));
+            nodes.addAll(createReceiveTrade(ShopMenu.getCurrentGovernment().getTradeList().get(i - 1), integer));
         }
 
         Button back = new Button("Back");
@@ -146,7 +146,7 @@ public class Received extends Application {
         textArea.setLayoutY(200);
         textArea.setPrefWidth(200);
 
-        anchorPane.getChildren().addAll(createTrade(trade, 1));
+        anchorPane.getChildren().addAll(createReceiveTrade(trade, 1));
 
         Button accept = new Button("Accept");
         accept.setLayoutX(200);
@@ -211,5 +211,106 @@ public class Received extends Application {
 
         anchorPane.getChildren().addAll(close, playerNickname, resourceName, amount, price, message, accept, reject, status, textArea);
         stage.show();
+    }
+
+    private static ArrayList<Node> createReceiveTrade(Trade trade, int i) {
+        ArrayList<Node> results = new ArrayList<>();
+        int y = 40 + 30 * i;
+        Label nickname = new Label(trade.getRequester().getUser().getNickname());
+        nickname.setLayoutX(10);
+        nickname.setLayoutY(y);
+        results.add(nickname);
+
+        Label status = new Label();
+        if (!trade.isShowed()) status.setText("not seen");
+        else if (trade.getIsAccepted().equals(1)) status.setText("accepted");
+        else if (trade.getIsAccepted().equals(-1)) status.setText("rejected");
+        else status.setText("seen");
+        status.setLayoutX(100);
+        status.setLayoutY(y);
+        results.add(status);
+
+        Label resourceName = new Label(trade.getResourceType().getName());
+        resourceName.setLayoutX(200);
+        resourceName.setLayoutY(y);
+        results.add(resourceName);
+
+        Integer amountInt = trade.getResourceAmount();
+        Label amount = new Label(amountInt.toString());
+        amount.setLayoutX(300);
+        amount.setLayoutY(y);
+        results.add(amount);
+
+        Integer priceInt = trade.getPrice();
+        Label price = new Label(priceInt.toString());
+        price.setLayoutX(400);
+        price.setLayoutY(y);
+        results.add(price);
+
+        Label message = new Label("Show");
+        message.setLayoutX(500);
+        message.setLayoutY(y);
+        results.add(message);
+
+        message.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                showMessage(trade);
+            }
+        });
+
+        nickname.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if (trade.getIsAccepted().equals(0)) {
+                    if (ShopMenu.getCurrentGovernment().equals(trade.getReceiver())) {
+                        Received.showDetails(trade);
+                        trade.setShowed(true);
+                    }
+                }
+            }
+        });
+
+        return results;
+    }
+
+    protected static void showMessage(Trade trade) {
+        AnchorPane anchorPane = new AnchorPane();
+        Stage messageStage = new Stage();
+        messageStage.setTitle("Trade Messages");
+        Scene messageScene = new Scene(anchorPane, 600, 600);
+        messageStage.setResizable(false);
+        messageStage.setScene(messageScene);
+
+        Label requester = new Label("Requester Message:");
+        requester.setLayoutX(50);
+        requester.setLayoutY(50);
+
+        Text requesterMessage = new Text(trade.getRequesterMessage());
+        requesterMessage.setLayoutX(50);
+        requesterMessage.setLayoutY(90);
+
+        Label receiver = new Label("Receiver Message:");
+        receiver.setLayoutX(50);
+        receiver.setLayoutY(300);
+
+        Text receiverMessage = new Text(trade.getReceiverMessage());
+        receiverMessage.setLayoutX(50);
+        receiverMessage.setLayoutY(340);
+
+
+        Button back = new Button("Back");
+        back.setLayoutX(10);
+        back.setLayoutY(10);
+
+        back.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                messageStage.close();
+            }
+        });
+
+        anchorPane.getChildren().addAll(back, receiverMessage, requesterMessage, receiver, requester);
+        messageStage.show();
     }
 }

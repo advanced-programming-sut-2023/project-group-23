@@ -341,6 +341,7 @@ public class Request extends Application {
                 Trade trade = new Trade(price, message, resourceType, amount,
                         requesterGovernment, receiverGovernment);
                 requesterGovernment.addToTradeHistory(trade);
+                receiverGovernment.getTradeHistory().remove(trade);
                 receiverGovernment.addToTradeList(trade);
                 successful.show();
             }

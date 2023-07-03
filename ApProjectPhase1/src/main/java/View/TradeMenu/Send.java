@@ -1,9 +1,6 @@
 package View.TradeMenu;
 
-import Model.Game;
-import Model.Trade;
-import Model.Tree;
-import Model.User;
+import Model.*;
 import View.ShopMenu.ShopMenu;
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -77,9 +74,10 @@ public class Send extends Application {
 
         int size = Math.min(number * 10 + 10, ShopMenu.getCurrentGovernment().getTradeHistory().size());
         for (int i = number * 10 + 1; i <= size; i++) {
+            Trade trade = ShopMenu.getCurrentGovernment().getTradeHistory().get(i - 1);
             int integer = i % 10;
             if (integer == 0) integer = 10;
-            nodes.addAll(createTrade(ShopMenu.getCurrentGovernment().getTradeHistory().get(i - 1), integer));
+            nodes.addAll(createSendTrade(trade, integer));
         }
 
         Button back = new Button("Back");
@@ -104,7 +102,7 @@ public class Send extends Application {
         stage.show();
     }
 
-    protected static ArrayList<Node> createTrade(Trade trade, int i) {
+    private static ArrayList<Node> createSendTrade(Trade trade, int i) {
         ArrayList<Node> results = new ArrayList<>();
         int y = 40 + 30 * i;
         Label nickname = new Label(trade.getReceiver().getUser().getNickname());
@@ -147,14 +145,6 @@ public class Send extends Application {
             @Override
             public void handle(MouseEvent event) {
                 showMessage(trade);
-            }
-        });
-
-        nickname.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                if (ShopMenu.getCurrentGovernment().equals(trade.getReceiver()))
-                    Received.showDetails(trade);
             }
         });
 

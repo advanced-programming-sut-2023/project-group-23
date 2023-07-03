@@ -397,8 +397,8 @@ public class ShopMenu extends Application {
         Label storageAmount = new Label();
         storageAmount.setLayoutX(300);
         storageAmount.setLayoutY(125);
-        if (currentGovernment.getResources().containsKey(foodType))
-            storageAmount.setText(currentGovernment.getResources().get(foodType).toString());
+        if (currentGovernment.getFoods().containsKey(foodType))
+            storageAmount.setText(currentGovernment.getFoods().get(foodType).toString());
         else storageAmount.setText("0");
 
         Alert buySuccess = new Alert(Alert.AlertType.INFORMATION);
