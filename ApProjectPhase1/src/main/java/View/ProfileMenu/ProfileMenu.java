@@ -110,7 +110,7 @@ public class ProfileMenu extends Application {
         username.setFont(font);
 
         password = (Label) anchorPane.getChildren().get(3);
-        password.setText(User.getCurrentUser().getPassword());
+        password.setText(User.getCurrentUser().getNoEncryptedPassword());
         password.setFont(font);
 
         nickname = (Label) anchorPane.getChildren().get(5);
@@ -432,6 +432,7 @@ public class ProfileMenu extends Application {
                     try {
                         changePassword.show();
                         User.getCurrentUser().setPassword(newPassword.getText());
+                        getPassword().setText(newPassword.getText());
                         User.updateDatabase();
                         stage.close();
                     } catch (IOException e) {

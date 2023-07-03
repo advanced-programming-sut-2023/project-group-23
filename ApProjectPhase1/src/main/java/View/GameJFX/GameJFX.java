@@ -1,6 +1,7 @@
 package View.GameJFX;
 
 import Controller.GameMenuController;
+import Controller.ShopMenuController;
 import Model.Game;
 import Model.Government;
 import Model.Map;
@@ -8,6 +9,7 @@ import Model.MapCell;
 import Model.People.TempJFX.Tile;
 import View.GameMenu.GameMenu;
 import View.LoginMenu.LoginMenu;
+import View.ShopMenu.ShopMenu;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -41,23 +43,46 @@ public class GameJFX extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-//        GameJFX.setCurrentGame(Game.getCurrentGame());
-//        GameMenuController.setCurrentGame(Game.getCurrentGame());
-//        GameJFX.setCurrentGovernment(currentGame.getGovernments().get(0));
-//        GameMenuController.setCurrentGovernment(currentGame.getGovernments().get(0));
+        GameJFX.setCurrentGame(Game.getCurrentGame());
+        GameMenuController.setCurrentGame(Game.getCurrentGame());
+        GameJFX.setCurrentGovernment(currentGame.getGovernments().get(0));
+        GameMenuController.setCurrentGovernment(currentGame.getGovernments().get(0));
 
         Pane gamePane = FXMLLoader.load(new URL(LoginMenu.class.getResource("/View/Game.fxml").toExternalForm()));
         Pane mapPane = new Pane();
-        //map = GameMenuController.getCurrentGame().getMap();
-        map = new Map();
+        map = GameMenuController.getCurrentGame().getMap();
+//        map = new Map();
         Tile.setMapPane(mapPane);
         showMap(mapPane, WIDTH / 2, HEIGHT / 2);
         gamePane.getChildren().add(mapPane);
         gamePane.getChildren().add(Tile.statusPane);
 
+        if (currentGovernment.isCanShop()) {
+            Button shop = new Button("Shop");
+            shop.setLayoutX(WIDTH - 90);
+            shop.setLayoutY(80);
+            shop.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    ShopMenu.setCurrentGovernment(currentGovernment);
+                    ShopMenuController.setCurrentGovernment(currentGovernment);
+                    Stage stage1 = new Stage();
+                    stage1.setTitle("Shop Menu");
+                    stage1.setResizable(false);
+                    try {
+                        new ShopMenu().start(stage1);
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            });
+            gamePane.getChildren().add(shop);
+        }
+
+
         Button nextTurnButton = new Button("Next Turn");
         nextTurnButton.setLayoutX(WIDTH - 90);
-        nextTurnButton.setLayoutY(HEIGHT - 40);
+        nextTurnButton.setLayoutY(40);
         nextTurnButton.setOnMouseClicked(mouseEvent -> {
             try {
                 nextTurnHandler(gamePane);

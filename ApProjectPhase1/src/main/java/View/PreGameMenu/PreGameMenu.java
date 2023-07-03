@@ -10,6 +10,7 @@ import Model.People.Lord;
 import Model.People.Troop;
 import Model.People.TroopType;
 import Model.User;
+import View.GameJFX.GameJFX;
 import View.GameMenu.GameMenu;
 import View.MainMenu.MainMenu;
 import javafx.application.Application;
@@ -268,7 +269,11 @@ public class PreGameMenu extends Application {
                 if (color.equals("ok") && putKeep.equals("ok")) {
                     stage.close();
                     if (MainMenu.okPlayers == stages.size() - 1) {
-                        //TODO:start the game
+                        try {
+                            new GameJFX().start(new Stage());
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
+                        }
                     } else {
                         MainMenu.okPlayers++;
                     }

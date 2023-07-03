@@ -126,6 +126,48 @@ public class TradeMenuController {
     }
 
 
+    public static String accept(Trade trade, String receiverMessage) {
+        if (trade.getPrice() > trade.getRequester().getGold()) return "the requester doesn't have enough gold";
+        int newAmount = 0;
+        Government receiverGovernment = trade.getReceiver();
+        Government requesterGovernment = trade.getRequester();
+        String resourceName = trade.getResourceType().getName();
+        FoodType foodType = isFood(resourceName);
+        ResourceType resourceType = getResourceByName(resourceName);
+        if (foodType != null) {
+            newAmount = trade.getRequester().getFoodAmountByFood(foodType) + trade.getResourceAmount();
+            if (trade.getRequester().getMaxFoodStorage() >= newAmount) {
+                if (receiverGovernment.getFoodAmountByFood(foodType) < trade.getResourceAmount()) return "receiver doesn't have enough resource";
+                trade.getRequester().changeFoodAmount(foodType, newAmount);
+                receiverGovernment.changeFoodAmount(foodType, receiverGovernment.getFoodAmountByFood(foodType) - trade.getResourceAmount());
+                trade.getRequester().setGold(trade.getRequester().getGold() - trade.getPrice());
+                receiverGovernment.setGold(receiverGovernment.getGold() + trade.getPrice());
+            } else return "requester doesn't have enough space for this resource";
+        } else {
+            newAmount = trade.getRequester().getAmountByResource(resourceType) + trade.getResourceAmount();
+            if (trade.getRequester().getMaxResourceStorage() >= newAmount) {
+                if (receiverGovernment.getAmountByResource(resourceType) < trade.getResourceAmount()) return "receiver doesn't have enough resource";
+                trade.getRequester().changeAmountOfResource(resourceType, newAmount);
+                receiverGovernment.changeAmountOfResource(resourceType, receiverGovernment.getAmountByResource(resourceType) - trade.getResourceAmount());
+                trade.getRequester().setGold(trade.getRequester().getGold() - trade.getPrice());
+                receiverGovernment.setGold(receiverGovernment.getGold() + trade.getPrice());
+            } else return "requester doesn't have enough space for this resource";
+        }
+        trade.setAccepted(1);
+        trade.setReceiverMessage(receiverMessage);
+        receiverGovernment.getTradeList().remove(trade);
+        receiverGovernment.getTradeHistory().add(trade);
+        return "";
+    }
+
+    public static String reject(Trade trade, String receiverMessage) {
+        trade.setAccepted(-1);
+        trade.setReceiverMessage(receiverMessage);
+        receiverGovernment.getTradeList().remove(trade);
+        receiverGovernment.getTradeHistory().add(trade);
+        return "";
+    }
+
     public static String acceptTrade(Matcher matcher) {
         String acceptReject = matcher.group(1);
         Matcher matcher1, matcher2;

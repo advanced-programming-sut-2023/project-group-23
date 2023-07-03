@@ -132,7 +132,7 @@ public class Government {
     public HashMap<ResourceType, Integer> getResources() {
         return resources;
     }
-    public int getAmountByResource(ResourceType resourceType) {
+    public Integer getAmountByResource(ResourceType resourceType) {
         return resources.getOrDefault(resourceType, 0);
     }
 
@@ -168,7 +168,7 @@ public class Government {
     public HashMap<FoodType, Integer> getFoods() {
         return foods;
     }
-    public int getFoodAmountByFood(FoodType foodType) {
+    public Integer getFoodAmountByFood(FoodType foodType) {
         return foods.get(foodType);
     }
 

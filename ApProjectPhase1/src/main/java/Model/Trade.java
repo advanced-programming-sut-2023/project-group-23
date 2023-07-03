@@ -66,4 +66,8 @@ public class Trade {
     public boolean isShowed() {
         return isShowed;
     }
+
+    public Integer getIsAccepted() {
+        return isAccepted;
+    }
 }

@@ -28,9 +28,33 @@ public class History extends Application {
         received.setLayoutY(200);
         received.setPrefWidth(80);
 
+        received.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                stage.setTitle("Received");
+                try {
+                    new Received().start(stage);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+
         Button back = new Button("Back");
         back.setLayoutX(10);
         back.setLayoutY(10);
+
+        sent.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                stage.setTitle("Sent");
+                try {
+                    new Send().start(stage);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
 
         back.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override

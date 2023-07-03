@@ -7,6 +7,7 @@ import Model.Government;
 import Model.GroundType;
 import Model.People.TroopType;
 import Model.Tree;
+import View.GameJFX.GameJFX;
 import View.MainMenu.MainMenu;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -133,7 +134,11 @@ public class Initialize extends Application {
     private void goToGame(Stage stage) {
         stage.close();
         if (MainMenu.okPlayers == PreGameMenu.stages.size() - 1) {
-            //TODO:start the game
+            try {
+                new GameJFX().start(new Stage());
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         } else {
             MainMenu.okPlayers++;
         }
