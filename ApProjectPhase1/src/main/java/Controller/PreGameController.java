@@ -2,6 +2,7 @@ package Controller;
 
 import Model.*;
 import Model.Buildings.*;
+import Model.People.Lord;
 import Model.People.Person;
 import Model.People.Troop;
 import Model.People.TroopType;
@@ -197,8 +198,10 @@ public class PreGameController {
                 if(cell.getTroops().size() > 0 ||
                         cell.getBuilding() != null ||
                         cell.getTree() != null ||
-                        cell.getRock() != null)
+                        cell.getRock() != null) {
+                    System.out.println(cell.getGroundType().getName());
                     return "tile x: " + i + ", y: " + j + " is not clear";
+                }
             }
         }
         if (num == 1) {
@@ -216,6 +219,7 @@ public class PreGameController {
                     cell.setBuilding(building);
                 }
             }
+            Lord lord = new Lord(currentGovernment, TroopType.LORD, x, y);
             return "ok";
         }
         return "";
