@@ -139,7 +139,9 @@ public class Tile extends Polygon {
             Text troopField;
             for (Troop troop : cell.getTroops()) {
                 troopField = new Text(troop.getName() +
-                        "   Government: " + troop.getGovernment().getUser().getNickname());
+                        " Government: " + troop.getGovernment().getUser().getNickname() +
+                        " HP: " + troop.getHitPoint() +
+                        " Damage: " + troop.getType().getHumanDamage());
                 statusPane.getChildren().add(troopField);
             }
         }
