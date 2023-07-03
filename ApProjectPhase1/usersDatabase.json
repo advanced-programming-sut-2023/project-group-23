@@ -58,5 +58,27 @@
     "userSecurityQuestionNumber": 1,
     "userAnswerToSecurityQuestion": "reza",
     "userHighScore": 0
+  },
+  {
+    "username": "micheal",
+    "password": "3fd3268b18eec19a31c1579ca895eee4195796dbf1ef10239d91c0c0bdb7ae4d",
+    "nickname": "scott",
+    "slogan": "",
+    "email": "scott1@gmail.com",
+    "userSecurityQuestionNumber": 1,
+    "userAnswerToSecurityQuestion": "andrew",
+    "userHighScore": 0,
+    "avatarAddress": "file:/C:/Users/A/project-group-23/ApProjectPhase1/target/classes/profile/3.png"
+  },
+  {
+    "username": "dwight",
+    "password": "9cc3e5abdfaee198a6b74b97ea91e306e1744ddf49876d3dcf6cb936dfd5c9d7",
+    "nickname": "shrute",
+    "slogan": "",
+    "email": "shrute@yahoo.com",
+    "userSecurityQuestionNumber": 1,
+    "userAnswerToSecurityQuestion": "jim",
+    "userHighScore": 0,
+    "avatarAddress": "file:/C:/Users/A/project-group-23/ApProjectPhase1/target/classes/profile/4.png"
   }
 ]
