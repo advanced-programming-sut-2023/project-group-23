@@ -221,6 +221,7 @@ public class PreGameController {
             }
             Lord lord = new Lord(currentGovernment, TroopType.LORD, x, y);
             currentGovernment.setLord(lord);
+            currentGame.getMap().getCellByCoordinate(x, y).addToTroops(lord);
             return "ok";
         }
         return "";

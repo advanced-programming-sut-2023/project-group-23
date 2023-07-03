@@ -4,6 +4,7 @@ import Controller.GameMenuController;
 import Controller.ShopMenuController;
 import Model.Game;
 import Model.Government;
+import Model.MapCell;
 import Model.Maps;
 import Model.People.TempJFX.Tile;
 import Model.People.TroopType;
@@ -139,6 +140,8 @@ public class GameJFX extends Application {
         stage.setTitle("Move Troop");
         stage.setResizable(false);
 
+        TroopType[] selectedType = new TroopType[1];
+
         Button cancel = new Button("Cancel");
         cancel.setLayoutX(10);
         cancel.setLayoutY(560);
@@ -167,6 +170,12 @@ public class GameJFX extends Application {
             yCoordinate.setLayoutY(60);
             anchorPane.getChildren().add(yCoordinate);
 
+            TextField amount = new TextField();
+            amount.setPromptText("Amount");
+            amount.setLayoutX(200);
+            amount.setLayoutY(90);
+            anchorPane.getChildren().add(amount);
+
             Text wrongCoordinate = new Text("");
             wrongCoordinate.setLayoutX(400);
             wrongCoordinate.setLayoutY(65);
@@ -175,12 +184,50 @@ public class GameJFX extends Application {
 
             MenuButton troops = new MenuButton("Troop Type");
             troops.setLayoutX(200);
-            troops.setLayoutY(90);
+            troops.setLayoutY(120);
             anchorPane.getChildren().add(troops);
             for(Map.Entry<TroopType, Integer> entry : troopTypes.entrySet()) {
                 MenuItem menuItem = new MenuItem(entry.getKey().getName());
+                menuItem.setOnAction(actionEvent -> {
+                    selectedType[0] = TroopType.getTroopTypeByName(entry.getKey().getName());
+                });
                 troops.getItems().add(menuItem);
             }
+
+            Button okButton = new Button("OK");
+            okButton.setLayoutX(550);
+            okButton.setLayoutY(560);
+            okButton.setOnMouseClicked(mouseEvent -> {
+                wrongCoordinate.setText("");
+                if (!xCoordinate.getText().matches("\\d+")) {
+                    wrongCoordinate.setText("coordinate must be an integer!");
+                    return;
+                } else if (!yCoordinate.getText().matches("\\d+")) {
+                    wrongCoordinate.setText("coordinate must be an integer!");
+                    return;
+                } else if (!amount.getText().matches("\\d+")) {
+                    wrongCoordinate.setText("Amount must be an integer!");
+                    return;
+                }
+                int troopAmount = Integer.parseInt(amount.getText());
+                int x = Integer.parseInt(xCoordinate.getText());
+                int y = Integer.parseInt(yCoordinate.getText());
+                MapCell destinationCell = currentGame.getMap().getCellByCoordinate(x, y);
+
+                if(troopAmount > troopTypes.get(selectedType[0]) || troopAmount < 1) {
+                    wrongCoordinate.setText("Amount must be between 1 and " + amount.getText());
+                    return;
+                }
+                wrongCoordinate.setText(GameMenuController.moveUnitJFX(selectedType[0], troopAmount, destinationCell));
+                if(wrongCoordinate.getText().equals("")) {
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                    alert.setHeaderText("Moved Troops Successfully!");
+                    alert.setContentText(amount.getText() + " " + selectedType[0].getName() + " moved to x: " + x + " y: " + y);
+                    alert.showAndWait();
+                    stage.close();
+                }
+            });
+            anchorPane.getChildren().add(okButton);
         }
         stage.show();
     }

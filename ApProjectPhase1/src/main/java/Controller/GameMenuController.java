@@ -383,6 +383,91 @@ public class GameMenuController {
         return cell;
     }
 
+    public static String moveUnitJFX(TroopType troopType, int amount, MapCell destinationCell) {
+        if(destinationCell.getRock() != null ||
+                destinationCell.getGroundType().equals(GroundType.WATER) ||
+                destinationCell.getGroundType().equals(GroundType.ROCK) ||
+                (destinationCell.getBuilding() != null && !destinationCell.getBuilding().getType().isPassable()))
+            return "Destination cell is not clear!";
+
+        int[][] mapForMove = createMapForMove();
+        int x = destinationCell.getX();
+        int y = destinationCell.getY();
+        MapCell initialCell = Tile.getSelectedTile().getCell();
+
+        if(troopType.getSpeed() < Math.abs(x - initialCell.getX()) + Math.abs(y - initialCell.getY()) ||
+                move(initialCell.getX(), initialCell.getY(), initialCell.getX(), initialCell.getY(), x, y, mapForMove, troopType.getSpeed()))
+            return "Destination cell is not reachable!";
+
+        Troop troop;
+        for(int j = initialCell.getTroops().size() - 1 ; j >= 0 && amount > 0 ; j--) {
+            troop = initialCell.getTroops().get(j);
+            if(troop.getGovernment().equals(currentGovernment) &&
+                    !troop.isMovedThisRound() &&
+                    troop.getType().equals(troopType)) {
+                troop.setX(x);
+                troop.setY(y);
+                troop.setMovedThisRound(true);
+                initialCell.removeFromTroops(troop);
+                destinationCell.addToTroops(troop);
+                amount--;
+            }
+        }
+        return "";
+    }
+
+    private static int[][] createMapForMove() {
+        int[][] map = new int[202][202];
+        for (int j = 0; j < 202; j++) {
+            map[0][j] = -1;
+            map[201][j] = -1;
+        }
+        for (int i = 0; i < 202; i++) {
+            map[i][0] = -1;
+            map[i][201] = -1;
+        }
+        MapCell[][] mapCell = Game.getCurrentGame().getMap().getMap();
+        for (int i = 1; i < 201; i++) {
+            for (int j = 1; j < 201; j++) {
+                if (mapCell[i - 1][j - 1].getGroundType().getName().equals("rock") || mapCell[i - 1][j - 1].getGroundType().getName().equals("water"))
+                    map[i][j] = -1;
+                else if (mapCell[i - 1][j - 1].getRock() != null) map[i][j] = -1;
+                else if (mapCell[i - 1][j - 1].getBuilding() != null) {
+                    if (!mapCell[i - 1][j - 1].getBuilding().isPassable())
+                        map[i][j] = -1;
+                    else map[i][j] = 0;
+                } else map[i][j] = 0;
+            }
+        }
+        return map;
+    }
+
+    public static boolean move(int x, int y, int xI, int yI, int xF, int yF, int[][] map, int speed) {
+        if (x == xF && y == yF && speed >= 0) return true;
+        if (speed == 0) return false;
+        if (map[x + 1][y] == 0) {
+            map[x + 1][y] = 1;
+            if (!move(x + 1, y, xI, yI, xF, yF, map, speed - 1)) map[x + 1][y] = 0;
+            else return true;
+        }
+        else if (map[x][y + 1] == 0) {
+            map[x][y + 1] = 1;
+            if (!move(x, y + 1, xI, yI, xF, yF, map, speed - 1)) map[x][y + 1] = 0;
+            else return true;
+        }
+        else if (map[x - 1][y] == 0) {
+            map[x - 1][y] = 1;
+            if (!move(x - 1, y, xI, yI, xF, yF, map, speed - 1)) map[x - 1][y] = 0;
+            else return true;
+        }
+        else if (map[x][y - 1] == 0) {
+            map[x][y - 1] = 1;
+            if (!move(x, y - 1, xI, yI, xF, yF, map, speed - 1)) map[x][y - 1] = 0;
+            else return true;
+        }
+        return false;
+    }
+
 
     public static void patrolUnit(Matcher matcher) {
     }
@@ -420,7 +505,7 @@ public class GameMenuController {
         HashMap<TroopType, Integer> map = new HashMap<>();
         if(cell.getTroops().size() > 0)
             for (Troop troop : cell.getTroops()) {
-                if(troop.getGovernment().equals(currentGovernment)) {
+                if(troop.getGovernment().equals(currentGovernment) && !troop.isMovedThisRound()) {
                     if (map.containsKey(troop.getType())) map.put(troop.getType(), map.get(troop.getType()) + 1);
                     else map.put(troop.getType(), 1);
                 }
