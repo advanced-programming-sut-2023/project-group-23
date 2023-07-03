@@ -2,19 +2,18 @@ package Model;
 
 import Model.People.TempJFX.Tile;
 import Model.People.Troop;
-import javafx.beans.Observable;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
-public class Map {
+public class Maps {
     private MapCell[][] map;
     private int width;
     private int height;
     private int currentX;
     private int currentY;
 
-    public Map() {
+    public Maps() {
         this.width = 200;
         this.height = 200;
         this.map = new MapCell[height][width];

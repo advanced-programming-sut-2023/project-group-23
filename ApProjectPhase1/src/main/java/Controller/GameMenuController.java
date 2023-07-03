@@ -2,6 +2,7 @@ package Controller;
 
 import Model.*;
 import Model.Buildings.*;
+import Model.People.TempJFX.Tile;
 import Model.People.Troop;
 import Model.People.TroopType;
 
@@ -412,5 +413,19 @@ public class GameMenuController {
 
     public static void setCurrentGame(Game currentGame) {
         GameMenuController.currentGame = currentGame;
+    }
+
+    public static HashMap<TroopType, Integer> getTroopTypes(Tile selectedTile) {
+        MapCell cell = selectedTile.getCell();
+        HashMap<TroopType, Integer> map = new HashMap<>();
+        if(cell.getTroops().size() > 0)
+            for (Troop troop : cell.getTroops()) {
+                if(troop.getGovernment().equals(currentGovernment)) {
+                    if (map.containsKey(troop.getType())) map.put(troop.getType(), map.get(troop.getType()) + 1);
+                    else map.put(troop.getType(), 1);
+                }
+            }
+
+        return map;
     }
 }

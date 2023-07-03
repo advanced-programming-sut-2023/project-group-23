@@ -18,13 +18,10 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -465,7 +462,7 @@ public class ShopMenu extends Application {
         governments.add(government);
         governments.add(government2);
         governments.add(government3);
-        Game game = new Game(governments, new Map());
+        Game game = new Game(governments, new Maps());
         PreGameController.setCurrentGame(game);
         PreGameController.setCurrentGovernment(government);
         ShopMenu.setCurrentGovernment(government);

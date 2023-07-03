@@ -1,8 +1,5 @@
 package Model;
 
-import Model.Government;
-import Model.Map;
-
 import java.util.ArrayList;
 
 public class Game {
@@ -10,21 +7,21 @@ public class Game {
     private static Game currentGame;
     private ArrayList<Government> governments;
     private ArrayList<Colors> usedGovernmentColors;
-    private Map map;
+    private Maps map;
     private int rounds;
 
-    public Game(ArrayList<Government> governments, Map map) {
+    public Game(ArrayList<Government> governments, Maps map) {
         this.governments = governments;
         this.map = map;
         this.usedGovernmentColors = new ArrayList<>();
-        this.rounds = 0;
+        this.rounds = 1;
     }
 
     public ArrayList<Government> getGovernments() {
         return governments;
     }
 
-    public Map getMap() {
+    public Maps getMap() {
         return map;
     }
 
@@ -32,7 +29,7 @@ public class Game {
         this.governments = governments;
     }
 
-    public void setMap(Map map) {
+    public void setMap(Maps map) {
         this.map = map;
     }
 

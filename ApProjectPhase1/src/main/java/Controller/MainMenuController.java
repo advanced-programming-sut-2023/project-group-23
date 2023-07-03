@@ -2,13 +2,11 @@ package Controller;
 
 import Model.Game;
 import Model.Government;
-import Model.Map;
+import Model.Maps;
 import Model.User;
-import View.LoginMenu.LoginMenuCommands;
 import View.MainMenu.MainMenuCommands;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.regex.Matcher;
 
 public class MainMenuController {
@@ -35,7 +33,7 @@ public class MainMenuController {
             tempGovernmentsList.add(new Government(user));
         }
 
-        Game.setCurrentGame(new Game(tempGovernmentsList, new Map()));
+        Game.setCurrentGame(new Game(tempGovernmentsList, new Maps()));
         return "set your game settings";
     }
 }

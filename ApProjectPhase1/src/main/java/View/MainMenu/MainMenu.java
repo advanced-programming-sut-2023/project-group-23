@@ -3,19 +3,15 @@ package View.MainMenu;
 import Controller.LoginMenuController;
 import Controller.MainMenuController;
 import Controller.PreGameController;
-import Controller.TradeMenuController;
 import Model.Game;
 import Model.Government;
-import Model.Map;
+import Model.Maps;
 import Model.People.Lord;
 import Model.People.TroopType;
 import Model.User;
-import View.GameMenu.GameMenu;
 import View.LoginMenu.LoginMenu;
 import View.PreGameMenu.PreGameMenu;
 import View.ProfileMenu.ProfileMenu;
-import View.TradeMenu.PreTradeMenu;
-import View.TradeMenu.TradeMenu;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -26,7 +22,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -185,7 +180,7 @@ public class MainMenu extends Application {
                         Government government = new Government(user);
                         governments.add(government);
                     }
-                    Game game = new Game(governments, new Map());
+                    Game game = new Game(governments, new Maps());
                     Game.setCurrentGame(game);
                     PreGameMenu.setCurrentGame(game);
                     PreGameController.setCurrentGame(game);

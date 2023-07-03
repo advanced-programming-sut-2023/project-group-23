@@ -4,30 +4,28 @@ import Controller.GameMenuController;
 import Controller.ShopMenuController;
 import Model.Game;
 import Model.Government;
-import Model.Map;
-import Model.MapCell;
+import Model.Maps;
 import Model.People.TempJFX.Tile;
-import View.GameMenu.GameMenu;
+import Model.People.TroopType;
 import View.LoginMenu.LoginMenu;
 import View.ShopMenu.ShopMenu;
 import javafx.application.Application;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.image.Image;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.ImagePattern;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Objects;
+import java.util.HashMap;
+import java.util.Map;
 
 public class GameJFX extends Application {
 
@@ -39,7 +37,7 @@ public class GameJFX extends Application {
     private double startY;
     private double distance;
 
-    private Map map;
+    private Maps map;
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -57,8 +55,8 @@ public class GameJFX extends Application {
         gamePane.getChildren().add(mapPane);
         gamePane.getChildren().add(Tile.statusPane);
 
+        Button shop = new Button("Shop");
         if (currentGovernment.isCanShop()) {
-            Button shop = new Button("Shop");
             shop.setLayoutX(WIDTH - 90);
             shop.setLayoutY(80);
             shop.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -85,7 +83,7 @@ public class GameJFX extends Application {
         nextTurnButton.setLayoutY(40);
         nextTurnButton.setOnMouseClicked(mouseEvent -> {
             try {
-                nextTurnHandler(gamePane);
+                nextTurnHandler(gamePane, shop);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -104,6 +102,9 @@ public class GameJFX extends Application {
             else if(keyEvent.getCode().equals(KeyCode.MINUS)) {
                 Tile.zoom(false);
                 showMap(mapPane, mapPane.getLayoutX(), mapPane.getLayoutY());
+            }
+            else if(keyEvent.getCode().equals(KeyCode.M)) {
+                if(Tile.getSelectedTile() != null) moveTroop(mapPane, gamePane);
             }
         });
 
@@ -129,7 +130,62 @@ public class GameJFX extends Application {
         stage.show();
     }
 
-    private void nextTurnHandler(Pane gamePane) throws IOException {
+    private void moveTroop(Pane mapPane, Pane gamePane) {
+        HashMap<TroopType, Integer> troopTypes = GameMenuController.getTroopTypes(Tile.getSelectedTile());
+        AnchorPane anchorPane = new AnchorPane();
+        Scene scene = new Scene(anchorPane, 600, 600);
+        Stage stage = new Stage();
+        stage.setScene(scene);
+        stage.setTitle("Move Troop");
+        stage.setResizable(false);
+
+        Button cancel = new Button("Cancel");
+        cancel.setLayoutX(10);
+        cancel.setLayoutY(560);
+        cancel.setOnMouseClicked(mouseEvent -> {
+            stage.close();
+        });
+
+        anchorPane.getChildren().add(cancel);
+
+        if(troopTypes.size() == 0) {
+            Text error = new Text("No Troops Available!");
+            error.setX(300);
+            error.setY(300);
+            anchorPane.getChildren().add(error);
+        }
+        else {
+            TextField xCoordinate = new TextField();
+            xCoordinate.setPromptText("X Coordinate");
+            xCoordinate.setLayoutX(200);
+            xCoordinate.setLayoutY(30);
+            anchorPane.getChildren().add(xCoordinate);
+
+            TextField yCoordinate = new TextField();
+            yCoordinate.setPromptText("Y Coordinate");
+            yCoordinate.setLayoutX(200);
+            yCoordinate.setLayoutY(60);
+            anchorPane.getChildren().add(yCoordinate);
+
+            Text wrongCoordinate = new Text("");
+            wrongCoordinate.setLayoutX(400);
+            wrongCoordinate.setLayoutY(65);
+            wrongCoordinate.setFill(Color.RED);
+            anchorPane.getChildren().add(wrongCoordinate);
+
+            MenuButton troops = new MenuButton("Troop Type");
+            troops.setLayoutX(200);
+            troops.setLayoutY(90);
+            anchorPane.getChildren().add(troops);
+            for(Map.Entry<TroopType, Integer> entry : troopTypes.entrySet()) {
+                MenuItem menuItem = new MenuItem(entry.getKey().getName());
+                troops.getItems().add(menuItem);
+            }
+        }
+        stage.show();
+    }
+
+    private void nextTurnHandler(Pane gamePane, Button shopButton) throws IOException {
         int nextIndex = currentGame.getGovernments().indexOf(currentGovernment) + 1;
         if(nextIndex == currentGame.getGovernments().size()) {
             GameMenuController.nextTurn();
@@ -139,6 +195,13 @@ public class GameJFX extends Application {
         }
         GameJFX.setCurrentGovernment(currentGame.getGovernments().get(nextIndex));
         GameMenuController.setCurrentGovernment(currentGovernment);
+        ShopMenu.setCurrentGovernment(currentGovernment);
+        ShopMenuController.setCurrentGovernment(currentGovernment);
+        gamePane.getChildren().remove(shopButton);
+        if(currentGovernment.isCanShop()) gamePane.getChildren().add(shopButton);
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setHeaderText(currentGovernment.getUser().getNickname() + " Is Playing Now!");
+        alert.showAndWait();
         gamePane.requestFocus();
     }
 
