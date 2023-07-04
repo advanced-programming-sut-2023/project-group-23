@@ -117,6 +117,9 @@ public class Tile extends Polygon {
         Text groundTypeField = new Text("Ground Type: " + cell.getGroundType().getName());
         statusPane.getChildren().add(groundTypeField);
 
+        Text coordinatesField = new Text("X: " + cell.getX() + "    Y: " + cell.getY());
+        statusPane.getChildren().add(coordinatesField);
+
         if(cell.getTree() != null) {
             Text treeField = new Text("Tree: " + cell.getTree().getName());
             statusPane.getChildren().add(treeField);

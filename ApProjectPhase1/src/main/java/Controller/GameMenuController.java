@@ -383,6 +383,61 @@ public class GameMenuController {
         return cell;
     }
 
+    public static String allAttack(TroopType troopType, int troopAmount, MapCell destinationCell) {
+        if(destinationCell.getRock() != null ||
+                destinationCell.getGroundType().equals(GroundType.WATER) ||
+                destinationCell.getGroundType().equals(GroundType.ROCK) ||
+                (destinationCell.getBuilding() != null && !destinationCell.getBuilding().getType().isPassable()))
+            return "Destination cell is not clear!";
+
+        int[][] mapForMove = createMapForMove();
+        int x = destinationCell.getX();
+        int y = destinationCell.getY();
+        MapCell initialCell = Tile.getSelectedTile().getCell();
+        int range = (int) Math.ceil(Math.sqrt(Math.pow(x - initialCell.getX(), 2) + Math.pow(y - initialCell.getY(), 2)));
+        int distance = Math.abs(x - initialCell.getX()) + Math.abs(y - initialCell.getY());
+        int totalDamage = 0;
+        Troop troop;
+
+        if(troopType.getFireRange() > 0) {
+            if(troopType.getFireRange() < range)
+                return "Enemy cell is out of range!";
+            totalDamage = troopAmount * troopType.getHumanDamage();
+        }
+        else {
+            if(troopType.getSpeed() < distance ||
+                    !move(initialCell.getX(), initialCell.getY(), initialCell.getX(), initialCell.getY(), x, y, mapForMove, troopType.getSpeed()))
+                return "Destination cell is not reachable!";
+
+            totalDamage = troopAmount * troopType.getHumanDamage();
+            for(int j = initialCell.getTroops().size() - 1 ; j >= 0 && troopAmount > 0 ; j--) {
+                troop = initialCell.getTroops().get(j);
+                if(troop.getGovernment().equals(currentGovernment) &&
+                        !troop.isMovedThisRound() &&
+                        troop.getType().equals(troopType)) {
+                    troop.setX(x);
+                    troop.setY(y);
+                    troop.setMovedThisRound(true);
+                    initialCell.removeFromTroops(troop);
+                    destinationCell.addToTroops(troop);
+                    troopAmount--;
+                }
+            }
+        }
+
+
+        if(destinationCell.getBuilding() != null && !destinationCell.getBuilding().getGovernment().equals(currentGovernment))
+            destinationCell.getBuilding().setHitPoint(destinationCell.getBuilding().getHitPoint() - totalDamage);
+
+        for (int j = destinationCell.getTroops().size() - 1 ; j >= 0 ; j--) {
+            troop = destinationCell.getTroops().get(j);
+            if(!troop.getGovernment().equals(currentGovernment))
+                troop.setHitPoint(troop.getHitPoint() - totalDamage);
+        }
+
+        return "";
+    }
+
     public static String moveUnitJFX(TroopType troopType, int amount, MapCell destinationCell) {
         if(destinationCell.getRock() != null ||
                 destinationCell.getGroundType().equals(GroundType.WATER) ||
@@ -396,7 +451,7 @@ public class GameMenuController {
         MapCell initialCell = Tile.getSelectedTile().getCell();
 
         if(troopType.getSpeed() < Math.abs(x - initialCell.getX()) + Math.abs(y - initialCell.getY()) ||
-                move(initialCell.getX(), initialCell.getY(), initialCell.getX(), initialCell.getY(), x, y, mapForMove, troopType.getSpeed()))
+            !move(initialCell.getX(), initialCell.getY(), initialCell.getX(), initialCell.getY(), x, y, mapForMove, troopType.getSpeed()))
             return "Destination cell is not reachable!";
 
         Troop troop;
@@ -513,4 +568,6 @@ public class GameMenuController {
 
         return map;
     }
+
+
 }
