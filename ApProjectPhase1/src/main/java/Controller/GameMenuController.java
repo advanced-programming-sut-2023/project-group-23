@@ -186,6 +186,33 @@ public class GameMenuController {
         System.out.print(result);
     }
 
+    public static ArrayList<Text> endGameJFX() throws IOException {
+        for(Government government : currentGame.getGovernments()) {
+            if(government.getRoundLost() == 0) {
+                government.setRoundLost(Game.getCurrentGame().getRounds());
+                government.setScore(government.getScore() + 2000);
+            }
+            government.setScore(government.getScore() + 50 * government.getRoundLost());
+        }
+        ArrayList<Government> governments = new ArrayList<>();
+        governments.addAll(currentGame.getGovernments());
+        for (int i = 1; i < governments.size(); i++) {
+            for (int j = 0; j < i; j ++) {
+                if (governments.get(j).getScore() < governments.get(i).getScore()) {
+                    Collections.swap(governments, i, j);
+                }
+            }
+        }
+        ArrayList<Text> usersList = new ArrayList<>();
+        int i = 1;
+        for (Government government : governments) {
+            usersList.add(new Text(i + ". user Nickname : " + government.getUser().getNickname() + " , round lost : " + government.getRoundLost() + " , score: " + government.getScore()));
+            i++;
+            if (government.getUser().getUserHighScore() < government.getScore()) government.getUser().setUserHighScore(government.getScore());
+        }
+        return usersList;
+    }
+
     public static void nextTurn() {
         for(Government government : Game.getCurrentGame().getGovernments()) {
             if(government.getLord().getHitPoint() < 1 && government.getRoundLost() == 0) {

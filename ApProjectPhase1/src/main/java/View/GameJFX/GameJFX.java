@@ -11,6 +11,7 @@ import Model.Maps;
 import Model.People.TempJFX.Tile;
 import Model.People.TroopType;
 import View.LoginMenu.LoginMenu;
+import View.MainMenu.MainMenu;
 import View.ShopMenu.ShopMenu;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -118,7 +119,18 @@ public class GameJFX extends Application {
         nextTurnButton.setLayoutY(40);
         nextTurnButton.setOnMouseClicked(mouseEvent -> {
             try {
-                nextTurnHandler(gamePane, shop, scribe, population);
+                nextTurnHandler(gamePane, shop, scribe, population, stage);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+
+        Button endGameButton = new Button("End Game");
+        endGameButton.setLayoutX(WIDTH - 90);
+        endGameButton.setLayoutY(120);
+        endGameButton.setOnMouseClicked(mouseEvent -> {
+            try {
+                endGame(stage);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -612,12 +624,12 @@ public class GameJFX extends Application {
         stage.show();
     }
 
-    private void nextTurnHandler(Pane gamePane, Button shopButton, ImageView imageView, Label label) throws IOException {
+    private void nextTurnHandler(Pane gamePane, Button shopButton, ImageView imageView, Label label, Stage mainStage) throws IOException {
         int nextIndex = currentGame.getGovernments().indexOf(currentGovernment) + 1;
         if(nextIndex == currentGame.getGovernments().size()) {
             GameMenuController.nextTurn();
             if(GameMenuController.isGameOver())
-                GameMenuController.endGame();
+                GameJFX.endGame(mainStage);
             else nextIndex = 0;
         }
         GameJFX.setCurrentGovernment(currentGame.getGovernments().get(nextIndex));
@@ -639,6 +651,39 @@ public class GameJFX extends Application {
         alert.setHeaderText(currentGovernment.getUser().getNickname() + " Is Playing Now!");
         alert.showAndWait();
         gamePane.requestFocus();
+    }
+
+    private static void endGame(Stage mainStage) throws IOException {
+        AnchorPane anchorPane = new AnchorPane();
+        Scene scene = new Scene(anchorPane, 600, 600);
+        Stage stage = new Stage();
+        stage.setScene(scene);
+        stage.setTitle("Results");
+        stage.setResizable(false);
+
+        ArrayList<Text> rankings = GameMenuController.endGameJFX();
+        for(int i = 0 ; i < rankings.size() ; i++) {
+            Text text = rankings.get(i);
+            text.setX(100);
+            text.setY(30 * (1 + i));
+            anchorPane.getChildren().add(text);
+        }
+
+        Button okButton = new Button("OK");
+        okButton.setLayoutX(550);
+        okButton.setLayoutY(560);
+        okButton.setOnMouseClicked(mouseEvent -> {
+            stage.close();
+            mainStage.setTitle("Main Menu");
+            mainStage.setResizable(false);
+            try {
+                new MainMenu().start(mainStage);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
+        anchorPane.getChildren().add(okButton);
+        stage.show();
     }
 
     private void showMap(Pane mapPane, double X, double Y) {
