@@ -11,7 +11,6 @@ import Model.Maps;
 import Model.People.TempJFX.Tile;
 import Model.People.TroopType;
 import View.LoginMenu.LoginMenu;
-import View.PreGameMenu.PreGameMenu;
 import View.ShopMenu.ShopMenu;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -19,11 +18,15 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -83,13 +86,39 @@ public class GameJFX extends Application {
             gamePane.getChildren().add(shop);
         }
 
+        Double amount = GameMenuController.getCurrentGovernment().getGold();
+        Label treasury = new Label(amount.toString());
+        treasury.setLayoutX(WIDTH - 150 + 5);
+        treasury.setLayoutY(HEIGHT - 100 + 5);
+
+        Integer pop = GameMenuController.getCurrentGovernment().getPeasantPopulation();
+        Integer maxPop = GameMenuController.getCurrentGovernment().getMaxPopulation();
+        Label population = new Label(pop.toString() + "  /  " + maxPop.toString());
+        population.setLayoutX(treasury.getLayoutX());
+        population.setLayoutY(treasury.getLayoutY() + 50);
+
+        gamePane.getChildren().addAll(treasury, population);
+
+
+        ImageView scribe = new ImageView();
+        scribe.setLayoutX(WIDTH - 200);
+        scribe.setLayoutY(HEIGHT - 200);
+        scribe.setFitHeight(100);
+        scribe.setFitWidth(100);
+        if (Integer.parseInt(GameMenuController.showPopularity()) > 0) {
+            scribe.setImage(new Image(getClass().getResource("/happy.png").toExternalForm()));
+        } else if (Integer.parseInt(GameMenuController.showPopularity()) == 0) {
+            scribe.setImage(new Image(getClass().getResource("/neutral.png").toExternalForm()));
+        } else scribe.setImage(new Image(getClass().getResource("/angry.png").toExternalForm()));
+
+        gamePane.getChildren().add(scribe);
 
         Button nextTurnButton = new Button("Next Turn");
         nextTurnButton.setLayoutX(WIDTH - 90);
         nextTurnButton.setLayoutY(40);
         nextTurnButton.setOnMouseClicked(mouseEvent -> {
             try {
-                nextTurnHandler(gamePane, shop);
+                nextTurnHandler(gamePane, shop, scribe, population);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -583,7 +612,7 @@ public class GameJFX extends Application {
         stage.show();
     }
 
-    private void nextTurnHandler(Pane gamePane, Button shopButton) throws IOException {
+    private void nextTurnHandler(Pane gamePane, Button shopButton, ImageView imageView, Label label) throws IOException {
         int nextIndex = currentGame.getGovernments().indexOf(currentGovernment) + 1;
         if(nextIndex == currentGame.getGovernments().size()) {
             GameMenuController.nextTurn();
@@ -597,6 +626,14 @@ public class GameJFX extends Application {
         ShopMenuController.setCurrentGovernment(currentGovernment);
         PreGameController.setCurrentGovernment(currentGovernment);
         gamePane.getChildren().remove(shopButton);
+        Integer pop = GameMenuController.getCurrentGovernment().getPeasantPopulation();
+        Integer maxPop = GameMenuController.getCurrentGovernment().getMaxPopulation();
+        label.setText(pop.toString() + "  /  " + maxPop.toString());
+        if (Integer.parseInt(GameMenuController.showPopularity()) > 0) {
+            imageView.setImage(new Image(getClass().getResource("/happy.png").toExternalForm()));
+        } else if (Integer.parseInt(GameMenuController.showPopularity()) == 0) {
+            imageView.setImage(new Image(getClass().getResource("/neutral.png").toExternalForm()));
+        } else imageView.setImage(new Image(getClass().getResource("/angry.png").toExternalForm()));
         if(currentGovernment.isCanShop()) gamePane.getChildren().add(shopButton);
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setHeaderText(currentGovernment.getUser().getNickname() + " Is Playing Now!");

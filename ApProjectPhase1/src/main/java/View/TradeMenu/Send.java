@@ -1,5 +1,6 @@
 package View.TradeMenu;
 
+import Controller.GameMenuController;
 import Model.*;
 import View.ShopMenu.ShopMenu;
 import javafx.application.Application;
@@ -72,11 +73,13 @@ public class Send extends Application {
             }
         });
 
+        nodes.clear();
         int size = Math.min(number * 10 + 10, ShopMenu.getCurrentGovernment().getTradeHistory().size());
         for (int i = number * 10 + 1; i <= size; i++) {
-            Trade trade = ShopMenu.getCurrentGovernment().getTradeHistory().get(i - 1);
+            Trade trade = GameMenuController.getCurrentGovernment().getTradeHistory().get(i - 1);
             int integer = i % 10;
             if (integer == 0) integer = 10;
+//            System.out.println(ShopMenu.getCurrentGovernment().getUser().getNickname());
             nodes.addAll(createSendTrade(trade, integer));
         }
 

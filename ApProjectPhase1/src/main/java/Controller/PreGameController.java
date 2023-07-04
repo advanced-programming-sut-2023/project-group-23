@@ -58,7 +58,7 @@ public class PreGameController {
         GroundType groundType;
         WaterType waterType = null;
 
-        if((groundType = getGroundTypeByName(typeName)) == null || groundType.equals(GroundType.WATER)) {
+        if((groundType = getGroundTypeByName(typeName)) == null) {
             if((waterType = getWaterTypeByName(typeName)) == null)
                 return "invalid ground type or water type";
             groundType = GroundType.WATER;

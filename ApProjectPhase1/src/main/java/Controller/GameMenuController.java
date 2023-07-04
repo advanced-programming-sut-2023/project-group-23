@@ -61,7 +61,7 @@ public class GameMenuController {
             if(amount > 0)
                 foodDiversity++;
         }
-        int foodPopularity = Math.max(foodDiversity, 0) + currentGovernment.getFoodRate() * 4;
+        int foodPopularity = Math.min(foodDiversity, 0) + currentGovernment.getFoodRate() * 4;
 
         int taxPopularity;
         int taxRate = currentGovernment.getTaxRate();
@@ -72,10 +72,10 @@ public class GameMenuController {
         else
             taxPopularity = 4 * taxRate - 8;
 
-        int totalPopularity = foodPopularity + taxPopularity -
+        Integer totalPopularity = foodPopularity + taxPopularity -
                 currentGovernment.getFearRate() +
                 currentGovernment.getReligiousRate();
-        return "total popularity rate: " + totalPopularity;
+        return totalPopularity.toString();
     }
 
     public static void showFoodList() {
