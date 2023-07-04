@@ -637,7 +637,10 @@ public class GameJFX extends Application {
             GameMenuController.nextTurn();
             if(GameMenuController.isGameOver())
                 GameJFX.endGame(mainStage);
-            else nextIndex = 0;
+            else {
+                nextIndex = 0;
+                currentGame.setRounds(currentGame.getRounds() + 1);
+            }
         }
         GameJFX.setCurrentGovernment(currentGame.getGovernments().get(nextIndex));
         GameMenuController.setCurrentGovernment(currentGovernment);
