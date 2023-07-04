@@ -1,6 +1,7 @@
 package View.GameJFX;
 
 import Controller.GameMenuController;
+import Controller.PreGameController;
 import Controller.ShopMenuController;
 import Model.Game;
 import Model.Government;
@@ -9,6 +10,7 @@ import Model.Maps;
 import Model.People.TempJFX.Tile;
 import Model.People.TroopType;
 import View.LoginMenu.LoginMenu;
+import View.PreGameMenu.PreGameMenu;
 import View.ShopMenu.ShopMenu;
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -349,6 +351,7 @@ public class GameJFX extends Application {
         GameMenuController.setCurrentGovernment(currentGovernment);
         ShopMenu.setCurrentGovernment(currentGovernment);
         ShopMenuController.setCurrentGovernment(currentGovernment);
+        PreGameController.setCurrentGovernment(currentGovernment);
         gamePane.getChildren().remove(shopButton);
         if(currentGovernment.isCanShop()) gamePane.getChildren().add(shopButton);
         Alert alert = new Alert(Alert.AlertType.INFORMATION);

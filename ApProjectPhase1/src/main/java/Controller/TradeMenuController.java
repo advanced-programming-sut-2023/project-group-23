@@ -136,9 +136,10 @@ public class TradeMenuController {
         ResourceType resourceType = getResourceByName(resourceName);
         if (foodType != null) {
             newAmount = trade.getRequester().getFoodAmountByFood(foodType) + trade.getResourceAmount();
+            System.out.println(newAmount);
             if (trade.getRequester().getMaxFoodStorage() >= newAmount) {
                 if (receiverGovernment.getFoodAmountByFood(foodType) < trade.getResourceAmount()) return "receiver doesn't have enough resource";
-                trade.getRequester().changeFoodAmount(foodType, newAmount);
+                trade.getRequester().changeFoodAmount(foodType, trade.getRequester().getFoodAmountByFood(foodType) + trade.getResourceAmount());
                 receiverGovernment.changeFoodAmount(foodType, receiverGovernment.getFoodAmountByFood(foodType) - trade.getResourceAmount());
                 trade.getRequester().setGold(trade.getRequester().getGold() - trade.getPrice());
                 receiverGovernment.setGold(receiverGovernment.getGold() + trade.getPrice());
@@ -155,16 +156,12 @@ public class TradeMenuController {
         }
         trade.setAccepted(1);
         trade.setReceiverMessage(receiverMessage);
-        receiverGovernment.getTradeList().remove(trade);
-        receiverGovernment.getTradeHistory().add(trade);
         return "";
     }
 
     public static String reject(Trade trade, String receiverMessage) {
         trade.setAccepted(-1);
         trade.setReceiverMessage(receiverMessage);
-        receiverGovernment.getTradeList().remove(trade);
-        receiverGovernment.getTradeHistory().add(trade);
         return "";
     }
 
