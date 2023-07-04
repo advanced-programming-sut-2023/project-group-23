@@ -5,6 +5,7 @@ import Model.Buildings.*;
 import Model.People.TempJFX.Tile;
 import Model.People.Troop;
 import Model.People.TroopType;
+import javafx.scene.text.Text;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -83,6 +84,14 @@ public class GameMenuController {
         }
     }
 
+    public static ArrayList<Text> showFoodListJFX() {
+        ArrayList<Text> foodList = new ArrayList<>();
+        for(Map.Entry<FoodType, Integer> entry : currentGovernment.getFoods().entrySet()) {
+            foodList.add(new Text(entry.getKey().getName() + ": " + entry.getValue()));
+        }
+        return foodList;
+    }
+
     public static String setFoodRate(Matcher matcher) {
         matcher.matches();
         int inputRate = Integer.parseInt(matcher.group("rateNumber"));
@@ -101,6 +110,20 @@ public class GameMenuController {
 
         currentGovernment.setFoodRate(inputRate);
         return "set food rate successfully";
+    }
+
+    public static String setFoodRateJFX(int inputRate) {
+        boolean isStorageEmpty = true;
+        for(int amount : currentGovernment.getFoods().values())
+            if(amount > 0) {
+                isStorageEmpty = false;
+                break;
+            }
+        if(isStorageEmpty)
+            return "Rate only can be -2 when storage is empty";
+
+        currentGovernment.setFoodRate(inputRate);
+        return "Food Rate set to " + inputRate;
     }
 
     public static String  showFoodRate() {

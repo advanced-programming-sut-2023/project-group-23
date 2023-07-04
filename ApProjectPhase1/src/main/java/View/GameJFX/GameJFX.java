@@ -29,6 +29,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -120,6 +121,9 @@ public class GameJFX extends Application {
             else if(keyEvent.getCode().equals(KeyCode.B)) {
                 dropBuilding();
             }
+            else if(keyEvent.getCode().equals(KeyCode.F)) {
+                showFoodMenu();
+            }
         });
 
 //        gamePane.setOnMouseClicked(mouseEvent -> {
@@ -144,6 +148,61 @@ public class GameJFX extends Application {
         stage.show();
     }
 
+    private void showFoodMenu() {
+        AnchorPane anchorPane = new AnchorPane();
+        Scene scene = new Scene(anchorPane, 600, 600);
+        Stage stage = new Stage();
+        stage.setScene(scene);
+        stage.setTitle("Food Menu");
+        stage.setResizable(false);
+
+        int[] selectedValue = new int[1];
+
+        ArrayList<Text> foodList = GameMenuController.showFoodListJFX();
+        for(int i = 0 ; i < foodList.size() ; i++) {
+            foodList.get(i).setX(200);
+            foodList.get(i).setY(30 * (i + 1));
+            anchorPane.getChildren().add(foodList.get(i));
+        }
+
+        Text foodRate = new Text("Food Rate: " + currentGovernment.getFoodRate());
+        foodRate.setX(200);
+        foodRate.setY(150);
+        anchorPane.getChildren().add(foodRate);
+
+        MenuButton rateMenu = new MenuButton("Food Rate");
+        anchorPane.getChildren().add(rateMenu);
+        for(int i = -2 ; i <= 2 ; i++) {
+            MenuItem menuItem = new MenuItem(String.valueOf(i));
+            rateMenu.getItems().add(menuItem);
+            menuItem.setOnAction(actionEvent -> {
+                selectedValue[0] = Integer.parseInt(menuItem.getText());
+            });
+        }
+
+        Button cancel = new Button("Cancel");
+        cancel.setLayoutX(10);
+        cancel.setLayoutY(560);
+        cancel.setOnMouseClicked(mouseEvent -> {
+            stage.close();
+        });
+
+        Button okButton = new Button("OK");
+        okButton.setLayoutX(550);
+        okButton.setLayoutY(560);
+        okButton.setOnMouseClicked(mouseEvent -> {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setHeaderText("Set Food Rate");
+            alert.setContentText(GameMenuController.setFoodRateJFX(selectedValue[0]));
+            alert.showAndWait();
+            stage.close();
+        });
+
+        anchorPane.getChildren().add(okButton);
+
+        stage.show();
+    }
+
     private void dropBuilding() {
         AnchorPane anchorPane = new AnchorPane();
         Scene scene = new Scene(anchorPane, 600, 600);
@@ -153,6 +212,13 @@ public class GameJFX extends Application {
         stage.setResizable(false);
 
         BuildingType[] selectedBuildingType = new BuildingType[1];
+
+        Button cancel = new Button("Cancel");
+        cancel.setLayoutX(10);
+        cancel.setLayoutY(560);
+        cancel.setOnMouseClicked(mouseEvent -> {
+            stage.close();
+        });
 
         TextField xCoordinate = new TextField();
         xCoordinate.setPromptText("X Coordinate");
