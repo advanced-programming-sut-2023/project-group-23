@@ -125,16 +125,16 @@ public class GameJFX extends Application {
             }
         });
 
-        Button endGameButton = new Button("End Game");
-        endGameButton.setLayoutX(WIDTH - 90);
-        endGameButton.setLayoutY(120);
-        endGameButton.setOnMouseClicked(mouseEvent -> {
-            try {
-                endGame(stage);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
+//        Button endGameButton = new Button("End Game");
+//        endGameButton.setLayoutX(WIDTH - 90);
+//        endGameButton.setLayoutY(120);
+//        endGameButton.setOnMouseClicked(mouseEvent -> {
+//            try {
+//                endGame(stage);
+//            } catch (IOException e) {
+//                throw new RuntimeException(e);
+//            }
+//        });
         gamePane.getChildren().add(nextTurnButton);
 
         gamePane.setOnKeyPressed(keyEvent -> {
@@ -164,6 +164,13 @@ public class GameJFX extends Application {
             }
             else if(keyEvent.getCode().equals(KeyCode.F)) {
                 showFoodMenu();
+            }
+            else if(keyEvent.getCode().equals(KeyCode.Q)) {
+                try {
+                    endGame(stage);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
 
