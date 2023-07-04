@@ -242,6 +242,79 @@ public class GameMenuController {
         return false;
     }
 
+    public static String dropBuildingJFX(BuildingType buildingType, MapCell destinationCell) {
+        ProducerType producerType;
+        StorageType storageType;
+        TowerType towerType;
+        TownBuildingType townBuildingType;
+        TroopProducerType troopProducerType;
+        int x = destinationCell.getX();
+        int y = destinationCell.getY();
+
+        MapCell cell;
+        for(int i = x ; i < x + buildingType.getSize() ; i++)
+            for(int j = y ; j < y + buildingType.getSize() ; j++) {
+                cell = currentGame.getMap().getCellByCoordinate(i, j);
+                if(cell.getBuilding() != null ||
+                        cell.getTree() != null ||
+                        cell.getRock() != null ||
+                        (!buildingType.isPassable() && cell.getTroops().size() > 0))
+                    return "Tile X: " + x + ", Y: " + y + " is not clear";
+            }
+
+        producerType = ProducerType.getProducerTypeByName(buildingType.getName());
+        if(producerType != null && producerType.getSpecialGroundType() != null)
+            for(int i = x ; i < x + buildingType.getSize() ; i++)
+                for(int j = y ; j < y + buildingType.getSize() ; j++) {
+                    cell = currentGame.getMap().getCellByCoordinate(i, j);
+                    if(!cell.getGroundType().equals(producerType.getSpecialGroundType()) ||
+                            (cell.getWaterType() != null && !cell.getWaterType().equals(WaterType.PLAIN)))
+                        return "tile x: " + x + ", y: " + y + " has invalid ground type";
+                }
+        else {
+            for(int i = x ; i < x + buildingType.getSize() ; i++)
+                for(int j = y ; j < y + buildingType.getSize() ; j++) {
+                    cell = currentGame.getMap().getCellByCoordinate(i, j);
+                    if(Building.getForbiddenGroundTypes().contains(cell.getGroundType()))
+                        return "tile x: " + x + ", y: " + y + " has invalid ground type";
+                }
+        }
+
+        if(buildingType.getCost() > currentGovernment.getGold())
+            return "you don't have enough gold";
+        ResourceType resourceCostType = buildingType.getResourceCostType();
+        int resourceCost = buildingType.getResourceCost();
+        if(currentGovernment.getAmountByResource(resourceCostType) < resourceCost)
+            return "you don't have enough " + resourceCostType.getName();
+
+        currentGovernment.setGold(currentGovernment.getGold() - buildingType.getCost());
+        currentGovernment.changeAmountOfResource(resourceCostType, currentGovernment.getAmountByResource(resourceCostType) - resourceCost);
+
+        Building building = null;
+        if(producerType != null)
+            building = new Producer(buildingType, producerType, currentGovernment, x, y);
+        else if((storageType = StorageType.getStorageTypeByName(buildingType.getName())) != null)
+            building = new Storage(buildingType, storageType, currentGovernment, x, y);
+        else if((towerType = TowerType.getTowerTypeByName(buildingType.getName())) != null)
+            building = new Tower(buildingType, towerType, currentGovernment, x, y);
+        else if((townBuildingType = TownBuildingType.getTownBuildingTypeByName(buildingType.getName())) != null)
+            building = new TownBuilding(buildingType, townBuildingType, currentGovernment, x, y);
+        else if((troopProducerType = TroopProducerType.getTroopProducerTypeByName(buildingType.getName())) != null)
+            building = new TroopProducers(buildingType, troopProducerType, currentGovernment, x, y);
+
+        for(int i = x ; i < x + buildingType.getSize() ; i++)
+            for(int j = y ; j < y + buildingType.getSize() ; j++) {
+                cell = currentGame.getMap().getCellByCoordinate(i, j);
+                cell.setBuilding(building);
+            }
+
+        int workersNeeded = building.getWorkerNeeded();
+        building.setWorkerNeeded(workersNeeded - Math.min(workersNeeded, currentGovernment.getPeasantPopulation()));
+        currentGovernment.setPeasantPopulation(currentGovernment.getPeasantPopulation() - Math.min(workersNeeded, currentGovernment.getPeasantPopulation()));
+
+        return "";
+    }
+
     public static String dropBuilding(Matcher matcher) {
         matcher.matches();
         int x = Integer.parseInt(matcher.group("xCoordinate"));
@@ -597,4 +670,6 @@ public class GameMenuController {
 
         return "";
     }
+
+
 }

@@ -3,6 +3,7 @@ package View.GameJFX;
 import Controller.GameMenuController;
 import Controller.PreGameController;
 import Controller.ShopMenuController;
+import Model.Buildings.BuildingType;
 import Model.Game;
 import Model.Government;
 import Model.MapCell;
@@ -13,6 +14,7 @@ import View.LoginMenu.LoginMenu;
 import View.PreGameMenu.PreGameMenu;
 import View.ShopMenu.ShopMenu;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -115,6 +117,9 @@ public class GameJFX extends Application {
             else if(keyEvent.getCode().equals(KeyCode.I)) {
                 if(Tile.getSelectedTile() != null) airAttack(mapPane, gamePane);
             }
+            else if(keyEvent.getCode().equals(KeyCode.B)) {
+                dropBuilding();
+            }
         });
 
 //        gamePane.setOnMouseClicked(mouseEvent -> {
@@ -136,6 +141,75 @@ public class GameJFX extends Application {
         Scene scene = new Scene(gamePane);
         stage.setScene(scene);
         gamePane.requestFocus();
+        stage.show();
+    }
+
+    private void dropBuilding() {
+        AnchorPane anchorPane = new AnchorPane();
+        Scene scene = new Scene(anchorPane, 600, 600);
+        Stage stage = new Stage();
+        stage.setScene(scene);
+        stage.setTitle("Drop Building");
+        stage.setResizable(false);
+
+        BuildingType[] selectedBuildingType = new BuildingType[1];
+
+        TextField xCoordinate = new TextField();
+        xCoordinate.setPromptText("X Coordinate");
+        xCoordinate.setLayoutX(200);
+        xCoordinate.setLayoutY(30);
+        anchorPane.getChildren().add(xCoordinate);
+
+        TextField yCoordinate = new TextField();
+        yCoordinate.setPromptText("Y Coordinate");
+        yCoordinate.setLayoutX(200);
+        yCoordinate.setLayoutY(60);
+        anchorPane.getChildren().add(yCoordinate);
+
+        Text wrongCoordinate = new Text("");
+        wrongCoordinate.setLayoutX(400);
+        wrongCoordinate.setLayoutY(65);
+        wrongCoordinate.setFill(Color.RED);
+        anchorPane.getChildren().add(wrongCoordinate);
+
+        MenuButton buildings = new MenuButton("Building Type");
+        buildings.setLayoutX(200);
+        buildings.setLayoutY(90);
+        anchorPane.getChildren().add(buildings);
+        for (BuildingType value : BuildingType.values()) {
+            MenuItem building = new MenuItem(value.getName());
+            buildings.getItems().add(building);
+            building.setOnAction(actionEvent -> {
+                selectedBuildingType[0] = BuildingType.getBuildingTypeByName(value.getName());
+            });
+        }
+
+        Button okButton = new Button("OK");
+        okButton.setLayoutX(550);
+        okButton.setLayoutY(560);
+        okButton.setOnMouseClicked(mouseEvent -> {
+            wrongCoordinate.setText("");
+            if (!xCoordinate.getText().matches("\\d+")) {
+                wrongCoordinate.setText("coordinate must be an integer!");
+                return;
+            } else if (!yCoordinate.getText().matches("\\d+")) {
+                wrongCoordinate.setText("coordinate must be an integer!");
+                return;
+            }
+            int x = Integer.parseInt(xCoordinate.getText());
+            int y = Integer.parseInt(yCoordinate.getText());
+            MapCell destinationCell = currentGame.getMap().getCellByCoordinate(x, y);
+
+            wrongCoordinate.setText(GameMenuController.dropBuildingJFX(selectedBuildingType[0], destinationCell));
+            if(wrongCoordinate.getText().equals("")) {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setHeaderText("Dropped Building Successfully!");
+                alert.setContentText(selectedBuildingType[0].getName() + " dropped successfully on X: " + x + " Y: " + y);
+                alert.showAndWait();
+                stage.close();
+            }
+        });
+        anchorPane.getChildren().add(okButton);
         stage.show();
     }
 
