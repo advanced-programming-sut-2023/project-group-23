@@ -570,4 +570,31 @@ public class GameMenuController {
     }
 
 
+    public static String airAttackJFX(TroopType troopType, int troopAmount, MapCell destinationCell) {
+        if(troopType.getFireRange() == 0)
+            return "This Troop is a Melee Troop!";
+
+        int x = destinationCell.getX();
+        int y = destinationCell.getY();
+        MapCell initialCell = Tile.getSelectedTile().getCell();
+        int range = (int) Math.ceil(Math.sqrt(Math.pow(x - initialCell.getX(), 2) + Math.pow(y - initialCell.getY(), 2)));
+        int totalDamage = 0;
+
+        if(range > troopType.getFireRange())
+            return "Enemy cell is out of range!";
+
+        totalDamage = troopAmount * troopType.getHumanDamage();
+
+        if(destinationCell.getBuilding() != null && !destinationCell.getBuilding().getGovernment().equals(currentGovernment))
+            destinationCell.getBuilding().setHitPoint(destinationCell.getBuilding().getHitPoint() - totalDamage);
+
+        Troop troop;
+        for (int j = destinationCell.getTroops().size() - 1 ; j >= 0 ; j--) {
+            troop = destinationCell.getTroops().get(j);
+            if(!troop.getGovernment().equals(currentGovernment))
+                troop.setHitPoint(troop.getHitPoint() - totalDamage);
+        }
+
+        return "";
+    }
 }

@@ -112,6 +112,9 @@ public class GameJFX extends Application {
             else if(keyEvent.getCode().equals(KeyCode.A)) {
                 if(Tile.getSelectedTile() != null) allAttack(mapPane, gamePane);
             }
+            else if(keyEvent.getCode().equals(KeyCode.I)) {
+                if(Tile.getSelectedTile() != null) airAttack(mapPane, gamePane);
+            }
         });
 
 //        gamePane.setOnMouseClicked(mouseEvent -> {
@@ -133,6 +136,107 @@ public class GameJFX extends Application {
         Scene scene = new Scene(gamePane);
         stage.setScene(scene);
         gamePane.requestFocus();
+        stage.show();
+    }
+
+    private void airAttack(Pane mapPane, Pane gamePane) {
+        HashMap<TroopType, Integer> troopTypes = GameMenuController.getTroopTypes(Tile.getSelectedTile());
+        AnchorPane anchorPane = new AnchorPane();
+        Scene scene = new Scene(anchorPane, 600, 600);
+        Stage stage = new Stage();
+        stage.setScene(scene);
+        stage.setTitle("Air Attack");
+        stage.setResizable(false);
+
+        TroopType[] selectedType = new TroopType[1];
+
+        Button cancel = new Button("Cancel");
+        cancel.setLayoutX(10);
+        cancel.setLayoutY(560);
+        cancel.setOnMouseClicked(mouseEvent -> {
+            stage.close();
+        });
+
+        anchorPane.getChildren().add(cancel);
+
+        if(troopTypes.size() == 0) {
+            Text error = new Text("No Troops Available!");
+            error.setX(200);
+            error.setY(300);
+            anchorPane.getChildren().add(error);
+        }
+        else {
+            TextField xCoordinate = new TextField();
+            xCoordinate.setPromptText("X Coordinate");
+            xCoordinate.setLayoutX(200);
+            xCoordinate.setLayoutY(30);
+            anchorPane.getChildren().add(xCoordinate);
+
+            TextField yCoordinate = new TextField();
+            yCoordinate.setPromptText("Y Coordinate");
+            yCoordinate.setLayoutX(200);
+            yCoordinate.setLayoutY(60);
+            anchorPane.getChildren().add(yCoordinate);
+
+            TextField amount = new TextField();
+            amount.setPromptText("Amount");
+            amount.setLayoutX(200);
+            amount.setLayoutY(90);
+            anchorPane.getChildren().add(amount);
+
+            Text wrongCoordinate = new Text("");
+            wrongCoordinate.setLayoutX(400);
+            wrongCoordinate.setLayoutY(65);
+            wrongCoordinate.setFill(Color.RED);
+            anchorPane.getChildren().add(wrongCoordinate);
+
+            MenuButton troopsMenu = new MenuButton("Troop Type");
+            troopsMenu.setLayoutX(200);
+            troopsMenu.setLayoutY(120);
+            anchorPane.getChildren().add(troopsMenu);
+            for(Map.Entry<TroopType, Integer> entry : troopTypes.entrySet()) {
+                MenuItem menuItem = new MenuItem(entry.getKey().getName());
+                menuItem.setOnAction(actionEvent -> {
+                    selectedType[0] = TroopType.getTroopTypeByName(entry.getKey().getName());
+                });
+                troopsMenu.getItems().add(menuItem);
+            }
+
+            Button okButton = new Button("OK");
+            okButton.setLayoutX(550);
+            okButton.setLayoutY(560);
+            okButton.setOnMouseClicked(mouseEvent -> {
+                wrongCoordinate.setText("");
+                if (!xCoordinate.getText().matches("\\d+")) {
+                    wrongCoordinate.setText("coordinate must be an integer!");
+                    return;
+                } else if (!yCoordinate.getText().matches("\\d+")) {
+                    wrongCoordinate.setText("coordinate must be an integer!");
+                    return;
+                } else if (!amount.getText().matches("\\d+")) {
+                    wrongCoordinate.setText("Amount must be an integer!");
+                    return;
+                }
+                int troopAmount = Integer.parseInt(amount.getText());
+                int x = Integer.parseInt(xCoordinate.getText());
+                int y = Integer.parseInt(yCoordinate.getText());
+                MapCell destinationCell = currentGame.getMap().getCellByCoordinate(x, y);
+
+                if(troopAmount > troopTypes.get(selectedType[0]) || troopAmount < 1) {
+                    wrongCoordinate.setText("Amount must be between 1 and " + amount.getText());
+                    return;
+                }
+                wrongCoordinate.setText(GameMenuController.airAttackJFX(selectedType[0], troopAmount, destinationCell));
+                if(wrongCoordinate.getText().equals("")) {
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                    alert.setHeaderText("Attacked Enemy Successfully!");
+                    alert.setContentText("Air Attack to X: " + x + " Y: " + y + " with " + selectedType[0].getName());
+                    alert.showAndWait();
+                    stage.close();
+                }
+            });
+            anchorPane.getChildren().add(okButton);
+        }
         stage.show();
     }
 
