@@ -451,23 +451,4 @@ public class ShopMenu extends Application {
         stage.show();
     }
 
-    public static void main(String[] args) throws Exception {
-        User.initializeUsersFromDatabase();
-        Government government = new Government(User.getUserByUsername("scott"));
-        Government government1 = new Government(User.getUserByUsername("bhrdj"));
-        Government government2 = new Government(User.getUserByUsername("sadra"));
-        Government government3 = new Government(User.getUserByUsername("kian"));
-        ArrayList<Government> governments = new ArrayList<>();
-        governments.add(government1);
-        governments.add(government);
-        governments.add(government2);
-        governments.add(government3);
-        Game game = new Game(governments, new Maps());
-        PreGameController.setCurrentGame(game);
-        PreGameController.setCurrentGovernment(government);
-        ShopMenu.setCurrentGovernment(government);
-        ShopMenuController.setCurrentGovernment(government);
-        Storage storage = new Storage(BuildingType.WHEAT_FARM, StorageType.STOCKPILE, government, 1, 1);
-        launch();
-    }
 }

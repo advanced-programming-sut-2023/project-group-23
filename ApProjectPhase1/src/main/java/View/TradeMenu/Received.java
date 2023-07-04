@@ -75,6 +75,7 @@ public class Received extends Application {
             }
         });
 
+        nodes.clear();
         int size = Math.min(number * 10 + 10, ShopMenu.getCurrentGovernment().getTradeList().size());
         for (int i = number * 10 + 1; i <= size; i++) {
             int integer = i % 10;

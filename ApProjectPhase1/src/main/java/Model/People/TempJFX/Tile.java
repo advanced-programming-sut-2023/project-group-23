@@ -4,22 +4,16 @@ import Model.GroundType;
 import Model.MapCell;
 import Model.People.Troop;
 import View.GameJFX.GameJFX;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
-import javafx.scene.image.Image;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Polygon;
 import javafx.scene.text.Text;
 
-import java.util.HashMap;
-
 public class Tile extends Polygon {
-    private static final double BASE_WIDTH = 66.0;
-    private static final double BASE_HEIGHT = 36.0;
+    public static final double BASE_WIDTH = 66.0;
+    public static final double BASE_HEIGHT = 36.0;
     public static double WIDTH = 66.0;
     public static double HEIGHT = 36.0;
     private static double zoomRate = 1.0;
